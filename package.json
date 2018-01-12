@@ -1,4 +1,21 @@
 {
   "name": "angular-groundhog",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "description": "Groundhog components for Angular",
+  "homepage": "https://github.com/Dynatrace/angular-groundhog",
+  "bugs": "https://github.com/Dynatrace/angular-groundhog/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/angular-groundhog.git"
+  },
+  "engines": {
+    "node": ">= 5.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.21",
+    "minimatch": "^3.0.4",
+    "ts-node": "^3.0.4",
+    "tslint": "^5.8.0",
+    "typescript": "~2.6.0"
+  }
 }
