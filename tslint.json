@@ -87,33 +87,29 @@
 
     // Custom Rules
     "ts-loader": true,
-    "no-exposed-todo": true,
-    "no-host-decorator-in-concrete": [
-      true,
-      "HostBinding",
-      "HostListener"
-    ],
-    "validate-decorators": [true, {
-      "Component": {
-        "encapsulation": "\\.None$",
-        "moduleId": "^module\\.id$",
-        "preserveWhitespaces": "false$",
-        "changeDetection": "\\.OnPush$",
-        "!styles": ".*"
-      }
-    }, "src/+(lib|cdk|material-experimental|cdk-experimental)/**/!(*.spec).ts"],
-    "require-license-banner": [
-      true,
-      "src/+(lib|cdk|material-experimental|cdk-experimental|demo-app)/**/!(*.spec).ts"
-    ],
+    // "no-exposed-todo": true,
+    // "no-host-decorator-in-concrete": [
+    //   true,
+    //   "HostBinding",
+    //   "HostListener"
+    // ],
+    // "validate-decorators": [true, {
+    //   "Component": {
+    //     "encapsulation": "\\.None$",
+    //     "moduleId": "^module\\.id$",
+    //     "preserveWhitespaces": "false$",
+    //     "changeDetection": "\\.OnPush$",
+    //     "!styles": ".*"
+    //   }
+    // }, "src/+(lib|cdk|material-experimental|cdk-experimental)/**/!(*.spec).ts"],
     "no-rxjs-patch-imports": [
       true,
       "src/+(lib|cdk|material-experimental|cdk-experimental)/**/*.ts"
     ],
-    "missing-rollup-globals": [
-      true,
-      "./tools/package-tools/rollup-globals.ts",
-      "src/+(lib|cdk|material-examples|material-experimental|cdk-experimental)/**/*.ts"
-    ]
+    // "missing-rollup-globals": [
+    //   true,
+    //   "./tools/package-tools/rollup-globals.ts",
+    //   "src/+(lib|cdk|material-examples|material-experimental|cdk-experimental)/**/*.ts"
+    // ]
   }
 }

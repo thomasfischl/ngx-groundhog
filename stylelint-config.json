@@ -8,9 +8,6 @@
         "not ie_mob <= 10"
       ]
     ],
-    "material/selector-no-deep": true,
-    "material/no-nested-mixin": true,
-    "material/selector-nested-pattern-scoped": [
       ".*[^&]$",
       {
         "message": "The & operator is not allowed at the end of theme selectors.",
