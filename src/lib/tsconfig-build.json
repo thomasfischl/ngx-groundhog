@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "stripInternal": false,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "importHelpers": true,
+    "newLine": "lf",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "../../dist/packages/groundhog",
+    "rootDir": ".",
+    "rootDirs": [
+      ".",
+      "../../dist/packages/groundhog"
+    ],
+    "sourceMap": true,
+    "inlineSources": true,
+    "target": "es2015",
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@dynatrace/ngx-groundhog/*": [
+        "../../dist/packages/groundhog/*"
+      ]
+    }
+  },
+  "files": [
+    "public-api.ts"
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "flatModuleOutFile": "index.js",
+    "flatModuleId": "@dynatrace/ngx-groundhog",
+    "skipTemplateCodegen": true,
+    "fullTemplateTypeCheck": true
+  }
+}
