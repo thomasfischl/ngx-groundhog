@@ -1,12 +1,12 @@
 {
-  "name": "angular-groundhog",
+  "name": "ngx-groundhog",
   "version": "0.0.0",
   "description": "Groundhog components for Angular",
-  "homepage": "https://github.com/Dynatrace/angular-groundhog",
-  "bugs": "https://github.com/Dynatrace/angular-groundhog/issues",
+  "homepage": "https://github.com/Dynatrace/ngx-groundhog",
+  "bugs": "https://github.com/Dynatrace/ngx-groundhog/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dynatrace/angular-groundhog.git"
+    "url": "https://github.com/Dynatrace/ngx-groundhog.git"
   },
   "engines": {
     "node": ">= 5.4.1"

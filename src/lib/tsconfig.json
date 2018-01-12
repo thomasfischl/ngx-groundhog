@@ -5,7 +5,7 @@
     "rootDir": "..",
     "baseUrl": ".",
     "paths": {
-      "@dynatrace/angular-groundhog/*": ["./*"]
+      "@dynatrace/ngx-groundhog/*": ["./*"]
     }
   },
   "include": ["./**/*.ts"]
