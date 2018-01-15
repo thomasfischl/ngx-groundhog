@@ -28,10 +28,24 @@
     "@angular/platform-browser-dynamic": "~5.2.0",
     "@angular/platform-server": "~5.2.0",
     "@angular/router": "~5.2.0",
+    "@types/chalk": "^2.2.0",
+    "@types/gulp": "^4.0.5",
     "@types/node": "^7.0.21",
+    "chalk": "^2.3.0",
+    "glob": "^7.1.2",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-connect": "^5.2.0",
+    "gulp-sass": "^3.1.0",
     "minimatch": "^3.0.4",
+    "rollup": "^0.54.0",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
+    "run-sequence": "^2.2.1",
+    "sorcery": "^0.10.0",
     "ts-node": "^3.0.4",
     "tslint": "^5.8.0",
-    "typescript": "~2.6.0"
+    "typescript": "~2.6.0",
+    "uglify-js": "^2.8.14"
   }
 }
