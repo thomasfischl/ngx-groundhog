@@ -1,16 +1,18 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {GhButtonCssStyler} from './button';
+import {GhButtonCssStyler, GhButton} from './button';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   exports: [
-    GhButtonCssStyler
+    GhButtonCssStyler,
+    GhButton
   ],
   declarations: [
-    GhButtonCssStyler
+    GhButtonCssStyler,
+    GhButton
   ]
 })
 export class GhButtonModule {}
