@@ -11,16 +11,13 @@ import {
 const {outputDir, packagesDir, projectDir} = buildConfig;
 
 /** Array of vendors that are required to serve the demo-app. */
-/** TODO: (ffr): check which vendor libs will be used in the demo-app */
 const appVendors = [
   '@angular',
   'systemjs',
   'zone.js',
   'rxjs',
-  // 'hammerjs',
   'core-js',
-  // 'web-animations-js',
-  // 'moment',
+  'web-animations-js',
   'tslib',
 ];
 
@@ -56,7 +53,7 @@ task(':build:devapp:assets', copyTask(assetsGlob, outDir));
 
 task(':serve:devapp', serverTask(outDir, true));
 
-// The themes for the demo-app are built by using the SCSS mixins from Material.
+// The themes for the demo-app are built by using the SCSS mixins from Groundhog.
 // Therefore when SCSS files have been changed, the custom theme needs to be rebuilt.
 task(':build:devapp:ngx-groundhog-with-styles', sequenceTask(
   'ngx-groundhog:build-no-bundles', ':build:devapp:scss'
@@ -68,4 +65,3 @@ task('build:devapp', sequenceTask(
 ));
 
 task('serve:devapp', ['build:devapp'], sequenceTask([':serve:devapp', ':watch:devapp']));
-

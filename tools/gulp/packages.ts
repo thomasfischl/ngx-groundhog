@@ -8,5 +8,5 @@ export const examplesPackage = new BuildPackage('ngx-groundhog-examples', [groun
 // components can still be imported through `@dynatrace/ngx-groundhog`.
 groundhogPackage.exportsSecondaryEntryPointsAtRoot = true;
 
-// To avoid refactoring of the project the material package will map to the source path `lib/`.
+// To avoid refactoring of the project the groundhog package will map to the source path `lib/`.
 groundhogPackage.sourceDir = join(buildConfig.packagesDir, 'lib');

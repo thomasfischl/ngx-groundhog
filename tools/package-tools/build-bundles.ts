@@ -147,7 +147,7 @@ export class PackageBundler {
       // secondary entry-points from the rollup globals because we want the UMD for the
       // primary entry-point to include *all* of the sources for those entry-points.
       if (this.buildPackage.exportsSecondaryEntryPointsAtRoot &&
-          config.moduleName === `ng.${this.buildPackage.name}`) {
+          config.moduleName === `ngx.${this.buildPackage.name}`) {
 
         const importRegex = new RegExp(`@dynatrace/${this.buildPackage.name}/.+`);
         external = external.filter(e => !importRegex.test(e));

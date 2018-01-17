@@ -8,7 +8,7 @@ const gulpSass = require('gulp-sass');
 // const gulpCleanCss = require('gulp-clean-css');
 
 /** Create a gulp task that builds SCSS files. */
-export function buildScssTask(outputDir: string, sourceDir: string, minifyOutput = false) {
+export function buildScssTask(outputDir: string, sourceDir: string) {
   return () => {
     return src(join(sourceDir, '**/*.scss'))
       .pipe(gulpSass().on('error', gulpSass.logError))

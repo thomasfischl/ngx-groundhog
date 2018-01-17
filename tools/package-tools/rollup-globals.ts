@@ -9,7 +9,7 @@ export const dashCaseToCamelCase =
 /** List of potential secondary entry-points for the ngx-groundhog package. */
 const groundhogSecondaryEntryPoints = getSubdirectoryNames(join(buildConfig.packagesDir, 'lib'));
 
-/** Object with all material entry points in the format of Rollup globals. */
+/** Object with all groundhog entry points in the format of Rollup globals. */
 const rollupGroundhogEntryPoints = groundhogSecondaryEntryPoints.reduce((globals: any, entryPoint: string) => {
   globals[`@dynatrace/ngx-groundhog/${entryPoint}`] = `ngx.groundhog.${dashCaseToCamelCase(entryPoint)}`;
   return globals;
@@ -36,8 +36,8 @@ export const rollupGlobals = {
   '@angular/common/http/testing': 'ng.common.http.testing',
 
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.
-  '@dynatrace/groundhog-examples': 'ngx.groundhogExamples',
-  '@dynatrace/groundhog': 'ngx.groundhog',
+  '@dynatrace/ngx-groundhog-examples': 'ngx.groundhogExamples',
+  '@dynatrace/ngx-groundhog': 'ngx.groundhog',
 
   // Include secondary entry-points of the groundhog package
   ...rollupGroundhogEntryPoints,
