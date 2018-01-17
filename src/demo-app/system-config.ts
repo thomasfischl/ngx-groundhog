@@ -36,7 +36,7 @@ System.config({
     '@angular/platform-browser-dynamic':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
 
-    '@angular/ngx-groundhog': 'dist/packages/ngx-groundhog/public-api.js',
+    '@dynatrace/ngx-groundhog': 'dist/packages/ngx-groundhog/public-api.js',
 
     '@dynatrace/ngx-groundhog/button': 'dist/packages/ngx-groundhog/button/index.js',
   },
