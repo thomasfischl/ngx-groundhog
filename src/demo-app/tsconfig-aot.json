@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig-build",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "outDir": "../../dist/packages/demo-app",
+    "rootDirs": [
+      ".",
+      "../../dist/packages/demo-app"
+    ],
+    "paths": {
+      "@angular/ngx-groundhog/*": ["../../dist/releases/ngx-groundhog/*"],
+      "@angular/ngx-groundhog": ["../../dist/releases/ngx-groundhog"]
+    }
+  },
+  "files": [
+    "./demo-app-types.d.ts",
+    "./demo-app-module.ts",
+    "./main-aot.ts"
+  ],
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": false,
+    // TODO: disabled for now due to @angular/forms
+    "fullTemplateTypeCheck": false
+  }
+}

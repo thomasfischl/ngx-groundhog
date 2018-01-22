@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "baseUrl": ".",
+    "paths": {
+      "@dynatrace/ngx-groundhog/*": ["../lib/*"],
+      "@dynatrace/ngx-groundhog": ["../lib/public-api.ts"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}
