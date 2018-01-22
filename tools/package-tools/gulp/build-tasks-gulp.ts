@@ -92,11 +92,11 @@ export function createPackageBuildTasks(buildPackage: BuildPackage) {
   ]);
 
   task(`${taskName}:assets:scss`, buildScssTask(
-    buildPackage.outputDir, buildPackage.sourceDir, true)
+    buildPackage.outputDir, buildPackage.sourceDir)
   );
 
   task(`${taskName}:assets:es5-scss`, buildScssTask(
-      buildPackage.esm5OutputDir, buildPackage.sourceDir, true)
+      buildPackage.esm5OutputDir, buildPackage.sourceDir)
   );
 
   task(`${taskName}:assets:copy-styles`, () => {
