@@ -1,6 +1,6 @@
 /**
  * @license
- * Based on the build of angular/material2 by Google Inc. governed by an 
+ * Based on the build of angular/material2 by Google Inc. governed by an
  * MIT-style license that can be found in the LICENSE file at https://angular.io/license
  */
 import {join} from 'path';
@@ -10,7 +10,7 @@ import {writeFileSync} from 'fs';
 export function createEntryPointPackageJson(destDir: string, packageName: string,
                                             entryPointName: string) {
   const content = {
-    name: `@dyntrace/${packageName}/${entryPointName}`,
+    name: `@dynatrace/${packageName}/${entryPointName}`,
     typings: `../${entryPointName}.d.ts`,
     main: `../bundles/${packageName}-${entryPointName}.umd.js`,
     module: `../esm5/${entryPointName}.es5.js`,
