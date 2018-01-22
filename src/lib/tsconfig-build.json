@@ -1,3 +1,4 @@
+// TypeScript config file that is used to compile the library into ES2015.
 {
   "compilerOptions": {
     "declaration": true,
@@ -32,7 +33,8 @@
     }
   },
   "files": [
-    "public-api.ts"
+    "public-api.ts",
+    "typings.d.ts"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

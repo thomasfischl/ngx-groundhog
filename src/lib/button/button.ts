@@ -23,9 +23,9 @@ export class GhButtonCssStyler {}
   moduleId: module.id,
   selector: `button[gh-button]`,
   exportAs: 'ghButton',
-  host: {
-    '[disabled]': 'disabled || null',
-  },
+  // host: {
+  //   '[disabled]': 'disabled || null',
+  // },
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
   inputs: ['disabled'],
