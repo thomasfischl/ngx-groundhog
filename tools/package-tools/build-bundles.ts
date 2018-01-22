@@ -20,6 +20,11 @@ const bundlesDir = join(buildConfig.outputDir, 'bundles');
 export class PackageBundler {
   constructor(private buildPackage: BuildPackage) {}
 
+  /**
+ * @license
+ * Based on the build of angular/material2 by Google Inc. governed by an 
+ * MIT-style license that can be found in the LICENSE file at https://angular.io/license
+ */
   /** Creates all bundles for the package and all associated entry points (UMD, ES5, ES2015). */
   async createBundles() {
     for (const entryPoint of this.buildPackage.secondaryEntryPoints) {
