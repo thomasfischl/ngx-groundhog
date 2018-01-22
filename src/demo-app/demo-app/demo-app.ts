@@ -38,4 +38,8 @@ export class Home {}
   preserveWhitespaces: false,
 })
 export class DemoApp {
+  navItems = [
+    {name: 'Start', route: '/'},
+    {name: 'Button', route: '/button'}
+  ];
 }
