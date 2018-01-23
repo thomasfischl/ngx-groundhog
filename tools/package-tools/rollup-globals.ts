@@ -1,6 +1,6 @@
 /**
  * @license
- * Based on the build of angular/material2 by Google Inc. governed by an 
+ * Based on the build of angular/material2 by Google Inc. governed by an
  * MIT-style license that can be found in the LICENSE file at https://angular.io/license
  */
 import {join} from 'path';
@@ -10,13 +10,16 @@ import {buildConfig} from './build-config';
 /** Method that converts dash-case strings to a camel-based string. */
 export const dashCaseToCamelCase =
   (str: string) => str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-  
+
 /** List of potential secondary entry-points for the ngx-groundhog package. */
 const groundhogSecondaryEntryPoints = getSubdirectoryNames(join(buildConfig.packagesDir, 'lib'));
 
 /** Object with all groundhog entry points in the format of Rollup globals. */
-const rollupGroundhogEntryPoints = groundhogSecondaryEntryPoints.reduce((globals: any, entryPoint: string) => {
-  globals[`@dynatrace/ngx-groundhog/${entryPoint}`] = `ngx.groundhog.${dashCaseToCamelCase(entryPoint)}`;
+const rollupGroundhogEntryPoints = groundhogSecondaryEntryPoints.reduce(
+  (globals: any, entryPoint: string) => {
+    globals[`@dynatrace/ngx-groundhog/${entryPoint}`] =
+      `ngx.groundhog.${dashCaseToCamelCase(entryPoint)
+  }`;
   return globals;
 }, {});
 
@@ -39,6 +42,23 @@ export const rollupGlobals = {
   '@angular/core/testing': 'ng.core.testing',
   '@angular/common/testing': 'ng.common.testing',
   '@angular/common/http/testing': 'ng.common.http.testing',
+
+  // Angular CDK Mappings
+  '@angular/cdk': 'ng.cdk',
+  '@angular/cdk/a11y': 'ng.cdk.a11y',
+  '@angular/cdk/accordion': 'ng.cdk.accordion',
+  '@angular/cdk/bidi': 'ng.cdk.bidi',
+  '@angular/cdk/coercion': 'ng.cdk.coercion',
+  '@angular/cdk/collections': 'ng.cdk.collections',
+  '@angular/cdk/keycodes': 'ng.cdk.keycodes',
+  '@angular/cdk/layout': 'ng.cdk.layout',
+  '@angular/cdk/observers': 'ng.cdk.observers',
+  '@angular/cdk/overlay': 'ng.cdk.overlay',
+  '@angular/cdk/platform': 'ng.cdk.platform',
+  '@angular/cdk/portal': 'ng.cdk.portal',
+  '@angular/cdk/scrolling': 'ng.cdk.scrolling',
+  '@angular/cdk/stepper': 'ng.cdk.stepper',
+  '@angular/cdk/table': 'ng.cdk.table',
 
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.
   '@dynatrace/ngx-groundhog-examples': 'ngx.groundhogExamples',
