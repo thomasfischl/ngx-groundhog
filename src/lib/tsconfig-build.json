@@ -10,11 +10,11 @@
     "newLine": "lf",
     "module": "es2015",
     "moduleResolution": "node",
-    "outDir": "../../dist/packages/groundhog",
+    "outDir": "../../dist/packages/ngx-groundhog",
     "rootDir": ".",
     "rootDirs": [
       ".",
-      "../../dist/packages/groundhog"
+      "../../dist/packages/ngx-groundhog"
     ],
     "sourceMap": true,
     "inlineSources": true,
@@ -28,7 +28,7 @@
     "baseUrl": ".",
     "paths": {
       "@dynatrace/ngx-groundhog/*": [
-        "../../dist/packages/groundhog/*"
+        "../../dist/packages/ngx-groundhog/*"
       ]
     }
   },

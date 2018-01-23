@@ -1,17 +1,14 @@
 /**
  * @license
- * Based on the build of angular/material2 by Google Inc. governed by an 
+ * Based on the build of angular/material2 by Google Inc. governed by an
  * MIT-style license that can be found in the LICENSE file at https://angular.io/license
  */
+
 import {task} from 'gulp';
 import {join} from 'path';
 import {tsBuildTask, copyTask, serverTask} from '../util/task_helpers';
-import {
-  buildConfig, buildScssTask, sequenceTask, watchFiles
-} from 'ngx-groundhog-build-tools';
-import {
-  groundhogPackage,
-} from '../packages';
+import {buildConfig, buildScssTask, sequenceTask, watchFiles} from 'ngx-groundhog-build-tools';
+import {groundhogPackage} from '../packages';
 
 const {outputDir, packagesDir, projectDir} = buildConfig;
 

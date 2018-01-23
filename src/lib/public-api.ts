@@ -1,1 +1,1 @@
-export * from './button';
+export * from '@dynatrace/ngx-groundhog/button';

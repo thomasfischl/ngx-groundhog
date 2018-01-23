@@ -105,7 +105,7 @@
     "no-rxjs-patch-imports": [
       true,
       "src/+(lib|cdk|material-experimental|cdk-experimental)/**/*.ts"
-    ],
+    ]
     // "missing-rollup-globals": [
     //   true,
     //   "./tools/package-tools/rollup-globals.ts",

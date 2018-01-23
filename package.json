@@ -9,7 +9,8 @@
     "url": "https://github.com/Dynatrace/ngx-groundhog.git"
   },
   "scripts": {
-    "demo-app": "gulp serve:devapp"
+    "demo-app": "gulp serve:devapp",
+    "build": "gulp :publish:build-releases"
   },
   "engines": {
     "node": ">= 5.4.1"
