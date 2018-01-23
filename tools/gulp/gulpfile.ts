@@ -15,4 +15,5 @@ createPackageBuildTasks(groundhogPackage);
 import './tasks/aot';
 import './tasks/clean';
 import './tasks/development';
+import './tasks/lint';
 import './tasks/publish';
