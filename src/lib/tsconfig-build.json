@@ -1,0 +1,47 @@
+// TypeScript config file that is used to compile the library into ES2015.
+{
+  "compilerOptions": {
+    "declaration": true,
+    "stripInternal": false,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "importHelpers": true,
+    "newLine": "lf",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "../../dist/packages/ngx-groundhog",
+    "rootDir": ".",
+    "rootDirs": [
+      ".",
+      "../../dist/packages/ngx-groundhog"
+    ],
+    "sourceMap": true,
+    "inlineSources": true,
+    "target": "es2015",
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@dynatrace/ngx-groundhog/*": [
+        "../../dist/packages/ngx-groundhog/*"
+      ]
+    }
+  },
+  "files": [
+    "public-api.ts",
+    "typings.d.ts"
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "flatModuleOutFile": "index.js",
+    "flatModuleId": "@dynatrace/ngx-groundhog",
+    "skipTemplateCodegen": true,
+    "fullTemplateTypeCheck": true
+  }
+}

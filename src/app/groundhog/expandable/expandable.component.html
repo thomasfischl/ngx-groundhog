@@ -1,6 +1,0 @@
-<div class="expandable" [ngClass]="{'is-active': active, 'expandable--separated': separated }">
-  <a href="#" class="expandable__trigger" [ngClass]="{'expandable__trigger--right': trigger === 'right'}" (click)="onTrigger()">{{title}}</a>
-  <div class="expandable__content">
-    <ng-content></ng-content>
-  </div>
-</div>
