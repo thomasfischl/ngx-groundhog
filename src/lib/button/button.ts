@@ -25,7 +25,7 @@ export class GhButtonCssStyler {}
 export class GhButtonBase {
   constructor(public _elementRef: ElementRef) {}
 }
-export const _MatButtonMixinBase = mixinDisabled(GhButtonBase);
+export const _GhButtonMixinBase = mixinDisabled(GhButtonBase);
 
 /**
  * Groundhog design button.
@@ -46,7 +46,7 @@ export const _MatButtonMixinBase = mixinDisabled(GhButtonBase);
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhButton extends _MatButtonMixinBase implements OnDestroy, CanDisable {
+export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisable {
   constructor(elementRef: ElementRef,
               private _focusMonitor: FocusMonitor) {
     super(elementRef);
