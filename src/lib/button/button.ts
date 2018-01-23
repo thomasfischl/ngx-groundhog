@@ -26,9 +26,6 @@ export class GhButtonCssStyler {}
   moduleId: module.id,
   selector: `button[gh-button]`,
   exportAs: 'ghButton',
-  // host: {
-  //   '[disabled]': 'disabled || null',
-  // },
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
   inputs: ['disabled'],
@@ -55,4 +52,25 @@ export class GhButton /*extends _GhButtonMixinBase*/ implements OnDestroy {
     return this._elementRef.nativeElement;
   }
 
+}
+
+/**
+ * Groundhog design button.
+ */
+@Component({
+  moduleId: module.id,
+  selector: `a[gh-button]`,
+  exportAs: 'ghButton, ghAnchor',
+  inputs: ['disabled', 'disableRipple', 'color'],
+  templateUrl: 'button.html',
+  styleUrls: ['button.css'],
+  encapsulation: ViewEncapsulation.None,
+  preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class GhAnchor extends GhButton {
+  constructor(elementRef: ElementRef,
+              focusMonitor: FocusMonitor) {
+    super(elementRef, focusMonitor);
+  }
 }

@@ -42,14 +42,20 @@ $disabledcolor: $gray-300;
   line-height: 32px;
   line-height: -moz-block-height;
   border-width: 1px;
+  color: #fff;
   border-color: $buttoncolor;
+  background-color: $buttoncolor;
 
   &:hover {
+    color: #fff;
     border-color: $buttonhovercolor;
+    background-color: $buttonhovercolor;
+    text-decoration: none;
   }
 
   &:active {
     border-color: $buttonactivecolor;
+    background-color: $buttonactivecolor;
   }
 
   &[disabled] {
