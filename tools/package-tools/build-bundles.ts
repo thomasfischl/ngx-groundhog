@@ -22,7 +22,7 @@ export class PackageBundler {
 
   /**
  * @license
- * Based on the build of angular/material2 by Google Inc. governed by an 
+ * Based on the build of angular/material2 by Google Inc. governed by an
  * MIT-style license that can be found in the LICENSE file at https://angular.io/license
  */
   /** Creates all bundles for the package and all associated entry points (UMD, ES5, ES2015). */
@@ -111,7 +111,7 @@ export class PackageBundler {
     const bundleOptions = {
       context: 'this',
       external: Object.keys(rollupGlobals),
-      entry: config.entry,
+      input: config.entry,
       onwarn: (message: string) => {
         // TODO(jelbourn): figure out *why* rollup warns about certain symbols not being found
         // when those symbols don't appear to be in the input file in the first place.
@@ -130,12 +130,12 @@ export class PackageBundler {
     const writeOptions = {
       // Keep the moduleId empty because we don't want to force developers to a specific moduleId.
       moduleId: '',
-      moduleName: config.moduleName || 'ngx.groundhog',
+      name: config.moduleName || 'ngx.groundhog',
       banner: buildConfig.licenseBanner,
+      file: config.dest,
       format: config.format,
-      dest: config.dest,
       globals: rollupGlobals,
-      sourceMap: true
+      sourcemap: true
     };
 
     // For UMD bundles, we need to adjust the `external` bundle option in order to include
@@ -166,7 +166,6 @@ export class PackageBundler {
 
       bundleOptions.external = external;
     }
-
     return rollup.rollup(bundleOptions).then((bundle: any) => bundle.write(writeOptions));
   }
 
