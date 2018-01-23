@@ -10,7 +10,8 @@
   },
   "scripts": {
     "demo-app": "gulp serve:devapp",
-    "build": "gulp :publish:build-releases"
+    "build": "gulp :publish:build-releases",
+    "stylelint": "gulp lint"
   },
   "engines": {
     "node": ">= 5.4.1"
