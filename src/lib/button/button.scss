@@ -1,0 +1,65 @@
+// TODO @ffriedl89: move variables (let's first discuss how to handle them)
+$mainfont: "BerninaSans", "Open Sans", sans-serif !default;
+$turquoise-600: #00a1b2;
+$turquoise-700: #00848e;
+$turquoise-800: #006d75;
+$gray-300: #ccc;
+$buttoncolor: $turquoise-600;
+$buttonhovercolor: $turquoise-700;
+$buttonactivecolor: $turquoise-800;
+$disabledcolor: $gray-300;
+
+.gh-button {
+  box-sizing: border-box;
+  position: relative;
+
+  // Reset browser <button> styles.
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+
+  // Make anchors render like buttons.
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+
+  // CI
+  height: 32px;
+  border-style: solid;
+  border-radius: 3px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 14px;
+  line-height: 32px;
+  line-height: -moz-block-height;
+  border-width: 1px;
+  border-color: $buttoncolor;
+
+  &:hover {
+    border-color: $buttonhovercolor;
+  }
+
+  &:active {
+    border-color: $buttonactivecolor;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    border-color: $disabledcolor;
+    cursor: default;
+    box-shadow: none;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}

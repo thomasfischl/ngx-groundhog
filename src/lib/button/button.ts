@@ -2,8 +2,11 @@ import {
   Directive,
   Component,
   ViewEncapsulation,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ElementRef,
+  OnDestroy
 } from '@angular/core';
+import {FocusMonitor} from '@angular/cdk/a11y';
 
 /**
  * Directive whose purpose is to add the Groundhog CSS styling to this selector.
@@ -33,4 +36,23 @@ export class GhButtonCssStyler {}
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhButton /*extends _GhButtonMixinBase*/ {}
+export class GhButton /*extends _GhButtonMixinBase*/ implements OnDestroy {
+  constructor(private _elementRef: ElementRef,
+              private _focusMonitor: FocusMonitor) {
+    this._focusMonitor.monitor(this._elementRef.nativeElement, true);
+  }
+
+  ngOnDestroy() {
+    this._focusMonitor.stopMonitoring(this._elementRef.nativeElement);
+  }
+
+  /** Focuses the button. */
+  focus(): void {
+    this._getHostElement().focus();
+  }
+
+  private _getHostElement() {
+    return this._elementRef.nativeElement;
+  }
+
+}
