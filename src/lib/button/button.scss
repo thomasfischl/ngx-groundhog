@@ -61,6 +61,7 @@ $disabledcolor: $gray-300;
   &[disabled] {
     pointer-events: none;
     border-color: $disabledcolor;
+    background-color: $disabledcolor;
     cursor: default;
     box-shadow: none;
   }

@@ -97,7 +97,6 @@ export class GhAnchor extends GhButton {
   _haltDisabledEvents(event: Event) {
     // A disabled button shouldn't apply any actions
     if (this.disabled) {
-      console.log('disabled');
       event.preventDefault();
       event.stopImmediatePropagation();
     }
