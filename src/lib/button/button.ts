@@ -7,6 +7,10 @@ import {
   OnDestroy
 } from '@angular/core';
 import {FocusMonitor} from '@angular/cdk/a11y';
+import {
+  CanDisable,
+  mixinDisabled
+} from '@dynatrace/ngx-groundhog/core';
 
 /**
  * Directive whose purpose is to add the Groundhog CSS styling to this selector.
@@ -17,15 +21,24 @@ import {FocusMonitor} from '@angular/cdk/a11y';
 })
 export class GhButtonCssStyler {}
 
+// Boilerplate for applying mixins to MatButton.
+export class GhButtonBase {
+  constructor(public _elementRef: ElementRef) {}
+}
+export const _MatButtonMixinBase = mixinDisabled(GhButtonBase);
+
 /**
  * Groundhog design button.
  *
- * TODO (@thomaspink): implement disable, focusmonitor (once the cdk has been added) & coloring
+ * TODO (@thomaspink): coloring
  */
 @Component({
   moduleId: module.id,
   selector: `button[gh-button]`,
   exportAs: 'ghButton',
+  host: {
+    '[disabled]': 'disabled || null',
+  },
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
   inputs: ['disabled'],
@@ -33,9 +46,10 @@ export class GhButtonCssStyler {}
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhButton /*extends _GhButtonMixinBase*/ implements OnDestroy {
-  constructor(private _elementRef: ElementRef,
+export class GhButton extends _MatButtonMixinBase implements OnDestroy, CanDisable {
+  constructor(elementRef: ElementRef,
               private _focusMonitor: FocusMonitor) {
+    super(elementRef);
     this._focusMonitor.monitor(this._elementRef.nativeElement, true);
   }
 
@@ -61,7 +75,13 @@ export class GhButton /*extends _GhButtonMixinBase*/ implements OnDestroy {
   moduleId: module.id,
   selector: `a[gh-button]`,
   exportAs: 'ghButton, ghAnchor',
-  inputs: ['disabled', 'disableRipple', 'color'],
+  host: {
+    '[attr.tabindex]': 'disabled ? -1 : 0',
+    '[attr.disabled]': 'disabled || null',
+    '[attr.aria-disabled]': 'disabled.toString()',
+    '(click)': '_haltDisabledEvents($event)',
+  },
+  inputs: ['disabled'],
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
   encapsulation: ViewEncapsulation.None,
@@ -72,5 +92,14 @@ export class GhAnchor extends GhButton {
   constructor(elementRef: ElementRef,
               focusMonitor: FocusMonitor) {
     super(elementRef, focusMonitor);
+  }
+
+  _haltDisabledEvents(event: Event) {
+    // A disabled button shouldn't apply any actions
+    if (this.disabled) {
+      console.log('disabled');
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
   }
 }
