@@ -6,13 +6,22 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
+  ContentChildren,
+  QueryList,
+  AfterContentInit,
+  OnDestroy,
+  NgZone,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface GhSelectOption {
-  key: string;
-  label: string;
-}
+import { startWith } from 'rxjs/operators/startWith';
+import { takeUntil } from 'rxjs/operators/takeUntil';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { take } from 'rxjs/operators/take';
+import { merge } from 'rxjs/observable/merge';
+import { defer } from 'rxjs/observable/defer';
+import { Observable } from 'rxjs/Observable';
+import { GhOption } from './option';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   moduleId: module.id,
@@ -24,24 +33,26 @@ export interface GhSelectOption {
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhSelect {
+export class GhSelect implements AfterContentInit, OnDestroy {
 
-  private _data: GhSelectOption[];
   private _placeholder: string;
   private _panelOpen = false;
-  private _selectedValue: GhSelectOption;
+  private _selectedValue: any;
+  private _destroy = new Subject();
+
+  /** Combined stream of all of the child options' change events. */
+  optionSelectionChanges: Observable<boolean> = defer(() => {
+    if (this.options) {
+      return merge(...this.options.map(option => option.onSelectionChange));
+    }
+
+    return this._ngZone.onStable
+      .asObservable()
+      .pipe(take(1), switchMap(() => this.optionSelectionChanges));
+  });
 
   @Input()
   panelClass: string | Set<string> | string[] | {[key: string]: any};
-
-  @Input()
-  get data() {
-    return this._data;
-  }
-  set data(newdata: GhSelectOption[]) {
-    // TODO: @thomasheller do the parsing to Array
-    this._data = newdata as GhSelectOption[];
-  }
 
   @Input()
   get placeholder() {
@@ -66,8 +77,22 @@ export class GhSelect {
   @ViewChild('panel')
   panel: ElementRef;
 
+  @ContentChildren(GhOption, { descendants: true })
+  options: QueryList<GhOption>;
+
   // constructor
-  constructor(private _changeDetectionRef: ChangeDetectorRef ) {
+  constructor(private _changeDetectionRef: ChangeDetectorRef, private _ngZone: NgZone ) {
+  }
+
+  ngAfterContentInit(): void {
+    this.options.changes
+      .pipe(startWith(null), takeUntil(this._destroy))
+      .subscribe(() => this._resetOptions());
+  }
+
+  ngOnDestroy(): void {
+    this._destroy.next();
+    this._destroy.complete();
   }
 
   /**
@@ -97,11 +122,11 @@ export class GhSelect {
     this._panelOpen ? this.close() : this.open();
   }
 
-  /**
-   * Selects a value
-   */
-  select(option: GhSelectOption) {
-    this._selectedValue = option;
-    this.close();
+  _resetOptions() {
+    this.optionSelectionChanges
+      .pipe(takeUntil(merge(this._destroy, this.options.changes)))
+      .subscribe((evt) => {
+        console.log(evt);
+      });
   }
 }
