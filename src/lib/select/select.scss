@@ -1,0 +1,12 @@
+@import '../../../node_modules/@angular/cdk/overlay';
+
+@include cdk-overlay();
+
+.gh-select__panel {
+  box-sizing: border-box;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 0.5rem;
+}

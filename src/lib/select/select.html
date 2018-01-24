@@ -1,0 +1,27 @@
+<div
+  cdk-overlay-origin
+  #origin="cdkOverlayOrigin"
+  (click)="toggle()" >
+  <div [ngSwitch]="empty">
+    <span *ngSwitchCase="true">{{placeholder || ''}}</span>
+    <span *ngSwitchCase="false">{{triggerValue}}</span>
+  </div>
+  <span>Representitive icon</span>
+</div>
+<ng-template
+  cdk-connected-overlay
+  backdropClass="cdk-overlay-transparent-backdrop"
+  hasBackdrop
+  (backdropClick)="close()"
+  (detach)="close()"
+  [origin]="origin"
+  [open]="panelOpen">
+  <div
+    #panel
+    class="gh-select__panel"
+    [ngClass]="panelClass"> <!-- scrollcontainer / panel -->
+    <div class="gh-select__body"> <!-- scrollcontent -->
+      <ng-content></ng-content>
+    </div>
+  </div>
+</ng-template>
