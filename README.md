@@ -2,8 +2,25 @@
 
 Home of Dynatrace's component library "Groundhog" for Angular
 
-## How to create a new component
+### Getting started
+TODO
 
+#### Available features
+
+| Feature          | Status             | Docs         |
+|------------------|--------------------|--------------|
+| Button           | In Development     | [Docs](https://github.com/Dynatrace/ngx-groundhog/tree/master/src/lib/button) |
+| Select           | In Development     | |
+
+## Found an Issue?
+
+## Want a Feature?
+
+### Pull-Request
+TODO
+
+#### How to create a new component
+We are working right now on a schema that will do the step for creating a new component automatically. Util this Tool has been released use the following steps:
 1. Create a new directory in the `lib` folder named with your component's name
 2. Create the following files inside this folder
   - `public-api.ts`
