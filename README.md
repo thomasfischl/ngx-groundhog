@@ -19,7 +19,19 @@ TODO
 ### Pull-Request
 TODO
 
-#### How to create a new component
+## Development
+
+#### Prerequisite
+1. Make sure [node.js](https://nodejs.org) (Version 8 or greater) is installed
+2. Run `npm install` to install all dependencies
+
+#### Start Demo-App
+Run `npm run demo-app` to start the demo-app on a local dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+
+#### Build
+Run `npm run build` to build the project. The build artifacts will be stored in the dist/ directory.
+
+#### Creating a new component
 We are working right now on a schema that will do the step for creating a new component automatically (Issue [#6](6))    
 Until this Tool has been released use the following steps:
 1. Create a new directory in the `lib` folder named with your component's name
