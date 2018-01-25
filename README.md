@@ -7,10 +7,10 @@ TODO
 
 #### Available features
 
-| Feature          | Status             | Docs         |
-|------------------|--------------------|--------------|
-| Button           | In Development     | [Docs](https://github.com/Dynatrace/ngx-groundhog/tree/master/src/lib/button) |
-| Select           | In Development     | |
+| Feature          | Status             | Issue       |
+|------------------|--------------------|-------------|
+| Button           | In-progress        | [#17](17)   |
+| Select           | In-progress        | [#16](16)   |
 
 ## Found an Issue?
 
@@ -20,7 +20,8 @@ TODO
 TODO
 
 #### How to create a new component
-We are working right now on a schema that will do the step for creating a new component automatically. Util this Tool has been released use the following steps:
+We are working right now on a schema that will do the step for creating a new component automatically. (See issue [#6](6))    
+Util this Tool has been released use the following steps:
 1. Create a new directory in the `lib` folder named with your component's name
 2. Create the following files inside this folder
   - `public-api.ts`
