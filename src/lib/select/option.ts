@@ -8,6 +8,8 @@ import {
   EventEmitter,
   ElementRef,
 } from '@angular/core';
+import {mixinDisabled, CanDisable} from '@dynatrace/ngx-groundhog/core';
+import {_GhSelectMixinBase} from 'select';
 
 /** Event object emitted by MatOption when selected or deselected. */
 export interface GhOptionSelectionChange {
@@ -33,7 +35,7 @@ export interface GhOptionSelectionChange {
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhOption {
+export class GhOption extends _GhSelectMixinBase implements CanDisable {
   private _selected = false;
 
   get selected() { return this._selected; }
@@ -51,7 +53,10 @@ export class GhOption {
   @Output() onSelectionChange = new EventEmitter<GhOptionSelectionChange>();
 
   constructor (private _changeDetectorRef: ChangeDetectorRef,
-               private _element: ElementRef) { }
+               private _element: ElementRef
+  ) {
+    super();
+  }
 
   /** Selects the option. */
   select() {
@@ -76,9 +81,11 @@ export class GhOption {
    * determine if the select's view -> model callback should be invoked.
    */
   _toggleViaInteraction() {
-    this._selected = !this._selected;
-    this._changeDetectorRef.markForCheck();
-    this._emitSelectionChangeEvent(true);
+    if (!this.disabled) {
+      this._selected = !this._selected;
+      this._changeDetectorRef.markForCheck();
+      this._emitSelectionChangeEvent(true);
+    }
   }
 
   /** Emits the selection change event. */

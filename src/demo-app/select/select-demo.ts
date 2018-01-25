@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['select-demo.css'],
 })
 export class SelectDemo implements OnInit {
-  demoPlaceholder = 'Please select value';
   options = [
     {
       key: 'Banana',

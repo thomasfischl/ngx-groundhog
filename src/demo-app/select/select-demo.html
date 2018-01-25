@@ -1,9 +1,9 @@
 <h1>Select</h1>
 
-<gh-select
-  [placeholder]="demoPlaceholder"
-  >
-<gh-option *ngFor="let option of options" >
-  {{option.label}}
-</gh-option>
+<gh-select placeholder="Please select value">
+  <gh-option *ngFor="let option of options">{{option.label}}</gh-option>
+</gh-select>
+
+<gh-select placeholder="Please select value" disabled>
+  <gh-option *ngFor="let option of options">{{option.label}}</gh-option>
 </gh-select>

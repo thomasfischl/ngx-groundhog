@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 import {SelectionModel} from '@angular/cdk/collections';
+import {mixinDisabled, CanDisable} from '@dynatrace/ngx-groundhog/core';
 import {startWith} from 'rxjs/operators/startWith';
 import {takeUntil} from 'rxjs/operators/takeUntil';
 import {switchMap} from 'rxjs/operators/switchMap';
@@ -26,17 +27,25 @@ import {Observable} from 'rxjs/Observable';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
 
+// Boilerplate for applying mixins to MatSelect.
+export class GhSelectBase {
+  constructor() {}
+}
+export const _GhSelectMixinBase = mixinDisabled(GhSelectBase);
+
 @Component({
   moduleId: module.id,
   selector: 'gh-select',
   exportAs: 'ghSelect',
   templateUrl: 'select.html',
   styleUrls: ['select.css'],
+  inputs: ['disabled'],
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhSelect implements OnInit, AfterContentInit, OnDestroy {
+export class GhSelect extends _GhSelectMixinBase
+  implements OnInit, AfterContentInit, OnDestroy, CanDisable {
 
   /** The placeholder displayed in the trigger of the select. */
   private _placeholder: string;
@@ -114,7 +123,9 @@ export class GhSelect implements OnInit, AfterContentInit, OnDestroy {
       .pipe(take(1), switchMap(() => this.optionSelectionChanges));
   });
 
-  constructor(private _changeDetectiorRef: ChangeDetectorRef, private _ngZone: NgZone) { }
+  constructor(private _changeDetectiorRef: ChangeDetectorRef, private _ngZone: NgZone) {
+    super();
+  }
 
   /**
    * Hook that triggers after the component has been initialized
@@ -142,7 +153,7 @@ export class GhSelect implements OnInit, AfterContentInit, OnDestroy {
 
   /** Opens the panel */
   open() {
-    if (!this._panelOpen) {
+    if (!this.disabled && !this._panelOpen) {
       this._panelOpen = true;
       this._changeDetectiorRef.markForCheck();
     }
