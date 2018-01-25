@@ -20,8 +20,8 @@ TODO
 TODO
 
 #### How to create a new component
-We are working right now on a schema that will do the step for creating a new component automatically. (See issue [#6](6))    
-Util this Tool has been released use the following steps:
+We are working right now on a schema that will do the step for creating a new component automatically (Issue [#6](6))    
+Until this Tool has been released use the following steps:
 1. Create a new directory in the `lib` folder named with your component's name
 2. Create the following files inside this folder
   - `public-api.ts`
