@@ -35,29 +35,23 @@ import { Subject } from 'rxjs/Subject';
 })
 export class GhSelect implements AfterContentInit, OnDestroy {
 
+  /** The placeholder displayed in the trigger of the select. */
   private _placeholder: string;
+
+  /** Whether or not the overlay panel is open. */
   private _panelOpen = false;
+
   private _selectedValue: any;
+
+  /** Emits whenever the component is destroyed. */
   private _destroy = new Subject();
 
-  /** Combined stream of all of the child options' change events. */
-  optionSelectionChanges: Observable<boolean> = defer(() => {
-    if (this.options) {
-      return merge(...this.options.map(option => option.onSelectionChange));
-    }
+  /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
+  @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
 
-    return this._ngZone.onStable
-      .asObservable()
-      .pipe(take(1), switchMap(() => this.optionSelectionChanges));
-  });
-
+  /** Placeholder to be shown if no value has been selected. */
   @Input()
-  panelClass: string | Set<string> | string[] | {[key: string]: any};
-
-  @Input()
-  get placeholder() {
-    return this._placeholder;
-  }
+  get placeholder() { return this._placeholder; }
   set placeholder(newplaceholder: string) {
     this._placeholder = newplaceholder;
   }
@@ -79,6 +73,17 @@ export class GhSelect implements AfterContentInit, OnDestroy {
 
   @ContentChildren(GhOption, { descendants: true })
   options: QueryList<GhOption>;
+
+  /** Combined stream of all of the child options' change events. */
+  optionSelectionChanges: Observable<boolean> = defer(() => {
+    if (this.options) {
+      return merge(...this.options.map(option => option.onSelectionChange));
+    }
+
+    return this._ngZone.onStable
+      .asObservable()
+      .pipe(take(1), switchMap(() => this.optionSelectionChanges));
+  });
 
   // constructor
   constructor(private _changeDetectionRef: ChangeDetectorRef, private _ngZone: NgZone ) {
