@@ -12,10 +12,11 @@ import {
   OnDestroy,
   AfterContentInit,
   NgZone,
+  Attribute,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 import {SelectionModel} from '@angular/cdk/collections';
-import {mixinDisabled, CanDisable} from '@dynatrace/ngx-groundhog/core';
+import {mixinDisabled, CanDisable, mixinTabIndex, HasTabIndex} from '@dynatrace/ngx-groundhog/core';
 import {startWith} from 'rxjs/operators/startWith';
 import {takeUntil} from 'rxjs/operators/takeUntil';
 import {switchMap} from 'rxjs/operators/switchMap';
@@ -37,7 +38,7 @@ let nextUniqueId = 0;
 export class GhSelectBase {
   constructor() {}
 }
-export const _GhSelectMixinBase = mixinDisabled(GhSelectBase);
+export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(GhSelectBase));
 
 @Component({
   moduleId: module.id,
@@ -45,10 +46,11 @@ export const _GhSelectMixinBase = mixinDisabled(GhSelectBase);
   exportAs: 'ghSelect',
   templateUrl: 'select.html',
   styleUrls: ['select.css'],
-  inputs: ['disabled'],
+  inputs: ['disabled', 'tabIndex'],
   host: {
     'role': 'listbox',
     '[attr.id]': 'id',
+    '[attr.tabindex]': 'tabIndex',
     '[attr.aria-label]': '_ariaLabel',
     '[attr.aria-labelledby]': 'ariaLabelledby',
     '[attr.aria-disabled]': 'disabled.toString()',
@@ -57,13 +59,15 @@ export const _GhSelectMixinBase = mixinDisabled(GhSelectBase);
     '[attr.aria-describedby]': '_ariaDescribedby || null',
     '[class.gh-select-disabled]': 'disabled',
     'class': 'gh-select',
+    '(focus)': '_onFocus()',
+    '(blur)': '_onBlur()',
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhSelect extends _GhSelectMixinBase
-  implements OnInit, AfterContentInit, OnDestroy, CanDisable {
+  implements OnInit, AfterContentInit, OnDestroy, CanDisable, HasTabIndex {
 
   /** The placeholder displayed in the trigger of the select. */
   private _placeholder: string;
@@ -91,6 +95,9 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** The aria-describedby attribute on the select for improved a11y. */
   _ariaDescribedby: string; // TODO @thomaspink: Implement when adding support for angular forms
+
+  /** Whether the select is focused. */
+  focused: boolean = false;
 
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
@@ -174,8 +181,13 @@ export class GhSelect extends _GhSelectMixinBase
       .pipe(take(1), switchMap(() => this.optionSelectionChanges));
   });
 
-  constructor(private _changeDetectiorRef: ChangeDetectorRef, private _ngZone: NgZone) {
+  constructor(
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _ngZone: NgZone,
+    @Attribute('tabindex') tabIndex: string
+  ) {
     super();
+    this.tabIndex = parseInt(tabIndex) || 0;
   }
 
   /**
@@ -206,7 +218,7 @@ export class GhSelect extends _GhSelectMixinBase
   open() {
     if (!this.disabled && !this._panelOpen) {
       this._panelOpen = true;
-      this._changeDetectiorRef.markForCheck();
+      this._changeDetectorRef.markForCheck();
     }
   }
 
@@ -214,7 +226,7 @@ export class GhSelect extends _GhSelectMixinBase
   close() {
     if (this._panelOpen) {
       this._panelOpen = false;
-      this._changeDetectiorRef.markForCheck();
+      this._changeDetectorRef.markForCheck();
     }
   }
 
@@ -243,6 +255,22 @@ export class GhSelect extends _GhSelectMixinBase
       });
 
       this._setOptionIds();
+  }
+
+  /** Invoked when the control gains focus. */
+  _onFocus() {
+    if (!this.disabled) {
+      this.focused = true;
+    }
+  }
+
+  /** Invoked when the control looses focus. */
+  _onBlur() {
+    this.focused = false;
+
+    if (!this.disabled && !this.panelOpen) {
+      this._changeDetectorRef.markForCheck();
+    }
   }
 
   /** Invoked when an option is clicked. */
@@ -276,7 +304,7 @@ export class GhSelect extends _GhSelectMixinBase
   private _propagateChanges(fallbackValue?: any): void {
     const valueToEmit = this.selected ? (this.selected as GhOption).value : fallbackValue;
     this._value = valueToEmit;
-    this._changeDetectiorRef.markForCheck();
+    this._changeDetectorRef.markForCheck();
   }
 
   /** Records option IDs to pass to the aria-owns property. */
