@@ -10,6 +10,12 @@ import {
 } from '@angular/core';
 import {mixinDisabled, CanDisable} from '@dynatrace/ngx-groundhog/core';
 
+/**
+ * Option IDs need to be unique across components, so this counter exists outside of
+ * the component definition.
+ */
+let _uniqueIdCounter = 0;
+
 /** Event object emitted by MatOption when selected or deselected. */
 export interface GhOptionSelectionChange {
     /** Reference to the option that emitted the event. */
@@ -33,7 +39,10 @@ export const _GhOptionMixinBase = mixinDisabled(GhOptionBase);
   inputs: ['disabled'],
   host: {
     'role': 'option',
+    '[id]': 'id',
     '[attr.aria-selected]': 'selected.toString()',
+    '[attr.aria-disabled]': 'disabled.toString()',
+    '[class.gh-option-disabled]': 'disabled',
     '(click)': '_toggleViaInteraction()',
     'class': 'gh-option',
   },
@@ -42,7 +51,9 @@ export const _GhOptionMixinBase = mixinDisabled(GhOptionBase);
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhOption extends _GhOptionMixinBase implements CanDisable {
+
   private _selected = false;
+  private _id = `gh-option-${_uniqueIdCounter++}`;
 
   get selected() { return this._selected; }
 
@@ -51,6 +62,8 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
     return (this._element.nativeElement.textContent || '').trim();
   }
 
+  /** The unique ID of the option. */
+  get id(): string { return this._id; }
 
   /** The form value of the option. */
   @Input() value: any;

@@ -27,6 +27,12 @@ import {Observable} from 'rxjs/Observable';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
 
+/**
+ * Select IDs need to be unique across components, so this counter exists outside of
+ * the component definition.
+ */
+let nextUniqueId = 0;
+
 // Boilerplate for applying mixins to GhSelect.
 export class GhSelectBase {
   constructor() {}
@@ -40,6 +46,18 @@ export const _GhSelectMixinBase = mixinDisabled(GhSelectBase);
   templateUrl: 'select.html',
   styleUrls: ['select.css'],
   inputs: ['disabled'],
+  host: {
+    'role': 'listbox',
+    '[attr.id]': 'id',
+    '[attr.aria-label]': '_ariaLabel',
+    '[attr.aria-labelledby]': 'ariaLabelledby',
+    '[attr.aria-disabled]': 'disabled.toString()',
+    '[attr.aria-owns]': 'panelOpen ? _optionIds : null',
+    'attr.aria-multiselectable': 'false',
+    '[attr.aria-describedby]': '_ariaDescribedby || null',
+    '[class.gh-select-disabled]': 'disabled',
+    'class': 'gh-select',
+  },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,6 +71,13 @@ export class GhSelect extends _GhSelectMixinBase
   /** Whether or not the overlay panel is open. */
   private _panelOpen = false;
 
+  /** Unique id for this input. */
+  private _uid = `gh-select-${nextUniqueId++}`;
+
+  /** _uid or provided id via input */
+  private _id: string ;
+
+  /** Current value of the select */
   private _value: any;
 
   /** Emits whenever the component is destroyed. */
@@ -60,6 +85,12 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** Deals with the selection logic. */
   _selectionModel: SelectionModel<GhOption>;
+
+  /** The IDs of child options to be passed to the aria-owns attribute. */
+  _optionIds: string = '';
+
+  /** The aria-describedby attribute on the select for improved a11y. */
+  _ariaDescribedby: string; // TODO @thomaspink: Implement when adding support for angular forms
 
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
@@ -81,6 +112,19 @@ export class GhSelect extends _GhSelectMixinBase
     }
   }
 
+  /** Unique id of the element. */
+  @Input()
+  get id(): string { return this._id; }
+  set id(value: string) {
+    this._id = value || this._uid;
+  }
+
+  /** Aria label of the select. If not specified, the placeholder will be used as label. */
+  @Input('aria-label') ariaLabel: string = '';
+
+  /** Input that can be used to specify the `aria-labelledby` attribute. */
+  @Input('aria-labelledby') ariaLabelledby: string;
+
   /** The currently selected option. */
   get selected(): GhOption {
     return this._selectionModel.selected[0];
@@ -99,6 +143,13 @@ export class GhSelect extends _GhSelectMixinBase
   /** Whether or not the overlay panel is open. */
   get panelOpen() {
     return this._panelOpen;
+  }
+
+  /** Returns the aria-label of the select component. */
+  get _ariaLabel(): string | null {
+    // If an ariaLabelledby value has been set, the select should not overwrite the
+    // `aria-labelledby` value by setting the ariaLabel to the placeholder.
+    return this.ariaLabelledby ? null : this.ariaLabel || this.placeholder;
   }
 
   /** Panel containing the select options. */
@@ -190,6 +241,8 @@ export class GhSelect extends _GhSelectMixinBase
           this.close();
         }
       });
+
+      this._setOptionIds();
   }
 
   /** Invoked when an option is clicked. */
@@ -224,5 +277,10 @@ export class GhSelect extends _GhSelectMixinBase
     const valueToEmit = this.selected ? (this.selected as GhOption).value : fallbackValue;
     this._value = valueToEmit;
     this._changeDetectiorRef.markForCheck();
+  }
+
+  /** Records option IDs to pass to the aria-owns property. */
+  private _setOptionIds() {
+    this._optionIds = this.options.map(option => option.id).join(' ');
   }
 }
