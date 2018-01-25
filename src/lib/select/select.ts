@@ -27,7 +27,7 @@ import {Observable} from 'rxjs/Observable';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
 
-// Boilerplate for applying mixins to MatSelect.
+// Boilerplate for applying mixins to GhSelect.
 export class GhSelectBase {
   constructor() {}
 }

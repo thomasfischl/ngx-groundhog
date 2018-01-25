@@ -11,18 +11,22 @@ export class SelectDemo implements OnInit {
     {
       key: 'Banana',
       label: 'Banana label',
+      disabled: false
     },
     {
       key: 'Pear',
       label: 'Pear label',
+      disabled: false
     },
     {
       key: 'Apple',
       label: 'Apple label',
+      disabled: true
     },
     {
       key: 'Ananas',
       label: 'Ananas label',
+      disabled: false
     },
   ];
 

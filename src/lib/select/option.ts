@@ -9,7 +9,6 @@ import {
   ElementRef,
 } from '@angular/core';
 import {mixinDisabled, CanDisable} from '@dynatrace/ngx-groundhog/core';
-import {_GhSelectMixinBase} from 'select';
 
 /** Event object emitted by MatOption when selected or deselected. */
 export interface GhOptionSelectionChange {
@@ -19,12 +18,19 @@ export interface GhOptionSelectionChange {
     isUserInput: boolean;
 }
 
+// Boilerplate for applying mixins to GhOption.
+export class GhOptionBase {
+  constructor() {}
+}
+export const _GhOptionMixinBase = mixinDisabled(GhOptionBase);
+
 @Component({
   selector: 'gh-option',
   moduleId: module.id,
   exportAs: 'ghOption',
   templateUrl: 'option.html',
   styleUrls: ['option.css'],
+  inputs: ['disabled'],
   host: {
     'role': 'option',
     '[attr.aria-selected]': 'selected.toString()',
@@ -35,7 +41,7 @@ export interface GhOptionSelectionChange {
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhOption extends _GhSelectMixinBase implements CanDisable {
+export class GhOption extends _GhOptionMixinBase implements CanDisable {
   private _selected = false;
 
   get selected() { return this._selected; }
