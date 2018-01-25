@@ -1,4 +1,5 @@
 <div
+  class="gh-select-trigger"
   cdk-overlay-origin
   #origin="cdkOverlayOrigin"
   (click)="toggle()" >
@@ -6,7 +7,7 @@
     <span *ngSwitchCase="true">{{placeholder || ''}}</span>
     <span *ngSwitchCase="false">{{triggerValue}}</span>
   </div>
-  <span>Representitive icon</span>
+  <span class="gh-select-arrow"></span>
 </div>
 <ng-template
   cdk-connected-overlay

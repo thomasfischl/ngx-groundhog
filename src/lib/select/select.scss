@@ -2,11 +2,51 @@
 
 @include cdk-overlay();
 
+// TODO @ffriedl89: move variables (let's first discuss how to handle them)
+$mainfont: 'BerninaSans', 'Open Sans', sans-serif !default;
+$gray-300: #ccc;
+$disabledcolor: $gray-300;
+
+.gh-select-trigger {
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  height: 32px;
+  font-family: $mainfont;
+  border: 1px solid $disabledcolor;
+  border-radius: 3px;
+  padding: 0;
+  padding-left: 11px;
+  padding-right: 11px + 20px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 32px;
+  line-height: -moz-block-height;
+  white-space: nowrap;
+  text-align: left;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.gh-select-arrow {
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 3px;
+  top: 6px;
+  // TODO tomheller: Let's discuss how to handle assets, icons (maybe use some kind of icon manager/registry)
+  background-image: url(//assets.dynatrace.com/groundhog/v5.3.2/assets/images/icons/icons_file_002_dropdownclosed_downwards.svg);
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: center right;
+}
+
 .gh-select__panel {
   box-sizing: border-box;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  border: 1px solid #ccc;
+  border: 1px solid $disabledcolor;
   background-color: #fff;
   padding: 0.5rem;
 }
