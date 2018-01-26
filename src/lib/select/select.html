@@ -15,10 +15,12 @@
   backdropClass="cdk-overlay-transparent-backdrop"
   hasBackdrop
   (backdropClick)="close()"
+  (attach)="_onAttached()"
   (detach)="close()"
   [origin]="origin"
   [open]="panelOpen"
-  [minWidth]="_triggerRect?.width">
+  [minWidth]="_triggerRect?.width"
+  [offsetY]="_offsetY">
   <div
     #panel
     class="gh-select__panel"

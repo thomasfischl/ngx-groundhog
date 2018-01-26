@@ -3,6 +3,7 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy,
   Input,
+  Output,
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
@@ -13,14 +14,24 @@ import {
   AfterContentInit,
   NgZone,
   Attribute,
+  EventEmitter,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 import {SelectionModel} from '@angular/cdk/collections';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {DOWN_ARROW} from '@angular/cdk/keycodes';
+import {UP_ARROW} from '@angular/cdk/keycodes';
+import {LEFT_ARROW} from '@angular/cdk/keycodes';
+import {RIGHT_ARROW} from '@angular/cdk/keycodes';
+import {HOME} from '@angular/cdk/keycodes';
+import {END} from '@angular/cdk/keycodes';
+import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
+import {CdkConnectedOverlay, ConnectedOverlayPositionChange} from '@angular/cdk/overlay';
 import {ENTER, SPACE} from '@angular/cdk/keycodes';
 import {startWith} from 'rxjs/operators/startWith';
 import {takeUntil} from 'rxjs/operators/takeUntil';
 import {switchMap} from 'rxjs/operators/switchMap';
+import {map} from 'rxjs/operators/map';
 import {filter} from 'rxjs/operators/filter';
 import {take} from 'rxjs/operators/take';
 import {merge} from 'rxjs/observable/merge';
@@ -29,13 +40,6 @@ import {Observable} from 'rxjs/Observable';
 import {mixinDisabled, CanDisable, mixinTabIndex, HasTabIndex} from '@dynatrace/ngx-groundhog/core';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
-import {DOWN_ARROW} from '@angular/cdk/keycodes';
-import {UP_ARROW} from '@angular/cdk/keycodes';
-import {LEFT_ARROW} from '@angular/cdk/keycodes';
-import {RIGHT_ARROW} from '@angular/cdk/keycodes';
-import {HOME} from '@angular/cdk/keycodes';
-import {END} from '@angular/cdk/keycodes';
-import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
 
 /**
  * Select IDs need to be unique across components, so this counter exists outside of
@@ -120,6 +124,13 @@ export class GhSelect extends _GhSelectMixinBase
   /** The last measured value for the trigger's client bounding rect. */
   _triggerRect: ClientRect;
 
+  /**
+   * The y-offset of the overlay panel in relation to the trigger's top start corner.
+   * This must be adjusted to either -1 (if overlay opend below the trigger)
+   * or 1 (if overlay opens on top) to overlap the border of the overlay and trigger.
+   */
+  _offsetY = -1;
+
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
 
@@ -160,6 +171,9 @@ export class GhSelect extends _GhSelectMixinBase
   /** Input that can be used to specify the `aria-labelledby` attribute. */
   @Input('aria-labelledby') ariaLabelledby: string;
 
+  /** Event emitted when the select has been opened. */
+  @Output() readonly openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   /** The currently selected option. */
   get selected(): GhOption {
     return this._selectionModel.selected[0];
@@ -189,6 +203,9 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** Panel containing the select options. */
   @ViewChild('panel') panel: ElementRef;
+
+  /** Overlay pane containing the options. */
+  @ViewChild(CdkConnectedOverlay) overlayDir: CdkConnectedOverlay;
 
   /** Trigger that opens the select. */
   @ViewChild('trigger') trigger: ElementRef;
@@ -254,6 +271,9 @@ export class GhSelect extends _GhSelectMixinBase
       this._triggerRect = this.trigger.nativeElement.getBoundingClientRect();
       this._panelOpen = true;
       this._changeDetectorRef.markForCheck();
+
+      // TODO @thomaspink: Move this if annimations are implemented
+      this._onPanelDone();
     }
   }
 
@@ -262,6 +282,9 @@ export class GhSelect extends _GhSelectMixinBase
     if (this._panelOpen) {
       this._panelOpen = false;
       this._changeDetectorRef.markForCheck();
+
+      // TODO @thomaspink: Move this if annimations are implemented
+      this._onPanelDone();
     }
   }
 
@@ -357,6 +380,42 @@ export class GhSelect extends _GhSelectMixinBase
     if (!this.disabled && !this.panelOpen) {
       this._changeDetectorRef.markForCheck();
     }
+  }
+
+  /** Callback that is invoked when the overlay panel has been attached. */
+  _onAttached(): void {
+    this.overlayDir.positionChange
+      // Stop listening when the component will be destroyed
+      // or the overlay closes
+      .pipe(takeUntil(merge(
+        this._destroy,
+        this.openedChange.pipe(filter(o => !o))
+      )))
+      // Calculate the new offset based on the change event
+      .pipe(map(change => this._calculateOverlayOffsetY(change)))
+      // Filter changes in the offset
+      .pipe(filter(offsetY => offsetY !== this._offsetY))
+      .subscribe(offsetY => {
+        this._offsetY = offsetY;
+        this._changeDetectorRef.detectChanges();
+      });
+  }
+
+  /**
+   * When the panel element is finished transforming in (though not fading in), it
+   * emits an event and focuses an option if the panel is open.
+   */
+  _onPanelDone(): void {
+    if (this.panelOpen) {
+      this.openedChange.emit(true);
+    } else {
+      this.openedChange.emit(false);
+      this._changeDetectorRef.markForCheck();
+    }
+  }
+
+  private _calculateOverlayOffsetY(change: ConnectedOverlayPositionChange) {
+    return change.connectionPair.originY === 'top' ? 1 : -1;
   }
 
   /** Scrolls the active option into view. */
