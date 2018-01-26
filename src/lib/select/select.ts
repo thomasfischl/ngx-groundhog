@@ -17,6 +17,7 @@ import {
 import {NgClass} from '@angular/common';
 import {SelectionModel} from '@angular/cdk/collections';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {ENTER, SPACE} from '@angular/cdk/keycodes';
 import {startWith} from 'rxjs/operators/startWith';
 import {takeUntil} from 'rxjs/operators/takeUntil';
 import {switchMap} from 'rxjs/operators/switchMap';
@@ -28,6 +29,13 @@ import {Observable} from 'rxjs/Observable';
 import {mixinDisabled, CanDisable, mixinTabIndex, HasTabIndex} from '@dynatrace/ngx-groundhog/core';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
+import {DOWN_ARROW} from '@angular/cdk/keycodes';
+import {UP_ARROW} from '@angular/cdk/keycodes';
+import {LEFT_ARROW} from '@angular/cdk/keycodes';
+import {RIGHT_ARROW} from '@angular/cdk/keycodes';
+import {HOME} from '@angular/cdk/keycodes';
+import {END} from '@angular/cdk/keycodes';
+import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
 
 /**
  * Select IDs need to be unique across components, so this counter exists outside of
@@ -64,6 +72,7 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(GhSelectBase));
     'class': 'gh-select',
     '(focus)': '_onFocus()',
     '(blur)': '_onBlur()',
+    '(keydown)': '_handleKeydown($event)'
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
@@ -104,6 +113,9 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** Whether the select is focused. */
   focused: boolean = false;
+
+  /** Manages keyboard events for options in the panel. */
+  _keyManager: ActiveDescendantKeyManager<GhOption>;
 
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
@@ -195,6 +207,7 @@ export class GhSelect extends _GhSelectMixinBase
   });
 
   constructor(
+    private _elementRef: ElementRef,
     private _changeDetectorRef: ChangeDetectorRef,
     private _ngZone: NgZone,
     @Attribute('tabindex') tabIndex: string
@@ -213,6 +226,8 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** Hook that triggers when ng-content and all sub components (the options) are initialized. */
   ngAfterContentInit(): void {
+    this._initKeyManager();
+
     // After the ng-content has been initialized we can start listening on
     // the options query list for changes (new options get added, removed,...)
     this.options.changes
@@ -248,6 +263,11 @@ export class GhSelect extends _GhSelectMixinBase
     this._panelOpen ? this.close() : this.open();
   }
 
+  /** Focuses the select element. */
+  focus(): void {
+    this._elementRef.nativeElement.focus();
+  }
+
   /** Drops current option subscriptions and resets from scratch. */
   _resetOptions() {
     this.optionSelectionChanges
@@ -270,6 +290,52 @@ export class GhSelect extends _GhSelectMixinBase
       this._setOptionIds();
   }
 
+  /** Handles all keydown events on the select. */
+  _handleKeydown(event: KeyboardEvent): void {
+    if (!this.disabled) {
+      this.panelOpen ? this._handleOpenKeydown(event) : this._handleClosedKeydown(event);
+    }
+  }
+
+  /** Handles keyboard events while the select is closed. */
+  private _handleClosedKeydown(event: KeyboardEvent): void {
+    const keyCode = event.keyCode;
+    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW ||
+        keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW;
+    const isOpenKey = keyCode === ENTER || keyCode === SPACE;
+
+    // Open the select on ALT + arrow key to match the native <select>
+    if (isOpenKey || (event.altKey && isArrowKey)) {
+      // prevents the page from scrolling down when pressing space, enter or alt+arrow
+      event.preventDefault();
+      this.open();
+    } else {
+      this._keyManager.onKeydown(event);
+    }
+  }
+
+  /** Handles keyboard events when the selected is open. */
+  private _handleOpenKeydown(event: KeyboardEvent): void {
+    const keyCode = event.keyCode;
+    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
+    const manager = this._keyManager;
+
+    if (keyCode === HOME || keyCode === END) {
+      event.preventDefault();
+      keyCode === HOME ? manager.setFirstItemActive() : manager.setLastItemActive();
+    } else if (isArrowKey && event.altKey) {
+      // Close the select on ALT + arrow key to match the native <select>
+      event.preventDefault();
+      this.close();
+    } else if ((keyCode === ENTER || keyCode === SPACE) && manager.activeItem) {
+      event.preventDefault();
+      manager.activeItem._toggleViaInteraction();
+    } else {
+      const previouslyFocusedIndex = manager.activeItemIndex;
+      manager.onKeydown(event);
+    }
+  }
+
   /** Invoked when the control gains focus. */
   _onFocus() {
     if (!this.disabled) {
@@ -284,6 +350,11 @@ export class GhSelect extends _GhSelectMixinBase
     if (!this.disabled && !this.panelOpen) {
       this._changeDetectorRef.markForCheck();
     }
+  }
+
+  /** Scrolls the active option into view. */
+  private _scrollActiveOptionIntoView(): void {
+    // TODO @thomaspink: Implement panel resizing & scroll logic
   }
 
   /** Invoked when an option is clicked. */
@@ -309,6 +380,21 @@ export class GhSelect extends _GhSelectMixinBase
     this.options.forEach(option => {
       if (option !== skip) {
         option.deselect();
+      }
+    });
+  }
+
+  /** Sets up a key manager to listen to keyboard events on the overlay panel. */
+  private _initKeyManager() {
+    this._keyManager = new ActiveDescendantKeyManager<GhOption>(this.options)
+      .withTypeAhead();
+
+    this._keyManager.tabOut.pipe(takeUntil(this._destroy)).subscribe(() => this.close());
+    this._keyManager.change.pipe(takeUntil(this._destroy)).subscribe(() => {
+      if (this._panelOpen && this.panel) {
+        this._scrollActiveOptionIntoView();
+      } else if (!this._panelOpen && this._keyManager.activeItem) {
+        this._keyManager.activeItem._toggleViaInteraction();
       }
     });
   }

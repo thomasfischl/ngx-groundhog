@@ -9,6 +9,8 @@ import {
   ElementRef,
 } from '@angular/core';
 import {mixinDisabled, CanDisable} from '@dynatrace/ngx-groundhog/core';
+import {ENTER} from '@angular/cdk/keycodes';
+import {SPACE} from '@angular/cdk/keycodes';
 
 /**
  * Option IDs need to be unique across components, so this counter exists outside of
@@ -44,6 +46,7 @@ export const _GhOptionMixinBase = mixinDisabled(GhOptionBase);
     '[attr.aria-disabled]': 'disabled.toString()',
     '[class.gh-option-disabled]': 'disabled',
     '(click)': '_toggleViaInteraction()',
+    '(keydown)': '_handleKeydown($event)',
     'class': 'gh-option',
   },
   encapsulation: ViewEncapsulation.None,
@@ -51,7 +54,7 @@ export const _GhOptionMixinBase = mixinDisabled(GhOptionBase);
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhOption extends _GhOptionMixinBase implements CanDisable {
-
+  private _active = false;
   private _selected = false;
   private _id = `gh-option-${_uniqueIdCounter++}`;
 
@@ -96,6 +99,35 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
   }
 
   /**
+   * This method sets display styles on the option to make it appear
+   * active. This is used by the ActiveDescendantKeyManager so key
+   * events will display the proper options as active on arrow key events.
+   */
+  setActiveStyles(): void {
+    if (!this._active) {
+      this._active = true;
+      this._changeDetectorRef.markForCheck();
+    }
+  }
+
+  /**
+   * This method removes display styles on the option that made it appear
+   * active. This is used by the ActiveDescendantKeyManager so key
+   * events will display the proper options as active on arrow key events.
+   */
+  setInactiveStyles(): void {
+    if (this._active) {
+      this._active = false;
+      this._changeDetectorRef.markForCheck();
+    }
+  }
+
+  /** Gets the label to be used when determining whether the option should be focused. */
+  getLabel(): string {
+    return this.viewValue;
+  }
+
+  /**
    * Selects the option while indicating the selection came from the user. Used to
    * determine if the select's view -> model callback should be invoked.
    */
@@ -104,6 +136,16 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
       this._selected = !this._selected;
       this._changeDetectorRef.markForCheck();
       this._emitSelectionChangeEvent(true);
+    }
+  }
+
+  /** Ensures the option is selected when activated from the keyboard. */
+  _handleKeydown(event: KeyboardEvent): void {
+    if (event.keyCode === ENTER || event.keyCode === SPACE) {
+      this._toggleViaInteraction();
+
+      // Prevent the page from scrolling down and form submits.
+      event.preventDefault();
     }
   }
 
