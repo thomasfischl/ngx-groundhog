@@ -42,6 +42,7 @@ export const _GhOptionMixinBase = mixinDisabled(GhOptionBase);
   host: {
     'role': 'option',
     '[id]': 'id',
+    '[attr.tabindex]': '_getTabIndex()',
     '[attr.aria-selected]': 'selected.toString()',
     '[attr.aria-disabled]': 'disabled.toString()',
     '[class.gh-option-disabled]': 'disabled',
@@ -167,6 +168,12 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
       event.preventDefault();
     }
   }
+
+  /** Returns the correct tabindex for the option depending on disabled state. */
+  _getTabIndex(): string {
+    return this.disabled ? '-1' : '0';
+  }
+
 
   /** Emits the selection change event. */
   private _emitSelectionChangeEvent(isUserInput = false): void {
