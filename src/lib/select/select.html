@@ -1,4 +1,5 @@
 <div
+  #trigger
   class="gh-select-trigger"
   cdk-overlay-origin
   #origin="cdkOverlayOrigin"
@@ -16,7 +17,8 @@
   (backdropClick)="close()"
   (detach)="close()"
   [origin]="origin"
-  [open]="panelOpen">
+  [open]="panelOpen"
+  [minWidth]="_triggerRect?.width">
   <div
     #panel
     class="gh-select__panel"

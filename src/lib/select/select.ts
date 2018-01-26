@@ -117,6 +117,9 @@ export class GhSelect extends _GhSelectMixinBase
   /** Manages keyboard events for options in the panel. */
   _keyManager: ActiveDescendantKeyManager<GhOption>;
 
+  /** The last measured value for the trigger's client bounding rect. */
+  _triggerRect: ClientRect;
+
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
 
@@ -187,6 +190,9 @@ export class GhSelect extends _GhSelectMixinBase
   /** Panel containing the select options. */
   @ViewChild('panel') panel: ElementRef;
 
+  /** Trigger that opens the select. */
+  @ViewChild('trigger') trigger: ElementRef;
+
   /** All of the defined select options. */
   @ContentChildren(GhOption, {descendants: true})
   options: QueryList<GhOption>;
@@ -245,6 +251,7 @@ export class GhSelect extends _GhSelectMixinBase
   /** Opens the panel */
   open() {
     if (!this.disabled && !this._panelOpen) {
+      this._triggerRect = this.trigger.nativeElement.getBoundingClientRect();
       this._panelOpen = true;
       this._changeDetectorRef.markForCheck();
     }
