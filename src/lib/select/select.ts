@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 import {SelectionModel} from '@angular/cdk/collections';
-import {mixinDisabled, CanDisable, mixinTabIndex, HasTabIndex} from '@dynatrace/ngx-groundhog/core';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {startWith} from 'rxjs/operators/startWith';
 import {takeUntil} from 'rxjs/operators/takeUntil';
 import {switchMap} from 'rxjs/operators/switchMap';
@@ -25,6 +25,7 @@ import {take} from 'rxjs/operators/take';
 import {merge} from 'rxjs/observable/merge';
 import {defer} from 'rxjs/observable/defer';
 import {Observable} from 'rxjs/Observable';
+import {mixinDisabled, CanDisable, mixinTabIndex, HasTabIndex} from '@dynatrace/ngx-groundhog/core';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
 
@@ -53,11 +54,13 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(GhSelectBase));
     '[attr.tabindex]': 'tabIndex',
     '[attr.aria-label]': '_ariaLabel',
     '[attr.aria-labelledby]': 'ariaLabelledby',
+    '[attr.aria-required]': 'required.toString()',
     '[attr.aria-disabled]': 'disabled.toString()',
     '[attr.aria-owns]': 'panelOpen ? _optionIds : null',
     'attr.aria-multiselectable': 'false',
     '[attr.aria-describedby]': '_ariaDescribedby || null',
     '[class.gh-select-disabled]': 'disabled',
+    '[class.gh-select-required]': 'required',
     'class': 'gh-select',
     '(focus)': '_onFocus()',
     '(blur)': '_onBlur()',
@@ -74,6 +77,9 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** Whether or not the overlay panel is open. */
   private _panelOpen = false;
+
+  /** Whether filling out the select is required in the form. */
+  private _required = false;
 
   /** Unique id for this input. */
   private _uid = `gh-select-${nextUniqueId++}`;
@@ -124,6 +130,13 @@ export class GhSelect extends _GhSelectMixinBase
   get id(): string { return this._id; }
   set id(value: string) {
     this._id = value || this._uid;
+  }
+
+  /** Whether the component is required. */
+  @Input()
+  get required(): boolean { return this._required; }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
   }
 
   /** Aria label of the select. If not specified, the placeholder will be used as label. */
