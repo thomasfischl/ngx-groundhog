@@ -83,7 +83,7 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
   @Input() value: any;
 
   /** Event emitted when the option is selected or deselected. */
-  @Output() onSelectionChange = new EventEmitter<GhOptionSelectionChange>();
+  @Output() readonly onSelectionChange = new EventEmitter<GhOptionSelectionChange>();
 
   constructor (private _changeDetectorRef: ChangeDetectorRef,
                private _elementRef: ElementRef
