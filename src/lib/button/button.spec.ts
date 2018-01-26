@@ -50,7 +50,7 @@ describe('GhButton', () => {
   });
 
   // Anchor button tests
-  describe('a[mat-button]', () => {
+  describe('a[gh-button]', () => {
     it('should not redirect if disabled', () => {
       let fixture = TestBed.createComponent(TestApp);
       let testComponent = fixture.debugElement.componentInstance;
