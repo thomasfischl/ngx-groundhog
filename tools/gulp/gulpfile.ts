@@ -17,3 +17,4 @@ import './tasks/clean';
 import './tasks/development';
 import './tasks/lint';
 import './tasks/publish';
+import './tasks/unit-test';
