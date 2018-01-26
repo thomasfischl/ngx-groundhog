@@ -45,6 +45,7 @@ export const _GhOptionMixinBase = mixinDisabled(GhOptionBase);
     '[attr.aria-selected]': 'selected.toString()',
     '[attr.aria-disabled]': 'disabled.toString()',
     '[class.gh-option-disabled]': 'disabled',
+    '[class.gh-active]': 'active',
     '(click)': '_toggleViaInteraction()',
     '(keydown)': '_handleKeydown($event)',
     'class': 'gh-option',
@@ -62,11 +63,21 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
 
   /** The displayed value of the option. */
   get viewValue(): string {
-    return (this._element.nativeElement.textContent || '').trim();
+    return (this._elementRef.nativeElement.textContent || '').trim();
   }
 
   /** The unique ID of the option. */
   get id(): string { return this._id; }
+
+  /**
+   * Whether or not the option is currently active and ready to be selected.
+   * An active option displays styles as if it is focused, but the
+   * focus is actually retained somewhere else. This comes in handy
+   * for components like autocomplete where focus must remain on the input.
+   */
+  get active(): boolean {
+    return this._active;
+  }
 
   /** The form value of the option. */
   @Input() value: any;
@@ -75,7 +86,7 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
   @Output() onSelectionChange = new EventEmitter<GhOptionSelectionChange>();
 
   constructor (private _changeDetectorRef: ChangeDetectorRef,
-               private _element: ElementRef
+               private _elementRef: ElementRef
   ) {
     super();
   }
@@ -95,6 +106,14 @@ export class GhOption extends _GhOptionMixinBase implements CanDisable {
       this._selected = false;
       this._changeDetectorRef.markForCheck();
       this._emitSelectionChangeEvent();
+    }
+  }
+
+  /** Sets focus onto this option. */
+  focus(): void {
+    const element = this._elementRef.nativeElement();
+    if (typeof element.focus === 'function') {
+      element.focus();
     }
   }
 

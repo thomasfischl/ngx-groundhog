@@ -2,3 +2,13 @@
   font-style: italic;
   display: block;
 }
+
+.gh-option {
+  &.gh-active {
+    color: red;
+  }
+}
+
+.gh-option-disabled {
+  color: #999;
+}

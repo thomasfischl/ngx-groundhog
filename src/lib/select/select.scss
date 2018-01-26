@@ -7,6 +7,19 @@ $mainfont: 'BerninaSans', 'Open Sans', sans-serif !default;
 $gray-300: #ccc;
 $disabledcolor: $gray-300;
 
+.gh-select {
+  display: inline-block;
+  &[disabled],
+  &.gh-select-disabled {
+    opacity: 0.5;
+    outline: none;
+
+    .gh-select-trigger {
+      cursor: default;
+    }
+  }
+}
+
 .gh-select-trigger {
   display: inline-block;
   position: relative;
