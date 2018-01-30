@@ -4,7 +4,8 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy,
   ElementRef,
-  OnDestroy
+  OnDestroy,
+  Input
 } from '@angular/core';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {
@@ -82,6 +83,7 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
     '[attr.disabled]': 'disabled || null',
     '[attr.aria-disabled]': 'disabled.toString()',
     '(click)': '_haltDisabledEvents($event)',
+    '[class]': 'colorClass'
   },
   inputs: ['disabled'],
   templateUrl: 'button.html',
@@ -91,6 +93,17 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhAnchor extends GhButton {
+
+  private _color: string;
+
+  @Input()
+  get color() { return this._color; }
+  set color(value: string) { this._color = value; }
+
+  get colorClass() {
+    return this._color ? `gh-button-${this._color}` : '';
+  }
+
   constructor(elementRef: ElementRef,
               focusMonitor: FocusMonitor) {
     super(elementRef, focusMonitor);
