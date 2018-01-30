@@ -10,11 +10,17 @@ import {
   ContentChildren,
   QueryList,
   OnInit,
+  OnChanges,
+  DoCheck,
   OnDestroy,
   AfterContentInit,
   NgZone,
   Attribute,
   EventEmitter,
+  Self,
+  Optional,
+  isDevMode,
+  SimpleChanges,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -28,6 +34,7 @@ import {END} from '@angular/cdk/keycodes';
 import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
 import {CdkConnectedOverlay, ConnectedOverlayPositionChange} from '@angular/cdk/overlay';
 import {ENTER, SPACE} from '@angular/cdk/keycodes';
+import {ControlValueAccessor, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
 import {takeUntil} from 'rxjs/operators/takeUntil';
 import {switchMap} from 'rxjs/operators/switchMap';
@@ -37,7 +44,15 @@ import {take} from 'rxjs/operators/take';
 import {merge} from 'rxjs/observable/merge';
 import {defer} from 'rxjs/observable/defer';
 import {Observable} from 'rxjs/Observable';
-import {mixinDisabled, CanDisable, mixinTabIndex, HasTabIndex} from '@dynatrace/ngx-groundhog/core';
+import {
+  mixinDisabled,
+  CanDisable,
+  mixinTabIndex,
+  HasTabIndex,
+  ErrorStateMatcher,
+  CanUpdateErrorState,
+  mixinErrorState
+} from '@dynatrace/ngx-groundhog/core';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
 
@@ -47,11 +62,24 @@ import {Subject} from 'rxjs/Subject';
  */
 let nextUniqueId = 0;
 
+/** Change event object that is emitted when the select value has changed. */
+export interface GhSelectChange {
+    /** Reference to the select that emitted the change event. */
+    source: GhSelect;
+    /** Current value of the select that emitted the event. */
+    value: any;
+}
+
 // Boilerplate for applying mixins to GhSelect.
 export class GhSelectBase {
-  constructor() {}
+  constructor(
+    public _elementRef: ElementRef,
+    public _defaultErrorStateMatcher: ErrorStateMatcher,
+    public _parentForm: NgForm,
+    public _parentFormGroup: FormGroupDirective,
+    public ngControl: NgControl) {}
 }
-export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(GhSelectBase));
+export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(GhSelectBase)));
 
 @Component({
   moduleId: module.id,
@@ -82,8 +110,8 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(GhSelectBase));
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhSelect extends _GhSelectMixinBase
-  implements OnInit, AfterContentInit, OnDestroy, CanDisable, HasTabIndex {
+export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, DoCheck,
+  AfterContentInit, OnDestroy, CanDisable, HasTabIndex, ControlValueAccessor, CanUpdateErrorState {
 
   /** The placeholder displayed in the trigger of the select. */
   private _placeholder: string;
@@ -98,13 +126,16 @@ export class GhSelect extends _GhSelectMixinBase
   private _uid = `gh-select-${nextUniqueId++}`;
 
   /** _uid or provided id via input */
-  private _id: string ;
+  private _id: string;
 
   /** Current value of the select */
   private _value: any;
 
   /** Emits whenever the component is destroyed. */
   private _destroy = new Subject();
+
+  /** Comparison function to specify which option is displayed. Defaults to object equality. */
+  private _compareWith = (o1: any, o2: any) => o1 === o2;
 
   /** Deals with the selection logic. */
   _selectionModel: SelectionModel<GhOption>;
@@ -120,6 +151,12 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** Manages keyboard events for options in the panel. */
   _keyManager: ActiveDescendantKeyManager<GhOption>;
+
+  /** `View -> model callback called when value changes` */
+  _onChange: (value: any) => void = () => {};
+
+  /** `View -> model callback called when select has been touched` */
+  _onTouched = () => {};
 
   /** The last measured value for the trigger's client bounding rect. */
   _triggerRect: ClientRect;
@@ -139,6 +176,7 @@ export class GhSelect extends _GhSelectMixinBase
   get placeholder() { return this._placeholder; }
   set placeholder(newplaceholder: string) {
     this._placeholder = newplaceholder;
+    this.stateChanges.next();
   }
 
   /** Value of the select. */
@@ -147,6 +185,7 @@ export class GhSelect extends _GhSelectMixinBase
   set value(newValue: any) {
     // Only set the new value if it differes from the old one
     if (newValue !== this._value) {
+      this.writeValue(newValue);
       this._value = newValue;
     }
   }
@@ -156,6 +195,7 @@ export class GhSelect extends _GhSelectMixinBase
   get id(): string { return this._id; }
   set id(value: string) {
     this._id = value || this._uid;
+    this.stateChanges.next();
   }
 
   /** Whether the component is required. */
@@ -163,6 +203,25 @@ export class GhSelect extends _GhSelectMixinBase
   get required(): boolean { return this._required; }
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
+    this.stateChanges.next();
+  }
+
+  /**
+   * A function to compare the option values with the selected values. The first argument
+   * is a value from an option. The second is a value from the selection. A boolean
+   * should be returned.
+   */
+  @Input()
+  get compareWith() { return this._compareWith; }
+  set compareWith(fn: (o1: any, o2: any) => boolean) {
+    if (typeof fn !== 'function') {
+      throw new Error('`compareWith` must be a function.');
+    }
+    this._compareWith = fn;
+    if (this._selectionModel) {
+      // A different comparator means the selection could change.
+      this._initializeSelection();
+    }
   }
 
   /** Aria label of the select. If not specified, the placeholder will be used as label. */
@@ -173,6 +232,16 @@ export class GhSelect extends _GhSelectMixinBase
 
   /** Event emitted when the select has been opened. */
   @Output() readonly openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  /** Event emitted when the selected value has been changed by the user. */
+  @Output() readonly selectionChange: EventEmitter<GhSelectChange> =
+      new EventEmitter<GhSelectChange>();
+
+  /**
+   * Event that emits whenever the raw value of the select changes. This is here primarily
+   * to facilitate the two-way binding for the `value` input.
+   */
+  @Output() readonly valueChange: EventEmitter<any> = new EventEmitter<any>();
 
   /** The currently selected option. */
   get selected(): GhOption {
@@ -199,6 +268,14 @@ export class GhSelect extends _GhSelectMixinBase
     // If an ariaLabelledby value has been set, the select should not overwrite the
     // `aria-labelledby` value by setting the ariaLabel to the placeholder.
     return this.ariaLabelledby ? null : this.ariaLabel || this.placeholder;
+  }
+
+  private _initializeSelection(): void {
+    // Defer setting the value in order to avoid the "Expression
+    // has changed after it was checked" errors from Angular.
+    Promise.resolve().then(() => {
+      this._setSelectionByValue(this.ngControl ? this.ngControl.value : this._value);
+    });
   }
 
   /** Panel containing the select options. */
@@ -230,13 +307,27 @@ export class GhSelect extends _GhSelectMixinBase
   });
 
   constructor(
-    private _elementRef: ElementRef,
     private _changeDetectorRef: ChangeDetectorRef,
     private _ngZone: NgZone,
-    @Attribute('tabindex') tabIndex: string
+    _elementRef: ElementRef,
+    _defaultErrorStateMatcher: ErrorStateMatcher,
+    @Optional() _parentForm: NgForm,
+    @Optional() _parentFormGroup: FormGroupDirective,
+    @Self() @Optional() public ngControl: NgControl,
+    @Attribute('tabindex') tabIndex: string,
   ) {
-    super();
+    super(_elementRef, _defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
+
+    if (this.ngControl) {
+      // Note: we provide the value accessor through here, instead of
+      // the `providers` to avoid running into a circular import.
+      this.ngControl.valueAccessor = this;
+    }
+
     this.tabIndex = parseInt(tabIndex) || 0;
+
+    // Force setter to be called in case id was not specified.
+    this.id = this.id;
   }
 
   /**
@@ -245,6 +336,7 @@ export class GhSelect extends _GhSelectMixinBase
    */
   ngOnInit() {
     this._selectionModel = new SelectionModel<GhOption>(false, undefined, false);
+    this.stateChanges.next();
   }
 
   /** Hook that triggers when ng-content and all sub components (the options) are initialized. */
@@ -259,10 +351,25 @@ export class GhSelect extends _GhSelectMixinBase
       .subscribe(() => this._resetOptions());
   }
 
+  ngDoCheck() {
+    if (this.ngControl) {
+      this.updateErrorState();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Updating the disabled state is handled by `mixinDisabled`, but we need to additionally let
+    // the parent form field know to run change detection when the disabled state changes.
+    if (changes.disabled) {
+      this.stateChanges.next();
+    }
+  }
+
   /** Hook that trigger right before the component will be destroyed. */
   ngOnDestroy(): void {
     this._destroy.next();
     this._destroy.complete();
+    this.stateChanges.complete();
   }
 
   /** Opens the panel */
@@ -282,6 +389,7 @@ export class GhSelect extends _GhSelectMixinBase
     if (this._panelOpen) {
       this._panelOpen = false;
       this._changeDetectorRef.markForCheck();
+      this._onTouched();
 
       // TODO @thomaspink: Move this if annimations are implemented
       this._onPanelDone();
@@ -297,6 +405,48 @@ export class GhSelect extends _GhSelectMixinBase
   focus(): void {
     this._elementRef.nativeElement.focus();
   }
+
+  /**
+   * Sets the select's value. Part of the ControlValueAccessor interface
+   * required to integrate with Angular's core forms API.
+   */
+  writeValue(value: any): void {
+    if (this.options) {
+      this._setSelectionByValue(value);
+    }
+  }
+
+  /**
+   * Saves a callback function to be invoked when the select's value
+   * changes from user input. Part of the ControlValueAccessor interface
+   * required to integrate with Angular's core forms API.
+   * @param fn Callback to be triggered when the value changes.
+   */
+  registerOnChange(fn: (value: any) => void): void {
+    this._onChange = fn;
+  }
+
+  /**
+   * Saves a callback function to be invoked when the select is blurred
+   * by the user. Part of the ControlValueAccessor interface required
+   * to integrate with Angular's core forms API.
+   * @param fn Callback to be triggered when the component has been touched.
+   */
+  registerOnTouched(fn: () => {}): void {
+    this._onTouched = fn;
+  }
+
+  /**
+   * Disables the select. Part of the ControlValueAccessor interface required
+   * to integrate with Angular's core forms API.
+   * @param isDisabled Sets whether the component is disabled.
+   */
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    this._changeDetectorRef.markForCheck();
+    this.stateChanges.next();
+  }
+
 
   /** Drops current option subscriptions and resets from scratch. */
   _resetOptions() {
@@ -317,7 +467,7 @@ export class GhSelect extends _GhSelectMixinBase
         }
       });
 
-      this._setOptionIds();
+    this._setOptionIds();
   }
 
   /** Handles all keydown events on the select. */
@@ -331,7 +481,7 @@ export class GhSelect extends _GhSelectMixinBase
   private _handleClosedKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
     const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW ||
-        keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW;
+      keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW;
     const isOpenKey = keyCode === ENTER || keyCode === SPACE;
 
     // Open the select on ALT + arrow key to match the native <select>
@@ -370,6 +520,7 @@ export class GhSelect extends _GhSelectMixinBase
   _onFocus() {
     if (!this.disabled) {
       this.focused = true;
+      this.stateChanges.next();
     }
   }
 
@@ -378,7 +529,9 @@ export class GhSelect extends _GhSelectMixinBase
     this.focused = false;
 
     if (!this.disabled && !this.panelOpen) {
+      this._onTouched();
       this._changeDetectorRef.markForCheck();
+      this.stateChanges.next();
     }
   }
 
@@ -432,6 +585,8 @@ export class GhSelect extends _GhSelectMixinBase
     this._clearSelection(option);
     this._selectionModel.select(option);
 
+    this.stateChanges.next();
+
     // Only propagate changes if the option has really changed.
     // We do not want change events triggerd if the same option
     // got selected twice in a row.
@@ -448,6 +603,53 @@ export class GhSelect extends _GhSelectMixinBase
         option.deselect();
       }
     });
+    this.stateChanges.next();
+  }
+
+  /**
+   * Sets the selected option based on a value. If no option can be
+   * found with the designated value, the select trigger is cleared.
+   */
+  private _setSelectionByValue(value: any | any[], isUserInput = false): void {
+
+    this._clearSelection();
+
+    const correspondingOption = this._selectValue(value, isUserInput);
+
+    // Shift focus to the active item. Note that we shouldn't do this in multiple
+    // mode, because we don't know what option the user interacted with last.
+    if (correspondingOption) {
+      this._keyManager.setActiveItem(this.options.toArray().indexOf(correspondingOption));
+    }
+
+    this._changeDetectorRef.markForCheck();
+  }
+
+  /**
+   * Finds and selects and option based on its value.
+   * @returns Option that has the corresponding value.
+   */
+  private _selectValue(value: any, isUserInput = false): GhOption | undefined {
+    const correspondingOption = this.options.find((option: GhOption) => {
+      try {
+        // Treat null as a special reset value.
+        return option.value != null && this._compareWith(option.value, value);
+      } catch (error) {
+        if (isDevMode()) {
+          // Notify developers of errors in their comparator.
+          console.warn(error);
+        }
+        return false;
+      }
+    });
+
+    if (correspondingOption) {
+      isUserInput ? correspondingOption._toggleViaInteraction() : correspondingOption.select();
+      this._selectionModel.select(correspondingOption);
+      this.stateChanges.next();
+    }
+
+    return correspondingOption;
   }
 
   /** Sets up a key manager to listen to keyboard events on the overlay panel. */
@@ -469,6 +671,9 @@ export class GhSelect extends _GhSelectMixinBase
   private _propagateChanges(fallbackValue?: any): void {
     const valueToEmit = this.selected ? (this.selected as GhOption).value : fallbackValue;
     this._value = valueToEmit;
+    this.valueChange.emit(valueToEmit);
+    this._onChange(valueToEmit);
+    this.selectionChange.emit({source: this, value: valueToEmit});
     this._changeDetectorRef.markForCheck();
   }
 

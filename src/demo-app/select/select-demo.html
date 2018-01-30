@@ -1,9 +1,29 @@
 <h1>Select</h1>
 
-<gh-select placeholder="Please select value">
-  <gh-option *ngFor="let option of options" [disabled]="option.disabled">{{option.label}}</gh-option>
+<h4>Standalone</h4>
+<p>Current value: {{currentFruit || 'none'}}</p>
+<gh-select placeholder="Please select value" (selectionChange)="currentFruit = $event.value">
+  <gh-option>None</gh-option>
+  <gh-option *ngFor="let fruit of fruits" [disabled]="fruit.disabled" [value]="fruit.key">{{fruit.label}}</gh-option>
 </gh-select>
 
+<h4>Disabled State</h4>
 <gh-select placeholder="Please select value" disabled>
-  <gh-option *ngFor="let option of options">{{option.label}}</gh-option>
+  <gh-option>None</gh-option>
+  <gh-option *ngFor="let fruit of fruits">{{fruit.label}}</gh-option>
 </gh-select>
+
+<h4>ngModel (Angular Forms)</h4>
+<p>Current value: {{currentDrink || 'none'}}</p>
+<p> Touched: {{ drinkControl.touched }} </p>
+<p> Dirty: {{ drinkControl.dirty }} </p>
+<p> Status: {{ drinkControl.control?.status }} </p>
+<gh-select placeholder="Please select value" [(ngModel)]="currentDrink" #drinkControl="ngModel" [disabled]="drinkDisabled">
+  <gh-option>None</gh-option>
+  <gh-option *ngFor="let drink of drinks" [disabled]="drink.disabled" [value]="drink.key">{{drink.label}}</gh-option>
+</gh-select>
+<div>
+  <button gh-button (click)="currentDrink='Mojito'">Set Value</button>
+  <button gh-button (click)="drinkDisabled=!drinkDisabled">Toggle disabled</button>
+  <button gh-button (click)="drinkControl.reset()">Reset</button>
+</div>
