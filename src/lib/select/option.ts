@@ -18,7 +18,7 @@ import {SPACE} from '@angular/cdk/keycodes';
  */
 let _uniqueIdCounter = 0;
 
-/** Event object emitted by MatOption when selected or deselected. */
+/** Event object emitted by GhOption when selected or deselected. */
 export interface GhOptionSelectionChange {
     /** Reference to the option that emitted the event. */
     source: GhOption;

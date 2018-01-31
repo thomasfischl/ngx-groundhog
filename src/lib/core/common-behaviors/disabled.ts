@@ -9,7 +9,6 @@
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Constructor} from './constructor';
 
-/** @docs-private */
 export interface CanDisable {
   /** Whether the component is disabled. */
   disabled: boolean;
