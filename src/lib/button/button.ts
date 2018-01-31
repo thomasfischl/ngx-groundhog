@@ -94,11 +94,11 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
 })
 export class GhAnchor extends GhButton {
 
-  private _color: string;
+  // private _color: string;
 
-  @Input()
-  get color() { return this._color; }
-  set color(value: string) { this._color = value; }
+  // @Input()
+  // get color() { return this._color; }
+  // set color(value: string) { this._color = value; }
 
   get colorClass() {
     return this._color ? `gh-button-${this._color}` : '';
