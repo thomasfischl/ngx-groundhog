@@ -82,10 +82,9 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
     '[attr.tabindex]': 'disabled ? -1 : 0',
     '[attr.disabled]': 'disabled || null',
     '[attr.aria-disabled]': 'disabled.toString()',
-    '(click)': '_haltDisabledEvents($event)',
-    '[class]': 'colorClass'
+    '(click)': '_haltDisabledEvents($event)'
   },
-  inputs: ['disabled'],
+  inputs: ['disabled', 'color'],
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
   encapsulation: ViewEncapsulation.None,
@@ -93,16 +92,6 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhAnchor extends GhButton {
-
-  // private _color: string;
-
-  // @Input()
-  // get color() { return this._color; }
-  // set color(value: string) { this._color = value; }
-
-  get colorClass() {
-    return this._color ? `gh-button-${this._color}` : '';
-  }
 
   constructor(elementRef: ElementRef,
               focusMonitor: FocusMonitor) {

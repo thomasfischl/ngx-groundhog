@@ -1,26 +1,20 @@
 @import '../../../node_modules/@dynatrace/groundhog/src/button/button-common';
+@import '../../../node_modules/@dynatrace/groundhog/src/button/button';
 
 .gh-button {
   @include btn-common();
 
   background-color: $buttoncolor;
 
-  &:hover {
-    color: #fff;
-    background-color: $buttonhovercolor;
-  }
-
-  &:active {
-    color: #fff;
-    border-color: $buttonactivecolor;
-    background-color: $buttonactivecolor;
-  }
-
-  &[disabled] {
-    background-color: $disabledcolor;
-  }
-
   &::-moz-focus-inner {
     border: 0;
   }
+}
+
+.gh-primary {
+  @include btn-primary();
+}
+
+.gh-secondary {
+  @include btn-secondary();
 }
