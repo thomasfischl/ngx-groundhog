@@ -9,7 +9,9 @@ import {
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {
   CanDisable,
-  mixinDisabled
+  mixinDisabled,
+  CanColor,
+  mixinColor
 } from '@dynatrace/ngx-groundhog/core';
 
 /**
@@ -25,7 +27,7 @@ export class GhButtonCssStyler {}
 export class GhButtonBase {
   constructor(public _elementRef: ElementRef) {}
 }
-export const _GhButtonMixinBase = mixinDisabled(GhButtonBase);
+export const _GhButtonMixinBase = mixinDisabled(mixinColor(GhButtonBase, 'primary'));
 
 /**
  * Groundhog design button.
@@ -41,12 +43,12 @@ export const _GhButtonMixinBase = mixinDisabled(GhButtonBase);
   },
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
-  inputs: ['disabled'],
+  inputs: ['disabled', 'color'],
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisable {
+export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisable, CanColor {
   constructor(elementRef: ElementRef,
               private _focusMonitor: FocusMonitor) {
     super(elementRef);
