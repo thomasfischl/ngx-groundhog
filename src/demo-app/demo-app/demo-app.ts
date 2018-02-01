@@ -40,6 +40,6 @@ export class Home {}
 export class DemoApp {
   navItems = [
     {name: 'Start', route: '/'},
-    {name: 'Button', route: '/button'}
+    {name: 'Button', route: '/button'},
   ];
 }
