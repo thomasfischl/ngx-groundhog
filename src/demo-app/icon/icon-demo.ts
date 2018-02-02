@@ -14,7 +14,13 @@ export class IconDemo {
     iconRegistry
       .addSvgIcon('dynatrace',
         sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/dynatrace.svg'))
+      .addSvgIcon('chrome',
+        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/chrome.svg'))
       .addSvgIconInNamespace('core', 'angularjs',
-        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/angularjs.svg'));
+        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/angularjs.svg'))
+      .addSvgIconInNamespace('core', 'firefox',
+        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/firefox.svg'))
+      .addSvgIconInNamespace('core', 'docker',
+        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/docker.svg'));
   }
 }

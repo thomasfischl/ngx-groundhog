@@ -11,8 +11,8 @@ import {
 import {take} from 'rxjs/operators/take';
 import {GhIconRegistry} from './icon-registry';
 
-type IconSize = 'small' | 'medium' | 'big';
-const sizes: IconSize[] = ['small', 'medium', 'big'];
+export type GhIconSize = 'small' | 'medium' | 'big';
+const sizes: GhIconSize[] = ['small', 'medium', 'big'];
 const defaultIconSize = 'medium';
 
 @Component({
@@ -30,15 +30,15 @@ const defaultIconSize = 'medium';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhIcon implements OnChanges {
-  private _size: IconSize;
+  private _size: GhIconSize;
 
   /** Name of the icon in the SVG icon set. */
   @Input() svgIcon: string;
 
   /** Size of the icon (can be 'small', 'medium' or 'big') */
   @Input()
-  get size(): IconSize { return this._size; }
-  set size(value: IconSize) {
+  get size(): GhIconSize { return this._size; }
+  set size(value: GhIconSize) {
     if (sizes.indexOf(value) === -1) {
       throw new Error(`"${value}" is not a valid size for GhIcon. ` +
         `Valid sizes are: ${sizes.map(s => `"${s}"`).join(', ')}`);

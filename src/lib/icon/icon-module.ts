@@ -1,12 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {GhIcon} from './icon';
-import {GhIconRegistry} from './icon-registry';
+import {ICON_REGISTRY_PROVIDER} from './icon-registry';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
   exports: [
     GhIcon
   ],
@@ -14,7 +11,7 @@ import {GhIconRegistry} from './icon-registry';
     GhIcon
   ],
   providers: [
-    GhIconRegistry
+    ICON_REGISTRY_PROVIDER
   ]
 })
 export class GhIconModule {}

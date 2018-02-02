@@ -1,4 +1,11 @@
-import {Injectable, SecurityContext, Optional, Inject} from '@angular/core';
+import {
+  Injectable,
+  SecurityContext,
+  Optional,
+  SkipSelf,
+  Inject,
+  InjectionToken
+} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {SafeResourceUrl, DomSanitizer} from '@angular/platform-browser';
 import {DOCUMENT} from '@angular/common';
@@ -180,7 +187,7 @@ export class GhIconRegistry {
       return svg;
     }
 
-    throw new Error('MatIconRegistry could not resolve document.');
+    throw new Error('GhIconRegistry could not resolve document.');
   }
 
   /**
@@ -228,3 +235,23 @@ function cloneSvg(svg: SVGElement): SVGElement {
 function iconKey(namespace: string, name: string) {
   return namespace + ':' + name;
 }
+
+export function ICON_REGISTRY_PROVIDER_FACTORY(
+  parent: GhIconRegistry,
+  httpClient: HttpClient,
+  sanitizer: DomSanitizer,
+  document?: any
+) {
+  return parent || new GhIconRegistry(httpClient, sanitizer, document);
+}
+
+export const ICON_REGISTRY_PROVIDER = {
+  provide: GhIconRegistry,
+  deps: [
+    [new Optional(), new SkipSelf(), GhIconRegistry],
+    [new Optional(), HttpClient],
+    DomSanitizer,
+    [new Optional(), DOCUMENT as InjectionToken<any>],
+  ],
+  useFactory: ICON_REGISTRY_PROVIDER_FACTORY,
+};
