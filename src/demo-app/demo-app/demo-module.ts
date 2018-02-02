@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {DemoGroundhogModule} from '../demo-groundhog-module';
 import {ButtonDemo} from '../button/button-demo';
+import {IconDemo} from '../icon/icon-demo';
 import {DemoApp, Home} from './demo-app';
 import {DEMO_APP_ROUTES} from './routes';
 
@@ -17,6 +18,7 @@ import {DEMO_APP_ROUTES} from './routes';
   ],
   declarations: [
     ButtonDemo,
+    IconDemo,
     DemoApp,
     Home,
   ],
