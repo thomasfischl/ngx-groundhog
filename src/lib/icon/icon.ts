@@ -11,13 +11,16 @@ import {
 import {take} from 'rxjs/operators/take';
 import {GhIconRegistry} from './icon-registry';
 
+type IconSize = 'small' | 'medium' | 'big';
+const sizes: IconSize[] = ['small', 'medium', 'big'];
+const defaultIconSize = 'medium';
+
 @Component({
   moduleId: module.id,
   template: '<ng-content></ng-content>',
   selector: 'gh-icon',
   exportAs: 'ghIcon',
   styleUrls: ['icon.css'],
-  inputs: ['color'],
   host: {
     'role': 'img',
     'class': 'gh-icon',
@@ -27,9 +30,30 @@ import {GhIconRegistry} from './icon-registry';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhIcon implements OnChanges {
+  private _size: IconSize;
 
   /** Name of the icon in the SVG icon set. */
   @Input() svgIcon: string;
+
+  /** Size of the icon (can be 'small', 'medium' or 'big') */
+  @Input()
+  get size(): IconSize { return this._size; }
+  set size(value: IconSize) {
+    if (sizes.indexOf(value) === -1) {
+      throw new Error(`"${value}" is not a valid size for GhIcon. ` +
+        `Valid sizes are: ${sizes.map(s => `"${s}"`).join(', ')}`);
+    }
+    const size = value || defaultIconSize;
+    if (size !== this._size) {
+      if (this._size) {
+        this._elementRef.nativeElement.classList.remove(`gh-icon-${this._size}`);
+      }
+      if (size) {
+        this._elementRef.nativeElement.classList.add(`gh-icon-${size}`);
+      }
+      this._size = size;
+    }
+  }
 
   constructor(
     private _elementRef: ElementRef,
@@ -41,6 +65,9 @@ export class GhIcon implements OnChanges {
     if (!ariaHidden) {
       _elementRef.nativeElement.setAttribute('aria-hidden', 'true');
     }
+
+    // Set the default size to trigger setting the css classes
+    this.size = defaultIconSize;
   }
 
   ngOnChanges(changes: SimpleChanges) {

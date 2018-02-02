@@ -1,0 +1,24 @@
+$gh-icon-size-small: 18px;
+$gh-icon-size-medium: 32px;
+$gh-icon-size-big: 64px;
+
+@mixin square($side) {
+  width: $side;
+  height: $side;
+}
+
+.gh-icon {
+  display: inline-block;
+}
+
+.gh-icon-small {
+  @include square($gh-icon-size-small);
+}
+
+.gh-icon-medium {
+  @include square($gh-icon-size-medium);
+}
+
+.gh-icon-big {
+  @include square($gh-icon-size-big);
+}
