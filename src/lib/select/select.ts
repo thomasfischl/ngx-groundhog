@@ -106,10 +106,12 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(Gh
     '[attr.aria-labelledby]': 'ariaLabelledby',
     '[attr.aria-required]': 'required.toString()',
     '[attr.aria-disabled]': 'disabled.toString()',
+    '[attr.aria-invalid]': 'errorState',
     '[attr.aria-owns]': 'panelOpen ? _optionIds : null',
     'attr.aria-multiselectable': 'false',
     '[attr.aria-describedby]': '_ariaDescribedby || null',
     '[class.gh-select-disabled]': 'disabled',
+    '[class.gh-select-invalid]': 'errorState',
     '[class.gh-select-required]': 'required',
     'class': 'gh-select',
     '(focus)': '_onFocus()',
@@ -245,6 +247,9 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
   /** Input that can be used to specify the `aria-labelledby` attribute. */
   @Input('aria-labelledby') ariaLabelledby: string;
 
+  /** An object used to control when error messages are shown. */
+  @Input() errorStateMatcher: ErrorStateMatcher;
+
   /** Event emitted when the select has been opened. */
   @Output() readonly openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -283,14 +288,6 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     // If an ariaLabelledby value has been set, the select should not overwrite the
     // `aria-labelledby` value by setting the ariaLabel to the placeholder.
     return this.ariaLabelledby ? null : this.ariaLabel || this.placeholder;
-  }
-
-  private _initializeSelection(): void {
-    // Defer setting the value in order to avoid the "Expression
-    // has changed after it was checked" errors from Angular.
-    Promise.resolve().then(() => {
-      this._setSelectionByValue(this.ngControl ? this.ngControl.value : this._value);
-    });
   }
 
   /** Panel containing the select options. */
@@ -467,7 +464,6 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     this.stateChanges.next();
   }
 
-
   /** Drops current option subscriptions and resets from scratch. */
   _resetOptions() {
     this.optionSelectionChanges
@@ -603,8 +599,12 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     }
   }
 
-  private _calculateOverlayOffsetY(change: ConnectedOverlayPositionChange) {
-    return change.connectionPair.originY === 'top' ? 1 : -1;
+  private _initializeSelection(): void {
+    // Defer setting the value in order to avoid the "Expression
+    // has changed after it was checked" errors from Angular.
+    Promise.resolve().then(() => {
+      this._setSelectionByValue(this.ngControl ? this.ngControl.value : this._value);
+    });
   }
 
   /**
@@ -634,7 +634,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
    * too high or too low in the panel to be scrolled to the center, it clamps the
    * scroll position to the min or max scroll positions respectively.
    */
-  _calculateOverlayScroll() {
+  private _calculateOverlayScroll() {
     const items = this.options.length;
     const itemHeight = SELECT_ITEM_HEIGHT;
     const scrollContainerHeight = items * itemHeight;

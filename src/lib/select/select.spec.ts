@@ -2,7 +2,7 @@ import {Component, ViewChild, ViewChildren, QueryList} from '@angular/core';
 import {inject, TestBed, async, ComponentFixture, fakeAsync} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
-import {FormControl, FormsModule} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OverlayContainer} from '@angular/cdk/overlay';
 import {Platform} from '@angular/cdk/platform';
 import {GhSelectModule, GhSelect, GhOption} from './index';
@@ -57,6 +57,8 @@ describe('GhSelect', () => {
     TestBed.configureTestingModule({
       imports: [
         GhSelectModule,
+        ReactiveFormsModule,
+        FormsModule,
         NoopAnimationsModule,
       ],
       declarations: declarations,
@@ -102,14 +104,12 @@ describe('GhSelect', () => {
         it('should support setting a custom aria-label', fakeAsync(() => {
           fixture.componentInstance.ariaLabel = 'Custom Label';
           fixture.detectChanges();
-
           expect(select.getAttribute('aria-label')).toEqual('Custom Label');
         }));
 
         it('should not set an aria-label if aria-labelledby is specified', fakeAsync(() => {
           fixture.componentInstance.ariaLabelledby = 'myLabelId';
           fixture.detectChanges();
-
           expect(select.getAttribute('aria-label')).toBeFalsy('Expected no aria-label to be set.');
           expect(select.getAttribute('aria-labelledby')).toBe('myLabelId');
         }));
@@ -126,30 +126,51 @@ describe('GhSelect', () => {
         it('should be able to override the tabindex', fakeAsync(() => {
           fixture.componentInstance.tabIndexOverride = 3;
           fixture.detectChanges();
-
           expect(select.getAttribute('tabindex')).toBe('3');
         }));
 
         it('should set aria-required for required selects', fakeAsync(() => {
           expect(select.getAttribute('aria-required'))
-              .toEqual('false', `Expected aria-required attr to be false for normal selects.`);
-
+            .toEqual('false', `Expected aria-required attr to be false for normal selects.`);
           fixture.componentInstance.isRequired = true;
           fixture.detectChanges();
-
           expect(select.getAttribute('aria-required'))
-              .toEqual('true', `Expected aria-required attr to be true for required selects.`);
+            .toEqual('true', `Expected aria-required attr to be true for required selects.`);
         }));
 
         it('should set the gh-select-required class for required selects', fakeAsync(() => {
           expect(select.classList).not.toContain(
-              'gh-select-required', `Expected the gh-select-required class not to be set.`);
-
+            'gh-select-required', `Expected the gh-select-required class not to be set.`);
           fixture.componentInstance.isRequired = true;
           fixture.detectChanges();
-
           expect(select.classList).toContain(
-              'gh-select-required', `Expected the gh-select-required class to be set.`);
+            'gh-select-required', `Expected the gh-select-required class to be set.`);
+        }));
+
+        it('should set aria-invalid for selects that are invalid and touched', fakeAsync(() => {
+          expect(select.getAttribute('aria-invalid'))
+            .toEqual('false', `Expected aria-invalid attr to be false for valid selects.`);
+          fixture.componentInstance.isRequired = true;
+          fixture.componentInstance.control.markAsTouched();
+          fixture.detectChanges();
+          expect(select.getAttribute('aria-invalid'))
+            .toEqual('true', `Expected aria-invalid attr to be true for invalid selects.`);
+        }));
+
+        it('should set aria-disabled for disabled selects', fakeAsync(() => {
+          expect(select.getAttribute('aria-disabled')).toEqual('false');
+          fixture.componentInstance.control.disable();
+          fixture.detectChanges();
+          expect(select.getAttribute('aria-disabled')).toEqual('true');
+        }));
+
+        it('should set the tabindex of the select to -1 if disabled', fakeAsync(() => {
+          fixture.componentInstance.control.disable();
+          fixture.detectChanges();
+          expect(select.getAttribute('tabindex')).toEqual('-1');
+          fixture.componentInstance.control.enable();
+          fixture.detectChanges();
+          expect(select.getAttribute('tabindex')).toEqual('0');
         }));
       });
     });
@@ -164,7 +185,7 @@ describe('GhSelect', () => {
   selector: 'basic-select',
   template: `
     <div [style.height.px]="heightAbove"></div>
-      <gh-select placeholder="Food" [required]="isRequired"
+      <gh-select placeholder="Food" [formControl]="control" [required]="isRequired"
         [tabIndex]="tabIndexOverride" [aria-label]="ariaLabel" [aria-labelledby]="ariaLabelledby"
         [panelClass]="panelClass">
         <gh-option *ngFor="let food of foods" [value]="food.value" [disabled]="food.disabled">
