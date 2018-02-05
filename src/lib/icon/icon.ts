@@ -39,7 +39,7 @@ export class GhIcon implements OnChanges {
   @Input()
   get size(): GhIconSize { return this._size; }
   set size(value: GhIconSize) {
-    if (sizes.indexOf(value) === -1) {
+    if (value && sizes.indexOf(value) === -1) {
       throw new Error(`"${value}" is not a valid size for GhIcon. ` +
         `Valid sizes are: ${sizes.map(s => `"${s}"`).join(', ')}`);
     }
