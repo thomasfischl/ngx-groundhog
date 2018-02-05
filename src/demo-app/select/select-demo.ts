@@ -7,12 +7,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['select-demo.css'],
 })
 export class SelectDemo implements OnInit {
-  currentFruit: string;
+  currentFruit: string = 'Mango';
   fruits = [
     { key: 'Banana', label: 'Banana label', disabled: false },
     { key: 'Pear', label: 'Pear label', disabled: false },
     { key: 'Apple', label: 'Apple label', disabled: true },
-    { key: 'Ananas', label: 'Ananas label', disabled: false }
+    { key: 'Ananas', label: 'Ananas label', disabled: false },
+    { key: 'Blueberry', label: 'Blueberry label', disabled: false },
+    { key: 'Orange', label: 'Orange label', disabled: false },
+    { key: 'Peach', label: 'Peach label', disabled: false },
+    { key: 'Coconut', label: 'Coconut label', disabled: false },
+    { key: 'Avocado', label: 'Avocado label', disabled: false },
+    { key: 'Cherry', label: 'Cherry label', disabled: false },
+    { key: 'Kiwi', label: 'Kiwi label', disabled: false },
+    { key: 'Lemon', label: 'Lemon label', disabled: false },
+    { key: 'Lime', label: 'Lime label', disabled: false },
+    { key: 'Mango', label: 'Mango label', disabled: false },
+    { key: 'Olive', label: 'Olive label', disabled: false }
   ];
 
   currentDrink: string;

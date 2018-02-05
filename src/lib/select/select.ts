@@ -32,7 +32,11 @@ import {RIGHT_ARROW} from '@angular/cdk/keycodes';
 import {HOME} from '@angular/cdk/keycodes';
 import {END} from '@angular/cdk/keycodes';
 import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
-import {CdkConnectedOverlay, ConnectedOverlayPositionChange} from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair
+} from '@angular/cdk/overlay';
 import {ENTER, SPACE} from '@angular/cdk/keycodes';
 import {ControlValueAccessor, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
@@ -62,12 +66,18 @@ import {Subject} from 'rxjs/Subject';
  */
 let nextUniqueId = 0;
 
+/** The max height of the select's overlay panel */
+export const SELECT_PANEL_MAX_HEIGHT = 256;
+
+/** The height of the select items. */
+export const SELECT_ITEM_HEIGHT = 18;
+
 /** Change event object that is emitted when the select value has changed. */
 export interface GhSelectChange {
-    /** Reference to the select that emitted the change event. */
-    source: GhSelect;
-    /** Current value of the select that emitted the event. */
-    value: any;
+  /** Reference to the select that emitted the change event. */
+  source: GhSelect;
+  /** Current value of the select that emitted the event. */
+  value: any;
 }
 
 // Boilerplate for applying mixins to GhSelect.
@@ -136,6 +146,11 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
   /** Comparison function to specify which option is displayed. Defaults to object equality. */
   private _compareWith = (o1: any, o2: any) => o1 === o2;
+
+  /** The scroll position of the overlay panel, calculated to center the selected option. */
+  private _scrollTop = 0;
+
+  private _connectionPair: ConnectionPositionPair;
 
   /** Deals with the selection logic. */
   _selectionModel: SelectionModel<GhOption>;
@@ -235,7 +250,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
   /** Event emitted when the selected value has been changed by the user. */
   @Output() readonly selectionChange: EventEmitter<GhSelectChange> =
-      new EventEmitter<GhSelectChange>();
+    new EventEmitter<GhSelectChange>();
 
   /**
    * Event that emits whenever the raw value of the select changes. This is here primarily
@@ -348,7 +363,10 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     this.options.changes
       .pipe(startWith(null), takeUntil(this._destroy))
       // Everytime options change, we need to reset (resubscribe on their events, ...)
-      .subscribe(() => this._resetOptions());
+      .subscribe(() => {
+        this._resetOptions();
+        this._initializeSelection();
+      });
   }
 
   ngDoCheck() {
@@ -377,6 +395,8 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     if (!this.disabled && !this._panelOpen) {
       this._triggerRect = this.trigger.nativeElement.getBoundingClientRect();
       this._panelOpen = true;
+      this._highlightCorrectOption();
+      this._calculateOverlayScroll();
       this._changeDetectorRef.markForCheck();
 
       // TODO @thomaspink: Move this if annimations are implemented
@@ -452,12 +472,12 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
   _resetOptions() {
     this.optionSelectionChanges
       .pipe(
-        // Stop listening when the component will be destroyed
-        // or the options have changed (new ones added or removed)
-        takeUntil(merge(this._destroy, this.options.changes)),
-        // We only need user events.
-        // The other ones are triggered to select/deselect on GhSelect level
-        filter(event => event.isUserInput))
+      // Stop listening when the component will be destroyed
+      // or the options have changed (new ones added or removed)
+      takeUntil(merge(this._destroy, this.options.changes)),
+      // We only need user events.
+      // The other ones are triggered to select/deselect on GhSelect level
+      filter(event => event.isUserInput))
       .subscribe(evt => {
         // Note: The event.source is the selected GhOption
         this._onSelect(evt.source);
@@ -537,20 +557,36 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
   /** Callback that is invoked when the overlay panel has been attached. */
   _onAttached(): void {
-    this.overlayDir.positionChange
+    const positionChange = this.overlayDir.positionChange;
+
+    // Set the scroll position of the panel when
+    // it has been positioned correctly
+    positionChange.pipe(take(1)).subscribe(() => {
+      this._changeDetectorRef.detectChanges();
+      this.panel.nativeElement.scrollTop = this._scrollTop;
+    });
+
+    // Set classes depending on the position of the overlay
+    positionChange
       // Stop listening when the component will be destroyed
       // or the overlay closes
       .pipe(takeUntil(merge(
         this._destroy,
         this.openedChange.pipe(filter(o => !o))
       )))
-      // Calculate the new offset based on the change event
-      .pipe(map(change => this._calculateOverlayOffsetY(change)))
-      // Filter changes in the offset
-      .pipe(filter(offsetY => offsetY !== this._offsetY))
-      .subscribe(offsetY => {
-        this._offsetY = offsetY;
-        this._changeDetectorRef.detectChanges();
+      // Map the change event to the provided ConnectionPositionPair
+      .pipe(map(change => change.connectionPair))
+      // Filter out pairs that did not change
+      .pipe(filter(connectionPair => !this._connectionPair ||
+        connectionPair.originY !== this._connectionPair.originY))
+      .subscribe(connectionPair => {
+        // Set the classes to indicate the position of the overlay
+        if (this._connectionPair) {
+          this.panel.nativeElement.classList
+            .remove(`gh-select-panel-${this._connectionPair.originY}`);
+        }
+        this.panel.nativeElement.classList.add(`gh-select-panel-${connectionPair.originY}`);
+        this._connectionPair = connectionPair;
       });
   }
 
@@ -571,9 +607,70 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     return change.connectionPair.originY === 'top' ? 1 : -1;
   }
 
+  /**
+   * Highlights the selected item. If no option is selected, it will highlight
+   * the first item instead.
+   */
+  private _highlightCorrectOption(): void {
+    if (this._keyManager) {
+      if (this.empty) {
+        this._keyManager.setFirstItemActive();
+      } else {
+        this._keyManager.setActiveItem(this._getOptionIndex(this._selectionModel.selected[0])!);
+      }
+    }
+  }
+
+  /** Gets the index of the provided option in the option list. */
+  private _getOptionIndex(option: GhOption): number | undefined {
+    return this.options.reduce((result: number, current: GhOption, index: number) => {
+      return result === undefined ? (option === current ? index : undefined) : result;
+    }, undefined);
+  }
+
+  /**
+   * Calculates the scroll position of the select's overlay panel.
+   * Attempts to center the selected option in the panel. If the option is
+   * too high or too low in the panel to be scrolled to the center, it clamps the
+   * scroll position to the min or max scroll positions respectively.
+   */
+  _calculateOverlayScroll() {
+    const items = this.options.length;
+    const itemHeight = SELECT_ITEM_HEIGHT;
+    const scrollContainerHeight = items * itemHeight;
+    const panelHeight = Math.min(scrollContainerHeight, SELECT_PANEL_MAX_HEIGHT);
+    const scrollBuffer = panelHeight / 2;
+    const halfOptionHeight = itemHeight / 2;
+
+    // The farthest the panel can be scrolled before it hits the bottom
+    const maxScroll = scrollContainerHeight - panelHeight;
+
+    // If no value is selected we open the popup to the first item.
+    const selectedIndex =
+      this.empty ? 0 : this._getOptionIndex(this._selectionModel.selected[0])!;
+
+    const optionOffsetFromScrollTop = itemHeight * selectedIndex;
+
+    // Starts at the optionOffsetFromScrollTop, which scrolls the option to the top of the
+    // scroll container, then subtracts the scroll buffer to scroll the option down to
+    // the center of the overlay panel. Half the option height must be re-added to the
+    // scrollTop so the option is centered based on its middle, not its top edge.
+    const optimalScrollPosition = optionOffsetFromScrollTop - scrollBuffer + halfOptionHeight;
+    this._scrollTop = Math.min(Math.max(0, optimalScrollPosition), maxScroll);
+  }
+
   /** Scrolls the active option into view. */
   private _scrollActiveOptionIntoView(): void {
-    // TODO @thomaspink: Implement panel resizing & scroll logic
+    const activeOptionIndex = this._keyManager.activeItemIndex || 0;
+    const scrollOffset = activeOptionIndex * SELECT_ITEM_HEIGHT;
+    const panelTop = this.panel.nativeElement.scrollTop;
+
+    if (scrollOffset < panelTop) {
+      this.panel.nativeElement.scrollTop = scrollOffset;
+    } else if (scrollOffset + SELECT_ITEM_HEIGHT > panelTop + SELECT_PANEL_MAX_HEIGHT) {
+      this.panel.nativeElement.scrollTop =
+        Math.max(0, scrollOffset - SELECT_PANEL_MAX_HEIGHT + SELECT_ITEM_HEIGHT);
+    }
   }
 
   /** Invoked when an option is clicked. */

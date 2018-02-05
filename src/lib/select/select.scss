@@ -2,6 +2,10 @@
 
 @include cdk-overlay();
 
+$gh-select-panel-max-height: 256px !default;
+$gh-select-panel-min-width: 112px !default;
+$gh-select-panel-max-width: 280px !default;
+
 // TODO @ffriedl89: move variables (let's first discuss how to handle them)
 $mainfont: 'BerninaSans', 'Open Sans', sans-serif !default;
 $gray-300: #ccc;
@@ -55,11 +59,24 @@ $disabledcolor: $gray-300;
   background-position: center right;
 }
 
-.gh-select__panel {
+.gh-select-panel {
   box-sizing: border-box;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   border: 1px solid $disabledcolor;
   background-color: #fff;
-  padding: 0.5rem;
+
+  // Prevents the content from repainting on scroll.
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  min-width: $gh-select-panel-min-width;
+  max-width: $gh-select-panel-max-width;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;   // for momentum scroll on mobile
+
+  padding-top: 0;
+  padding-bottom: 0;
+  max-height: $gh-select-panel-max-height;
+  min-width: 100%; // prevents some animation twitching and test inconsistencies in IE11
 }

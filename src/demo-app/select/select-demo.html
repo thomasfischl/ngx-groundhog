@@ -2,7 +2,7 @@
 
 <h4>Standalone</h4>
 <p>Current value: {{currentFruit || 'none'}}</p>
-<gh-select placeholder="Please select value" (selectionChange)="currentFruit = $event.value">
+<gh-select placeholder="Please select value" (selectionChange)="currentFruit = $event.value" [value]="currentFruit">
   <gh-option>None</gh-option>
   <gh-option *ngFor="let fruit of fruits" [disabled]="fruit.disabled" [value]="fruit.key">{{fruit.label}}</gh-option>
 </gh-select>
