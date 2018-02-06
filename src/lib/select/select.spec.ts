@@ -1,5 +1,5 @@
 import {Component, ViewChild, ViewChildren, QueryList} from '@angular/core';
-import {inject, TestBed, async, ComponentFixture, fakeAsync} from '@angular/core/testing';
+import {inject, TestBed, async, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -7,6 +7,7 @@ import {OverlayContainer} from '@angular/cdk/overlay';
 import {Platform} from '@angular/cdk/platform';
 import {GhSelectModule, GhSelect, GhOption} from './index';
 import {DOWN_ARROW, UP_ARROW} from '@angular/cdk/keycodes';
+import {SPACE} from '@angular/cdk/keycodes';
 
 // NOTE:
 // The following funcitons to dispatch events have been taken directly from
@@ -172,6 +173,194 @@ describe('GhSelect', () => {
           fixture.detectChanges();
           expect(select.getAttribute('tabindex')).toEqual('0');
         }));
+
+        it('should select options via the UP/DOWN arrow keys on a closed select', fakeAsync(() => {
+          const formControl = fixture.componentInstance.control;
+          const options = fixture.componentInstance.options.toArray();
+
+          expect(formControl.value).toBeFalsy('Expected no initial value.');
+
+          dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+
+          expect(options[0].selected).toBe(true, 'Expected first option to be selected.');
+          expect(formControl.value).toBe(options[0].value,
+            'Expected value from first option to have been set on the model.');
+
+            dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+          dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+
+          // Note that the third option is skipped, because it is disabled.
+          expect(options[3].selected).toBe(true, 'Expected fourth option to be selected.');
+          expect(formControl.value).toBe(options[3].value,
+            'Expected value from fourth option to have been set on the model.');
+
+            dispatchKeyboardEvent(select, 'keydown', UP_ARROW);
+
+          expect(options[1].selected).toBe(true, 'Expected second option to be selected.');
+          expect(formControl.value).toBe(options[1].value,
+            'Expected value from second option to have been set on the model.');
+        }));
+
+        it('should open a single-selection select using ALT + DOWN_ARROW', fakeAsync(() => {
+          const {control: formControl, select: selectInstance} = fixture.componentInstance;
+
+          expect(selectInstance.panelOpen).toBe(false, 'Expected select to be closed.');
+          expect(formControl.value).toBeFalsy('Expected no initial value.');
+
+          const event = createKeyboardEvent('keydown', DOWN_ARROW);
+          Object.defineProperty(event, 'altKey', {get: () => true});
+
+          dispatchEvent(select, event);
+
+          expect(selectInstance.panelOpen).toBe(true, 'Expected select to be open.');
+          expect(formControl.value).toBeFalsy('Expected value not to have changed.');
+        }));
+
+        it('should open a single-selection select using ALT + UP_ARROW', fakeAsync(() => {
+          const {control: formControl, select: selectInstance} = fixture.componentInstance;
+
+          expect(selectInstance.panelOpen).toBe(false, 'Expected select to be closed.');
+          expect(formControl.value).toBeFalsy('Expected no initial value.');
+
+          const event = createKeyboardEvent('keydown', UP_ARROW);
+          Object.defineProperty(event, 'altKey', {get: () => true});
+
+          dispatchEvent(select, event);
+
+          expect(selectInstance.panelOpen).toBe(true, 'Expected select to be open.');
+          expect(formControl.value).toBeFalsy('Expected value not to have changed.');
+        }));
+
+        it('should should close when pressing ALT + DOWN_ARROW', fakeAsync(() => {
+          const {select: selectInstance} = fixture.componentInstance;
+
+          selectInstance.open();
+          fixture.detectChanges();
+
+          expect(selectInstance.panelOpen).toBe(true, 'Expected select to be open.');
+
+          const event = createKeyboardEvent('keydown', DOWN_ARROW);
+          Object.defineProperty(event, 'altKey', {get: () => true});
+
+          dispatchEvent(select, event);
+
+          expect(selectInstance.panelOpen).toBe(false, 'Expected select to be closed.');
+          expect(event.defaultPrevented).toBe(true, 'Expected default action to be prevented.');
+        }));
+
+        it('should should close when pressing ALT + UP_ARROW', fakeAsync(() => {
+          const {select: selectInstance} = fixture.componentInstance;
+
+          selectInstance.open();
+          fixture.detectChanges();
+
+          expect(selectInstance.panelOpen).toBe(true, 'Expected select to be open.');
+
+          const event = createKeyboardEvent('keydown', UP_ARROW);
+          Object.defineProperty(event, 'altKey', {get: () => true});
+
+          dispatchEvent(select, event);
+
+          expect(selectInstance.panelOpen).toBe(false, 'Expected select to be closed.');
+          expect(event.defaultPrevented).toBe(true, 'Expected default action to be prevented.');
+        }));
+
+        it('should be able to select options by typing on a closed select', fakeAsync(() => {
+          const formControl = fixture.componentInstance.control;
+          const options = fixture.componentInstance.options.toArray();
+
+          expect(formControl.value).toBeFalsy('Expected no initial value.');
+
+          dispatchEvent(select, createKeyboardEvent('keydown', 80, undefined, 'p'));
+          tick(200);
+
+          expect(options[1].selected).toBe(true, 'Expected second option to be selected.');
+          expect(formControl.value).toBe(options[1].value,
+            'Expected value from second option to have been set on the model.');
+
+          dispatchEvent(select, createKeyboardEvent('keydown', 69, undefined, 'e'));
+          tick(200);
+
+          expect(options[5].selected).toBe(true, 'Expected sixth option to be selected.');
+          expect(formControl.value).toBe(options[5].value,
+            'Expected value from sixth option to have been set on the model.');
+        }));
+
+        it('should do nothing if the key manager did not change the active item', fakeAsync(() => {
+          const formControl = fixture.componentInstance.control;
+
+          expect(formControl.value).toBeNull('Expected form control value to be empty.');
+          expect(formControl.pristine).toBe(true, 'Expected form control to be clean.');
+
+          dispatchKeyboardEvent(select, 'keydown', 16); // Press a random key.
+          expect(formControl.value).toBeNull('Expected form control value to stay empty.');
+          expect(formControl.pristine).toBe(true, 'Expected form control to stay clean.');
+        }));
+
+        it('should continue from the selected option when the value is set programmatically',
+          fakeAsync(() => {
+            const formControl = fixture.componentInstance.control;
+
+            formControl.setValue('eggs-5');
+            fixture.detectChanges();
+
+            dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+
+            expect(formControl.value).toBe('pasta-6');
+            expect(fixture.componentInstance.options.toArray()[6].selected).toBe(true);
+          }));
+
+        it('should not shift focus when the selected options are updated programmatically ' +
+            'in a multi select', fakeAsync(() => {
+
+          select = fixture.debugElement.query(By.css('gh-select')).nativeElement;
+          fixture.componentInstance.select.open();
+          fixture.detectChanges();
+
+          const options =
+            overlayContainerElement.querySelectorAll('gh-option') as NodeListOf<HTMLElement>;
+
+          options[3].focus();
+          expect(document.activeElement).toBe(options[3], 'Expected fourth option to be focused.');
+
+          fixture.componentInstance.control.setValue(['steak-0', 'sushi-7']);
+          fixture.detectChanges();
+
+          expect(document.activeElement)
+              .toBe(options[3], 'Expected fourth option to remain focused.');
+        }));
+
+        it('should not cycle through the options if the control is disabled', fakeAsync(() => {
+          const formControl = fixture.componentInstance.control;
+          formControl.setValue('eggs-5');
+          formControl.disable();
+          dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+          expect(formControl.value).toBe('eggs-5', 'Expected value to remain unchaged.');
+        }));
+
+        it('should not cycle through the options if the control is disabled', fakeAsync(() => {
+          const formControl = fixture.componentInstance.control;
+          formControl.setValue('eggs-5');
+          formControl.disable();
+          dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+          expect(formControl.value).toBe('eggs-5', 'Expected value to remain unchaged.');
+        }));
+
+        it('should not wrap selection after reaching the end of the options', fakeAsync(() => {
+          const lastOption = fixture.componentInstance.options.last;
+          fixture.componentInstance.options.forEach(() => {
+            dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+          });
+          expect(lastOption.selected).toBe(true, 'Expected last option to be selected.');
+          dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+          expect(lastOption.selected).toBe(true, 'Expected last option to stay selected.');
+        }));
+
+        it('should prevent the default action when pressing space', fakeAsync(() => {
+          const event = dispatchKeyboardEvent(select, 'keydown', SPACE);
+          expect(event.defaultPrevented).toBe(true);
+        }));
+
       });
     });
   });
