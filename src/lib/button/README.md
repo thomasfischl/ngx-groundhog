@@ -14,4 +14,4 @@ The button component exposes a `color` property. It can be used to set a specifi
 Possible values are `primary` or `secondary`. When not applied, the default value `primary` will be set.
 
 ## Accessibility
-By using native `<button>` or `a` elements accessibility is ensured per default. Buttons or links containing only icons (`gh-icon-button`) should be given a meaningful label via `aria-label` or `aria-labelledby`.
+By using native `<button>` or `<a>` elements accessibility is ensured per default. Buttons or links containing only icons (`gh-icon-button`) should be given a meaningful label via `aria-label` or `aria-labelledby`.
