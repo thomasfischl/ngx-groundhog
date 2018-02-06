@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
   GhButtonModule,
+  GhIconModule,
 } from '@dynatrace/ngx-groundhog';
 
 /**
@@ -9,6 +10,7 @@ import {
 @NgModule({
   exports: [
     GhButtonModule,
+    GhIconModule,
   ]
 })
 export class DemoGroundhogModule {}
