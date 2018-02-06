@@ -12,15 +12,11 @@ export class IconDemo {
 
   constructor(iconRegistry: GhIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry
-      .addSvgIcon('dynatrace',
-        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/dynatrace.svg'))
-      .addSvgIcon('chrome',
-        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/chrome.svg'))
-      .addSvgIconInNamespace('core', 'angularjs',
-        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/angularjs.svg'))
-      .addSvgIconInNamespace('core', 'firefox',
-        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/firefox.svg'))
-      .addSvgIconInNamespace('core', 'docker',
-        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/docker.svg'));
+      .addSvgIcon('agent',
+        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/agent.svg'))
+      .addSvgIconInNamespace('core', 'sensor',
+        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/sensor.svg'))
+      .addSvgIconInNamespace('core', 'ai',
+        sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/ai.svg'));
   }
 }
