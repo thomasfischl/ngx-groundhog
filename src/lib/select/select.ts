@@ -108,7 +108,7 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(Gh
     '[attr.aria-disabled]': 'disabled.toString()',
     '[attr.aria-invalid]': 'errorState',
     '[attr.aria-owns]': 'panelOpen ? _optionIds : null',
-    'attr.aria-multiselectable': 'false',
+    'aria-multiselectable': 'false',
     '[attr.aria-describedby]': '_ariaDescribedby || null',
     '[class.gh-select-disabled]': 'disabled',
     '[class.gh-select-invalid]': 'errorState',

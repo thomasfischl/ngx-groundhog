@@ -389,6 +389,10 @@ describe('GhSelect', () => {
           expect(trigger.getAttribute('aria-hidden'))
               .toBe('true', 'Expected aria-hidden to be true when the select is open.');
         }));
+
+        it('should set aria-multiselectable false on single-selection instances', fakeAsync(() => {
+          expect(select.getAttribute('aria-multiselectable')).toBe('false');
+        }));
       });
     });
   });
