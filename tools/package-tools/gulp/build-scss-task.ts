@@ -1,6 +1,6 @@
 /**
  * @license
- * Based on the build of angular/material2 by Google Inc. governed by an 
+ * Based on the build of angular/material2 by Google Inc. governed by an
  * MIT-style license that can be found in the LICENSE file at https://angular.io/license
  */
 import {src, dest} from 'gulp';
@@ -16,7 +16,11 @@ const gulpSass = require('gulp-sass');
 export function buildScssTask(outputDir: string, sourceDir: string) {
   return () => {
     return src(join(sourceDir, '**/*.scss'))
-      .pipe(gulpSass().on('error', gulpSass.logError))
+      .pipe(gulpSass({
+        // We need to include node_modules to the includePaths
+        // so we can @import from @dynatrace/groundhog/...
+        includePaths: ['node_modules/']
+      }).on('error', gulpSass.logError))
       // .pipe(gulpIf(minifyOutput, gulpCleanCss()))
       .pipe(dest(outputDir));
   };
