@@ -9,7 +9,7 @@ TODO
 
 | Feature          | Status      | Docs        | Issue       |
 |------------------|-------------|-------------|-------------|
-| Button           | Finished    | [Docs](/tree/master/src/lib/button) | - |
+| Button           | Finished    | [Docs](/blob/master/src/lib/button/README.md) | - |
 | Select           | In-progress | -           | [#16](16)   |
 
 ## Found an Issue?
