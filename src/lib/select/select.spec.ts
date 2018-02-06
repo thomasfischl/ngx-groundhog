@@ -8,6 +8,7 @@ import {Platform} from '@angular/cdk/platform';
 import {GhSelectModule, GhSelect, GhOption} from './index';
 import {DOWN_ARROW, UP_ARROW} from '@angular/cdk/keycodes';
 import {SPACE} from '@angular/cdk/keycodes';
+import {map} from 'rxjs/operators/map';
 
 // NOTE:
 // The following funcitons to dispatch events have been taken directly from
@@ -361,6 +362,33 @@ describe('GhSelect', () => {
           expect(event.defaultPrevented).toBe(true);
         }));
 
+        it('should consider the selection a result of a user action when closed', fakeAsync(() => {
+          const option = fixture.componentInstance.options.first;
+          const spy = jasmine.createSpy('option selection spy');
+          const subscription =
+              option.onSelectionChange.pipe(map(e => e.isUserInput)).subscribe(spy);
+
+          dispatchKeyboardEvent(select, 'keydown', DOWN_ARROW);
+          expect(spy).toHaveBeenCalledWith(true);
+
+          subscription.unsubscribe();
+        }));
+
+        it('should be able to focus the select trigger', fakeAsync(() => {
+          document.body.focus(); // ensure that focus isn't on the trigger already
+          fixture.componentInstance.select.focus();
+
+          expect(document.activeElement).toBe(select, 'Expected select element to be focused.');
+        }));
+
+        // Having `aria-hidden` on the trigger avoids issues where
+        // screen readers read out the wrong amount of options.
+        it('should set aria-hidden on the trigger element', fakeAsync(() => {
+          const trigger = fixture.debugElement.query(By.css('.gh-select-trigger')).nativeElement;
+
+          expect(trigger.getAttribute('aria-hidden'))
+              .toBe('true', 'Expected aria-hidden to be true when the select is open.');
+        }));
       });
     });
   });

@@ -1,6 +1,11 @@
+<!--
+  Having `aria-hidden` on the trigger avoids issues where
+  screen readers read out the wrong amount of options.
+-->
 <div
   #trigger
   class="gh-select-trigger"
+  aria-hidden="true"
   cdk-overlay-origin
   #origin="cdkOverlayOrigin"
   (click)="toggle()" >
