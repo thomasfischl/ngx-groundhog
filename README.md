@@ -9,7 +9,7 @@ TODO
 
 | Feature          | Status      | Docs        | Issue       |
 |------------------|-------------|-------------|-------------|
-| Button           | Finished    | [Docs](/blob/master/src/lib/button/README.md) | - |
+| Button           | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/button/README.md) | - |
 | Select           | In-progress | -           | [#16](16)   |
 
 ## Found an Issue?
