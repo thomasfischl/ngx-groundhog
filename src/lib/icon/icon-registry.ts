@@ -38,7 +38,7 @@ interface SvgIconConfig {
 }
 /**
  * Creates a new config object without setting svgElement
- * We use a function for creating a config object instad of a class to
+ * We use a function for creating a config object instead of a class to
  * reduce the footprint a class has (interface get removed on compile time)
  * @param url from which to fetch the SVG icon.
  */
