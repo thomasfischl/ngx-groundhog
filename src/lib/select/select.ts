@@ -110,6 +110,7 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(Gh
     '[attr.aria-owns]': 'panelOpen ? _optionIds : null',
     'aria-multiselectable': 'false',
     '[attr.aria-describedby]': '_ariaDescribedby || null',
+    '[attr.aria-activedescendant]': '_getAriaActiveDescendant()',
     '[class.gh-select-disabled]': 'disabled',
     '[class.gh-select-invalid]': 'errorState',
     '[class.gh-select-required]': 'required',
@@ -288,6 +289,15 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     // If an ariaLabelledby value has been set, the select should not overwrite the
     // `aria-labelledby` value by setting the ariaLabel to the placeholder.
     return this.ariaLabelledby ? null : this.ariaLabel || this.placeholder;
+  }
+
+  /** Determines the `aria-activedescendant` to be set on the host. */
+  _getAriaActiveDescendant(): string | null {
+    if (this.panelOpen && this._keyManager && this._keyManager.activeItem) {
+      return this._keyManager.activeItem.id;
+    }
+
+    return null;
   }
 
   /** Panel containing the select options. */

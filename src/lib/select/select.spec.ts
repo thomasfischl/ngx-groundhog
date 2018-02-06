@@ -1,5 +1,13 @@
 import {Component, ViewChild, ViewChildren, QueryList} from '@angular/core';
-import {inject, TestBed, async, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
+import {
+  inject,
+  TestBed,
+  async,
+  ComponentFixture,
+  fakeAsync,
+  tick,
+  flush
+} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -392,6 +400,56 @@ describe('GhSelect', () => {
 
         it('should set aria-multiselectable false on single-selection instances', fakeAsync(() => {
           expect(select.getAttribute('aria-multiselectable')).toBe('false');
+        }));
+
+        it('should set aria-activedescendant only while the panel is open', fakeAsync(() => {
+          fixture.componentInstance.control.setValue('chips-4');
+          fixture.detectChanges();
+
+          const host = fixture.debugElement.query(By.css('gh-select')).nativeElement;
+
+          expect(host.hasAttribute('aria-activedescendant'))
+              .toBe(false, 'Expected no aria-activedescendant on init.');
+
+          fixture.componentInstance.select.open();
+          fixture.detectChanges();
+          flush();
+
+          const options = overlayContainerElement.querySelectorAll('gh-option');
+
+          expect(host.getAttribute('aria-activedescendant'))
+              .toBe(options[4].id, 'Expected aria-activedescendant to match the active option.');
+
+          fixture.componentInstance.select.close();
+          fixture.detectChanges();
+          flush();
+
+          expect(host.hasAttribute('aria-activedescendant'))
+              .toBe(false, 'Expected no aria-activedescendant when closed.');
+        }));
+
+        it('should set aria-activedescendant based on the focused option', fakeAsync(() => {
+          const host = fixture.debugElement.query(By.css('gh-select')).nativeElement;
+
+          fixture.componentInstance.select.open();
+          fixture.detectChanges();
+          flush();
+
+          const options = overlayContainerElement.querySelectorAll('gh-option');
+
+          expect(host.getAttribute('aria-activedescendant')).toBe(options[0].id);
+
+          [1, 2, 3].forEach(() => {
+            dispatchKeyboardEvent(host, 'keydown', DOWN_ARROW);
+            fixture.detectChanges();
+          });
+
+          expect(host.getAttribute('aria-activedescendant')).toBe(options[4].id);
+
+          dispatchKeyboardEvent(host, 'keydown', UP_ARROW);
+          fixture.detectChanges();
+
+          expect(host.getAttribute('aria-activedescendant')).toBe(options[3].id);
         }));
       });
     });
