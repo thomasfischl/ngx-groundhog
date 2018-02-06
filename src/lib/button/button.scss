@@ -1,5 +1,5 @@
-@import '../../../node_modules/@dynatrace/groundhog/src/button/button-common';
-@import '../../../node_modules/@dynatrace/groundhog/src/button/button';
+@import '@dynatrace/groundhog/src/button/button-common';
+@import '@dynatrace/groundhog/src/button/button-variants';
 
 .gh-button {
   @include btn-common();
@@ -18,3 +18,4 @@
 .gh-secondary {
   @include btn-secondary();
 }
+
