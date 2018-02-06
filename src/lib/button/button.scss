@@ -4,30 +4,27 @@
 .gh-button {
   @include btn-common();
 
-  background-color: $buttoncolor;
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
-
   .gh-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 4px;
-    margin-top: 5px;
-    vertical-align: top;
+    @include btn-icon-element();
   }
+}
+
+.gh-icon-button {
+  // This subselector has to be first so the icon selector
+  // in btn-common can override this one
+  .gh-icon {
+    @include btn-icon-element();
+  }
+
+  @include btn-common('.gh-icon');
+  @include btn-icon();
+
 }
 
 .gh-primary {
-  @include btn-primary();
-
-  .gh-icon svg {
-    fill: #fff;
-  }
+  @include btn-primary('.gh-icon');
 }
 
 .gh-secondary {
-  @include btn-secondary();
+  @include btn-secondary('.gh-icon');
 }
-
