@@ -452,6 +452,66 @@ describe('GhSelect', () => {
           expect(host.getAttribute('aria-activedescendant')).toBe(options[3].id);
         }));
       });
+
+      describe('for options', () => {
+        let fixture: ComponentFixture<BasicSelect>;
+        let trigger: HTMLElement;
+        let options: NodeListOf<HTMLElement>;
+
+        beforeEach(fakeAsync(() => {
+          fixture = TestBed.createComponent(BasicSelect);
+          fixture.detectChanges();
+          trigger = fixture.debugElement.query(By.css('.gh-select-trigger')).nativeElement;
+          trigger.click();
+          fixture.detectChanges();
+
+          options =
+              overlayContainerElement.querySelectorAll('gh-option') as NodeListOf<HTMLElement>;
+        }));
+
+        it('should set the role of gh-option to option', fakeAsync(() => {
+          expect(options[0].getAttribute('role')).toEqual('option');
+          expect(options[1].getAttribute('role')).toEqual('option');
+          expect(options[2].getAttribute('role')).toEqual('option');
+        }));
+
+        it('should set aria-selected on each option', fakeAsync(() => {
+          expect(options[0].getAttribute('aria-selected')).toEqual('false');
+          expect(options[1].getAttribute('aria-selected')).toEqual('false');
+          expect(options[2].getAttribute('aria-selected')).toEqual('false');
+
+          options[1].click();
+          fixture.detectChanges();
+
+          trigger.click();
+          fixture.detectChanges();
+          flush();
+
+          expect(options[0].getAttribute('aria-selected')).toEqual('false');
+          expect(options[1].getAttribute('aria-selected')).toEqual('true');
+          expect(options[2].getAttribute('aria-selected')).toEqual('false');
+        }));
+
+        it('should set the tabindex of each option according to disabled state', fakeAsync(() => {
+          expect(options[0].getAttribute('tabindex')).toEqual('0');
+          expect(options[1].getAttribute('tabindex')).toEqual('0');
+          expect(options[2].getAttribute('tabindex')).toEqual('-1');
+        }));
+
+        it('should set aria-disabled for disabled options', fakeAsync(() => {
+          expect(options[0].getAttribute('aria-disabled')).toEqual('false');
+          expect(options[1].getAttribute('aria-disabled')).toEqual('false');
+          expect(options[2].getAttribute('aria-disabled')).toEqual('true');
+
+          fixture.componentInstance.foods[2]['disabled'] = false;
+          fixture.detectChanges();
+
+          expect(options[0].getAttribute('aria-disabled')).toEqual('false');
+          expect(options[1].getAttribute('aria-disabled')).toEqual('false');
+          expect(options[2].getAttribute('aria-disabled')).toEqual('false');
+        }));
+      });
+
     });
   });
 });
