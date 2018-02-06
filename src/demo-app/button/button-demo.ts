@@ -10,7 +10,10 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class ButtonDemo {
   constructor(iconRegistry: GhIconRegistry, sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('sensor',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/sensor.svg'));
+    iconRegistry
+      .addSvgIcon('sensor',
+        sanitizer.bypassSecurityTrustResourceUrl('/assets/sensor.svg'))
+      .addSvgIcon('ai',
+        sanitizer.bypassSecurityTrustResourceUrl('/assets/ai.svg'));
   }
 }
