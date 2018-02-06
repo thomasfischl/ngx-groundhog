@@ -586,7 +586,6 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
       .pipe(filter(connectionPair => !this._connectionPair ||
         connectionPair.originY !== this._connectionPair.originY))
       .subscribe(connectionPair => {
-        console.log('blubber');
         // Set the classes to indicate the position of the overlay
         if (this._connectionPair) {
           this.panel.nativeElement.classList
