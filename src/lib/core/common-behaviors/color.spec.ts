@@ -10,10 +10,10 @@ describe('MixinColor', () => {
     expect(instance.color)
         .toBeFalsy('Expected the mixed-into class to have a color property');
 
-    instance.color = 'accent';
+    instance.color = 'secondary';
 
     expect(instance.color)
-        .toBe('accent', 'Expected the mixed-into class to have an updated color property');
+        .toBe('secondary', 'Expected the mixed-into class to have an updated color property');
   });
 
   it('should remove old color classes if new color is set', () => {
@@ -28,12 +28,12 @@ describe('MixinColor', () => {
     expect(instance.testElement.classList)
       .toContain('gh-primary', 'Expected the element to have the "gh-primary" class set');
 
-    instance.color = 'accent';
+    instance.color = 'secondary';
 
     expect(instance.testElement.classList)
       .not.toContain('gh-primary', 'Expected the element to no longer have "gh-primary" set.');
     expect(instance.testElement.classList)
-      .toContain('gh-accent', 'Expected the element to have the "gh-accent" class set');
+      .toContain('gh-secondary', 'Expected the element to have the "gh-secondary" class set');
   });
 
   it('should allow having no color set', () => {
@@ -55,16 +55,16 @@ describe('MixinColor', () => {
   });
 
   it('should allow having a default color if specified', () => {
-    const classWithColor = mixinColor(TestClass, 'accent');
+    const classWithColor = mixinColor(TestClass, 'secondary');
     const instance = new classWithColor();
 
     expect(instance.testElement.classList)
-      .toContain('gh-accent', 'Expected the element to have the "gh-accent" class by default.');
+      .toContain('gh-secondary', 'Expected the element to have the "gh-secondary" class by default.');
 
     instance.color = undefined;
 
     expect(instance.testElement.classList)
-      .toContain('gh-accent', 'Expected the default color "gh-accent" to be set.');
+      .toContain('gh-secondary', 'Expected the default color "gh-secondary" to be set.');
   });
 
 });

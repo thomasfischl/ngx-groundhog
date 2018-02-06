@@ -7,10 +7,10 @@ TODO
 
 #### Available features
 
-| Feature          | Status             | Issue       |
-|------------------|--------------------|-------------|
-| Button           | In-progress        | [#17](17)   |
-| Select           | In-progress        | [#16](16)   |
+| Feature          | Status      | Docs        | Issue       |
+|------------------|-------------|-------------|-------------|
+| Button           | Finished    | [Docs](/tree/master/src/lib/button) | - |
+| Select           | In-progress | -           | [#16](16)   |
 
 ## Found an Issue?
 

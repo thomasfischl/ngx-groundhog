@@ -7,6 +7,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import {FocusMonitor} from '@angular/cdk/a11y';
+import {Platform} from '@angular/cdk/platform';
 import {
   CanDisable,
   mixinDisabled,
@@ -15,15 +16,15 @@ import {
 } from '@dynatrace/ngx-groundhog/core';
 
 /**
- * Directive whose purpose is to add the Groundhog CSS styling to this selector.
+ * List of classes to add to GhButton instances based on host attributes to
+ * style as different variants.
  */
-@Directive({
-  selector: 'button[gh-button], a[gh-button]',
-  host: {'class': 'gh-button'}
-})
-export class GhButtonCssStyler {}
+const BUTTON_HOST_ATTRIBUTES = [
+  'gh-button',
+  'gh-icon-button'
+];
 
-// Boilerplate for applying mixins to MatButton.
+// Boilerplate for applying mixins to GhButton.
 export class GhButtonBase {
   constructor(public _elementRef: ElementRef) {}
 }
@@ -31,12 +32,10 @@ export const _GhButtonMixinBase = mixinDisabled(mixinColor(GhButtonBase, 'primar
 
 /**
  * Groundhog design button.
- *
- * TODO (@thomaspink): coloring
  */
 @Component({
   moduleId: module.id,
-  selector: `button[gh-button]`,
+  selector: `button[gh-button], button[gh-icon-button]`,
   exportAs: 'ghButton',
   host: {
     '[disabled]': 'disabled || null',
@@ -49,9 +48,23 @@ export const _GhButtonMixinBase = mixinDisabled(mixinColor(GhButtonBase, 'primar
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisable, CanColor {
+
+  /** Whether the button is icon button. */
+  _isIconButton: boolean = this._hasHostAttributes('gh-icon-button');
+
   constructor(elementRef: ElementRef,
+              private _platform: Platform,
               private _focusMonitor: FocusMonitor) {
     super(elementRef);
+
+    // For each of the variant selectors that is prevent in the button's host
+    // attributes, add the correct corresponding class.
+    for (const attr of  BUTTON_HOST_ATTRIBUTES) {
+      if (this._hasHostAttributes(attr)) {
+        (elementRef.nativeElement as HTMLElement).classList.add(attr);
+      }
+    }
+
     this._focusMonitor.monitor(this._elementRef.nativeElement, true);
   }
 
@@ -66,6 +79,18 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
 
   private _getHostElement() {
     return this._elementRef.nativeElement;
+  }
+
+  /** Gets whether the button has one of the given attributes. */
+  private _hasHostAttributes(...attributes: string[]) {
+    // If not on the browser, say that there are none of the attributes present.
+    // Since these only affect how the ripple displays (and ripples only happen on the client),
+    // detecting these attributes isn't necessary when not on the browser.
+    if (!this._platform.isBrowser) {
+      return false;
+    }
+
+    return attributes.some(attribute => this._getHostElement().hasAttribute(attribute));
   }
 
 }
@@ -92,8 +117,9 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
 })
 export class GhAnchor extends GhButton {
   constructor(elementRef: ElementRef,
+              platform: Platform,
               focusMonitor: FocusMonitor) {
-    super(elementRef, focusMonitor);
+    super(elementRef, platform, focusMonitor);
   }
 
   _haltDisabledEvents(event: Event) {

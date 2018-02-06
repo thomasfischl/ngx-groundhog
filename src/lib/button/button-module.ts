@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {A11yModule} from '@angular/cdk/a11y';
-import {GhButtonCssStyler, GhButton, GhAnchor} from './button';
+import {GhButton, GhAnchor} from './button';
 
 @NgModule({
   imports: [
@@ -9,12 +9,10 @@ import {GhButtonCssStyler, GhButton, GhAnchor} from './button';
     A11yModule
   ],
   exports: [
-    GhButtonCssStyler,
     GhButton,
     GhAnchor
   ],
   declarations: [
-    GhButtonCssStyler,
     GhButton,
     GhAnchor
   ]
