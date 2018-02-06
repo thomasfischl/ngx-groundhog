@@ -1,5 +1,5 @@
-import { ElementRef } from "@angular/core";
-import { Constructor } from "./constructor";
+import { ElementRef } from '@angular/core';
+import { Constructor } from './constructor';
 
 export interface CanColor {
   /** Theme color palette for the component. */
@@ -11,7 +11,7 @@ export interface HasElementRef {
 }
 
 /** Possible color palette values. */
-export type ThemePalette = 'primary' | 'accent' | 'warn' | undefined;
+export type ThemePalette = 'primary' | 'secondary' | undefined;
 
 /** Mixin to augment a directive with a `color` property. */
 export function mixinColor<T extends Constructor<HasElementRef>>(base: T,
