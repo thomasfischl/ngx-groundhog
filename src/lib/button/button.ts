@@ -35,7 +35,7 @@ export const _GhButtonMixinBase = mixinDisabled(mixinColor(GhButtonBase, 'primar
  */
 @Component({
   moduleId: module.id,
-  selector: `button[gh-button]`,
+  selector: `button[gh-button], button[gh-icon-button]`,
   exportAs: 'ghButton',
   host: {
     '[disabled]': 'disabled || null',

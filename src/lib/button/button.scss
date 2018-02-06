@@ -9,10 +9,22 @@
   &::-moz-focus-inner {
     border: 0;
   }
+
+  .gh-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    margin-top: 5px;
+    vertical-align: top;
+  }
 }
 
 .gh-primary {
   @include btn-primary();
+
+  .gh-icon svg {
+    fill: #fff;
+  }
 }
 
 .gh-secondary {
