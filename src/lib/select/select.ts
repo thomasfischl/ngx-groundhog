@@ -67,10 +67,10 @@ import {Subject} from 'rxjs/Subject';
 let nextUniqueId = 0;
 
 /** The max height of the select's overlay panel */
-export const SELECT_PANEL_MAX_HEIGHT = 256;
+export const SELECT_PANEL_MAX_HEIGHT = 242;
 
 /** The height of the select items. */
-export const SELECT_ITEM_HEIGHT = 18;
+export const SELECT_ITEM_HEIGHT = 32;
 
 /** Change event object that is emitted when the select value has changed. */
 export interface GhSelectChange {
@@ -586,6 +586,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
       .pipe(filter(connectionPair => !this._connectionPair ||
         connectionPair.originY !== this._connectionPair.originY))
       .subscribe(connectionPair => {
+        console.log('blubber');
         // Set the classes to indicate the position of the overlay
         if (this._connectionPair) {
           this.panel.nativeElement.classList

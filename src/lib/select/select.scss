@@ -1,8 +1,10 @@
 @import '../../../node_modules/@angular/cdk/overlay';
+@import '@dynatrace/groundhog/src/common/mixins';
+@import '@dynatrace/groundhog/src/select/select-common';
 
 @include cdk-overlay();
 
-$gh-select-panel-max-height: 256px !default;
+$gh-select-panel-max-height: 242px !default;
 $gh-select-panel-min-width: 112px !default;
 $gh-select-panel-max-width: 280px !default;
 
@@ -12,37 +14,21 @@ $gray-300: #ccc;
 $disabledcolor: $gray-300;
 
 .gh-select {
+  @include select-container();
+
   display: inline-block;
   &[disabled],
   &.gh-select-disabled {
-    opacity: 0.5;
-    outline: none;
+    @include select-container-disabled();
+  }
 
-    .gh-select-trigger {
-      cursor: default;
-    }
+  &:focus:not(.gh-select-disabled) {
+    @include focusStyle();
   }
 }
 
 .gh-select-trigger {
-  display: inline-block;
-  position: relative;
-  box-sizing: border-box;
-  height: 32px;
-  font-family: $mainfont;
-  border: 1px solid $disabledcolor;
-  border-radius: 3px;
-  padding: 0;
-  padding-left: 11px;
-  padding-right: 11px + 20px;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 32px;
-  line-height: -moz-block-height;
-  white-space: nowrap;
-  text-align: left;
-  overflow: hidden;
-  background-color: #fff;
+  @include select-trigger();
 }
 
 .gh-select-arrow {
@@ -60,11 +46,8 @@ $disabledcolor: $gray-300;
 }
 
 .gh-select-panel {
-  box-sizing: border-box;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border: 1px solid $disabledcolor;
-  background-color: #fff;
+  @include select-panel();
+  border-radius: 0 0 3px 3px;
 
   // Prevents the content from repainting on scroll.
   -webkit-backface-visibility: hidden;
@@ -75,8 +58,10 @@ $disabledcolor: $gray-300;
   overflow: auto;
   -webkit-overflow-scrolling: touch;   // for momentum scroll on mobile
 
-  padding-top: 0;
-  padding-bottom: 0;
   max-height: $gh-select-panel-max-height;
   min-width: 100%; // prevents some animation twitching and test inconsistencies in IE11
+
+  &.gh-select-panel-top {
+    border-radius: 3px 3px 0 0;
+  }
 }

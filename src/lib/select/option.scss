@@ -1,14 +1,23 @@
-.gh-option__text {
-  font-style: italic;
-  display: block;
-}
+@import '@dynatrace/groundhog/src/select/option-common';
 
 .gh-option {
-  &.gh-active {
-    color: red;
+
+  @include option-common();
+
+  &.gh-active,
+  &:hover:not(.gh-option-disabled) {
+    @include option-hover();
+  }
+
+  &[aria-selected="true"] {
+    @include option-selected();
+  }
+
+  &:focus {
+    outline: 0;
   }
 }
 
 .gh-option-disabled {
-  color: #999;
+  @include option-disabled();
 }
