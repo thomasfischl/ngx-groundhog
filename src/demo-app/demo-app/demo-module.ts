@@ -8,6 +8,7 @@ import {IconDemo} from '../icon/icon-demo';
 import {DemoApp, Home} from './demo-app';
 import {DEMO_APP_ROUTES} from './routes';
 import { SelectDemo } from '../select/select-demo';
+import {DatepickerDemo} from '../datepicker/datepicker-demo';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { SelectDemo } from '../select/select-demo';
   ],
   declarations: [
     ButtonDemo,
+    DatepickerDemo,
     IconDemo,
     SelectDemo,
     DemoApp,

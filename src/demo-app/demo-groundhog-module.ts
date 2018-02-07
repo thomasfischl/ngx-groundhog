@@ -3,6 +3,7 @@ import {
   GhButtonModule,
   GhIconModule,
   GhSelectModule,
+  GhDatepickerModule,
 } from '@dynatrace/ngx-groundhog';
 
 /**
@@ -13,6 +14,7 @@ import {
     GhButtonModule,
     GhIconModule,
     GhSelectModule,
+    GhDatepickerModule,
   ]
 })
 export class DemoGroundhogModule {}

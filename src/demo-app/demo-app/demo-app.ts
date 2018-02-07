@@ -41,6 +41,7 @@ export class DemoApp {
   navItems = [
     {name: 'Start', route: '/'},
     {name: 'Button', route: '/button'},
+    {name: 'Datepicker', route: '/datepicker'},
     {name: 'Icon', route: '/icon'},
     {name: 'Select', route: '/select'},
   ];

@@ -66,6 +66,7 @@ System.config({
 
     '@dynatrace/ngx-groundhog/button': 'dist/packages/ngx-groundhog/button/index.js',
     '@dynatrace/ngx-groundhog/core': 'dist/packages/ngx-groundhog/core/index.js',
+    '@dynatrace/ngx-groundhog/datepicker': 'dist/packages/ngx-groundhog/datepicker/index.js',
     '@dynatrace/ngx-groundhog/icon': 'dist/packages/ngx-groundhog/icon/index.js',
   },
   packages: {
