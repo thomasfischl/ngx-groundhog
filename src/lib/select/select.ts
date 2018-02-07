@@ -67,11 +67,14 @@ import {trigger, state, style, animate, transition} from '@angular/animations';
  */
 let nextUniqueId = 0;
 
-/** The max height of the select's overlay panel */
-export const SELECT_PANEL_MAX_HEIGHT = 242;
-
 /** The height of the select items. */
 export const SELECT_ITEM_HEIGHT = 32;
+
+/**
+ * The maximum count of items that should be visible in the panel at once.
+ * To indicate that the panel can be scrolled, show half of the next item
+ */
+export const SELECT_MAX_ITEMS_VISIBLE = 7.5;
 
 /** Change event object that is emitted when the select value has changed. */
 export interface GhSelectChange {
@@ -214,6 +217,9 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
   /** Whether the panel's animation is done. */
   _panelDoneAnimating: boolean = false;
+
+  /** The max height of the select's overlay panel */
+  _maxPanelHeight: number = SELECT_ITEM_HEIGHT * SELECT_MAX_ITEMS_VISIBLE;
 
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
@@ -400,6 +406,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
       .pipe(startWith(null), takeUntil(this._destroy))
       // Everytime options change, we need to reset (resubscribe on their events, ...)
       .subscribe(() => {
+        this._updatePanelMaxHeight();
         this._resetOptions();
         this._initializeSelection();
       });
@@ -681,7 +688,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     const items = this.options.length;
     const itemHeight = SELECT_ITEM_HEIGHT;
     const scrollContainerHeight = items * itemHeight;
-    const panelHeight = Math.min(scrollContainerHeight, SELECT_PANEL_MAX_HEIGHT);
+    const panelHeight = Math.min(scrollContainerHeight, this._maxPanelHeight);
     const scrollBuffer = panelHeight / 2;
     const halfOptionHeight = itemHeight / 2;
 
@@ -710,9 +717,9 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
     if (scrollOffset < panelTop) {
       this.panel.nativeElement.scrollTop = scrollOffset;
-    } else if (scrollOffset + SELECT_ITEM_HEIGHT > panelTop + SELECT_PANEL_MAX_HEIGHT) {
+    } else if (scrollOffset + SELECT_ITEM_HEIGHT > panelTop + this._maxPanelHeight) {
       this.panel.nativeElement.scrollTop =
-        Math.max(0, scrollOffset - SELECT_PANEL_MAX_HEIGHT + SELECT_ITEM_HEIGHT);
+        Math.max(0, scrollOffset - this._maxPanelHeight + SELECT_ITEM_HEIGHT);
     }
   }
 
@@ -820,5 +827,12 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
   /** Records option IDs to pass to the aria-owns property. */
   private _setOptionIds() {
     this._optionIds = this.options.map(option => option.id).join(' ');
+  }
+
+  private _updatePanelMaxHeight() {
+    const ceiledMaxCount = Math.ceil(SELECT_MAX_ITEMS_VISIBLE);
+    this._maxPanelHeight = 2 /* summed up border width (top + bottom) */ + SELECT_ITEM_HEIGHT *
+      (this.options.length === ceiledMaxCount ? ceiledMaxCount : SELECT_MAX_ITEMS_VISIBLE);
+    this._changeDetectorRef.markForCheck();
   }
 }

@@ -57,15 +57,17 @@ $gh-select-panel-max-width: 280px !default;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 
+  // Makes sure the opening scale animation starts from the tom
   transform-origin: left top;
 
-  min-width: $gh-select-panel-min-width;
-  max-width: $gh-select-panel-max-width;
   overflow: auto;
   -webkit-overflow-scrolling: touch;   // for momentum scroll on mobile
 
-  max-height: $gh-select-panel-max-height;
-  min-width: 100%; // prevents some animation twitching and test inconsistencies in IE11
+  // prevents some animation twitching and test inconsistencies in IE11
+  min-width: 100%;
+
+  min-width: $gh-select-panel-min-width;
+  max-width: $gh-select-panel-max-width;
 
   &.gh-select-panel-top {
     border-radius: 3px 3px 0 0;

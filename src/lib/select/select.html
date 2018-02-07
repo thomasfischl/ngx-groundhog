@@ -35,7 +35,8 @@
     (@transformPanel.done)="_onPanelDone()"
     [@transformPanel]="'showing'"
     [ngClass]="panelClass"
-    [class.gh-select-panel-done-animating]="_panelDoneAnimating">
+    [class.gh-select-panel-done-animating]="_panelDoneAnimating"
+    [style.max-height.px]="_maxPanelHeight">
     <div class="gh-select-body"
       [@fadeInContent]="'showing'"
       (@fadeInContent.done)="_onFadeInDone()">
