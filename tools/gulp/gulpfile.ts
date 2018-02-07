@@ -18,3 +18,5 @@ import './tasks/development';
 import './tasks/lint';
 import './tasks/publish';
 import './tasks/unit-test';
+import './tasks/e2e';
+import './tasks/universal';
