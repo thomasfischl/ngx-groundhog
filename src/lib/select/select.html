@@ -1,0 +1,46 @@
+<!--
+  Having `aria-hidden` on the trigger avoids issues where
+  screen readers read out the wrong amount of options.
+-->
+<div
+  #trigger
+  class="gh-select-trigger"
+  aria-hidden="true"
+  cdk-overlay-origin
+  #origin="cdkOverlayOrigin"
+  (click)="toggle()" >
+  <div [ngSwitch]="empty">
+    <span *ngSwitchCase="true">{{placeholder || ''}}</span>
+    <span *ngSwitchCase="false">{{triggerValue}}</span>
+  </div>
+  <div class="gh-select-arrow">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path d="M403.078 142.412L256 289.49 108.922 142.412l-45.255 45.255L256 380l192.333-192.333z"/>
+    </svg>
+  </div>
+</div>
+<ng-template
+  cdk-connected-overlay
+  backdropClass="cdk-overlay-transparent-backdrop"
+  hasBackdrop
+  (backdropClick)="close()"
+  (attach)="_onAttached()"
+  (detach)="close()"
+  [origin]="origin"
+  [open]="panelOpen"
+  [minWidth]="_triggerRect?.width">
+  <div
+    #panel
+    class="gh-select-panel"
+    (@transformPanel.done)="_onPanelDone()"
+    [@transformPanel]="'showing'"
+    [ngClass]="panelClass"
+    [class.gh-select-panel-done-animating]="_panelDoneAnimating"
+    [style.max-height.px]="_maxPanelHeight">
+    <div class="gh-select-body"
+      [@fadeInContent]="'showing'"
+      (@fadeInContent.done)="_onFadeInDone()">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</ng-template>

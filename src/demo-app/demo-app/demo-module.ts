@@ -7,6 +7,7 @@ import {ButtonDemo} from '../button/button-demo';
 import {IconDemo} from '../icon/icon-demo';
 import {DemoApp, Home} from './demo-app';
 import {DEMO_APP_ROUTES} from './routes';
+import { SelectDemo } from '../select/select-demo';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {DEMO_APP_ROUTES} from './routes';
   declarations: [
     ButtonDemo,
     IconDemo,
+    SelectDemo,
     DemoApp,
     Home,
   ],

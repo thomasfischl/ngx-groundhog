@@ -1,0 +1,76 @@
+@import '../../../node_modules/@angular/cdk/overlay';
+@import '@dynatrace/groundhog/src/common/colors';
+@import '@dynatrace/groundhog/src/common/mixins';
+@import '@dynatrace/groundhog/src/select/select-common';
+
+@include cdk-overlay();
+
+$gh-select-panel-max-height: 242px !default;
+$gh-select-panel-min-width: 112px !default;
+$gh-select-panel-max-width: 280px !default;
+
+.gh-select {
+  @include select-container();
+
+  display: inline-block;
+  &[disabled],
+  &.gh-select-disabled {
+    @include select-container-disabled();
+  }
+
+  &:focus:not(.gh-select-disabled) {
+    @include focusStyle();
+  }
+}
+
+.gh-select-trigger {
+  @include select-trigger();
+  padding-right: 8px + 20px + 8px
+}
+
+.gh-select-arrow {
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  transition: transform 150ms ease-out;
+
+  svg {
+    fill: $turquoise-600;
+  }
+
+  .gh-select-open & {
+    transform: rotate(180deg);
+  }
+}
+
+.gh-select-panel {
+  @include select-panel();
+  border-radius: 0 0 3px 3px;
+
+  // Moves the panel up so it overlaps the border of the trigger
+  margin-top: -2px;
+
+  // Prevents the content from repainting on scroll.
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  // Makes sure the opening scale animation starts from the tom
+  transform-origin: left top;
+
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;   // for momentum scroll on mobile
+
+  // prevents some animation twitching and test inconsistencies in IE11
+  min-width: 100%;
+
+  min-width: $gh-select-panel-min-width;
+  max-width: $gh-select-panel-max-width;
+
+  &.gh-select-panel-top {
+    border-radius: 3px 3px 0 0;
+    margin-top: 0px;
+  }
+}
