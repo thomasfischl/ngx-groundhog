@@ -1,6 +1,6 @@
 # Icon
 
-`<gh-icon>` provides an easy way to use SVG (not font or bitmap) icons in your app. It does so by directly inlining the SVG content into the page as a child of the component. (Rather than using an  tag or a div background image).
+`<gh-icon>` provides an easy way to use SVG (not font or bitmap) icons in your app. It does so by directly inlining the SVG content into the page as a child of the component. (Rather than using a tag or a div background image).
 This makes it easier to apply CSS styles to SVG icons.
 
 **Example**
