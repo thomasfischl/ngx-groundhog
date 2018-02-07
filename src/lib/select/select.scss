@@ -59,6 +59,8 @@ $disabledcolor: $gray-300;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 
+  transform-origin: left top;
+
   min-width: $gh-select-panel-min-width;
   max-width: $gh-select-panel-max-width;
   overflow: auto;

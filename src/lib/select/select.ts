@@ -59,6 +59,7 @@ import {
 } from '@dynatrace/ngx-groundhog/core';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
+import {trigger, state, style, animate, transition} from '@angular/animations';
 
 /**
  * Select IDs need to be unique across components, so this counter exists outside of
@@ -123,6 +124,36 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(Gh
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('transformPanel', [
+      state('showing', style({
+        opacity: 1,
+        transform: 'scaleY(1)'
+      })),
+      // Animation in
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'scaleY(0)'
+        }),
+        animate('150ms cubic-bezier(0.25, 0.8, 0.25, 1)')
+      ]),
+      // Animation out
+      transition('* => void', [
+        animate('150ms 100ms linear', style({
+          opacity: 0,
+          transform: 'scaleY(0)'
+        }))
+      ])
+    ]),
+    trigger('fadeInContent', [
+      state('showing', style({opacity: 1})),
+      transition('void => showing', [
+        style({opacity: 0}),
+        animate('150ms 100ms cubic-bezier(0.55, 0, 0.55, 0.2)')
+      ])
+    ])
+  ],
 })
 export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, DoCheck,
   AfterContentInit, OnDestroy, CanDisable, HasTabIndex, ControlValueAccessor, CanUpdateErrorState {
@@ -179,6 +210,9 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
   /** The last measured value for the trigger's client bounding rect. */
   _triggerRect: ClientRect;
+
+  /** Whether the panel's animation is done. */
+  _panelDoneAnimating: boolean = false;
 
   /**
    * The y-offset of the overlay panel in relation to the trigger's top start corner.
@@ -406,9 +440,6 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
       this._highlightCorrectOption();
       this._calculateOverlayScroll();
       this._changeDetectorRef.markForCheck();
-
-      // TODO @thomaspink: Move this if annimations are implemented
-      this._onPanelDone();
     }
   }
 
@@ -418,9 +449,6 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
       this._panelOpen = false;
       this._changeDetectorRef.markForCheck();
       this._onTouched();
-
-      // TODO @thomaspink: Move this if annimations are implemented
-      this._onPanelDone();
     }
   }
 
@@ -606,8 +634,18 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
       this.openedChange.emit(true);
     } else {
       this.openedChange.emit(false);
+      this._panelDoneAnimating = false;
       this._changeDetectorRef.markForCheck();
     }
+  }
+
+  /**
+   * When the panel content is done fading in, the _panelDoneAnimating property is
+   * set so the proper class can be added to the panel.
+   */
+  _onFadeInDone(): void {
+    this._panelDoneAnimating = this.panelOpen;
+    this._changeDetectorRef.markForCheck();
   }
 
   private _initializeSelection(): void {

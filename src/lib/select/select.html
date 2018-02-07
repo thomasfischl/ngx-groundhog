@@ -33,8 +33,13 @@
   <div
     #panel
     class="gh-select-panel"
-    [ngClass]="panelClass"> <!-- scrollcontainer / panel -->
-    <div class="gh-select-body"> <!-- scrollcontent -->
+    (@transformPanel.done)="_onPanelDone()"
+    [@transformPanel]="'showing'"
+    [ngClass]="panelClass"
+    [class.gh-select-panel-done-animating]="_panelDoneAnimating">
+    <div class="gh-select-body"
+      [@fadeInContent]="'showing'"
+      (@fadeInContent.done)="_onFadeInDone()">
       <ng-content></ng-content>
     </div>
   </div>
