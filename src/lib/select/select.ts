@@ -114,6 +114,7 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(Gh
     '[class.gh-select-disabled]': 'disabled',
     '[class.gh-select-invalid]': 'errorState',
     '[class.gh-select-required]': 'required',
+    '[class.gh-select-open]': 'panelOpen',
     'class': 'gh-select',
     '(focus)': '_onFocus()',
     '(blur)': '_onBlur()',
