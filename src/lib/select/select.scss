@@ -1,4 +1,5 @@
 @import '../../../node_modules/@angular/cdk/overlay';
+@import '@dynatrace/groundhog/src/common/colors';
 @import '@dynatrace/groundhog/src/common/mixins';
 @import '@dynatrace/groundhog/src/select/select-common';
 
@@ -29,6 +30,7 @@ $disabledcolor: $gray-300;
 
 .gh-select-trigger {
   @include select-trigger();
+  padding-right: 8px + 20px + 8px
 }
 
 .gh-select-arrow {
@@ -36,13 +38,17 @@ $disabledcolor: $gray-300;
   width: 20px;
   height: 20px;
   position: absolute;
-  right: 3px;
-  top: 6px;
-  // TODO tomheller: Let's discuss how to handle assets, icons (maybe use some kind of icon manager/registry)
-  background-image: url(//assets.dynatrace.com/groundhog/v5.3.2/assets/images/icons/icons_file_002_dropdownclosed_downwards.svg);
-  background-repeat: no-repeat;
-  background-size: 20px;
-  background-position: center right;
+  right: 8px;
+  top: 5px;
+  transition: transform 150ms ease-out;
+
+  svg {
+    fill: $turquoise-600;
+  }
+
+  .gh-select-open & {
+    transform: rotate(180deg);
+  }
 }
 
 .gh-select-panel {
