@@ -10,6 +10,7 @@ TODO
 | Feature          | Status      | Docs        | Issue       |
 |------------------|-------------|-------------|-------------|
 | Button           | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/button/README.md) | - |
+| Icon             | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/icon/README.md)   | - |
 | Select           | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/select/README.md) | - |
 
 ## Found an Issue?
