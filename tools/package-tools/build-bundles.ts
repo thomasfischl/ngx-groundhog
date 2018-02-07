@@ -128,8 +128,10 @@ export class PackageBundler {
     };
 
     const writeOptions = {
-      // Keep the moduleId empty because we don't want to force developers to a specific moduleId.
-      moduleId: '',
+      // change to amd.id since moduleId is deprecated
+      amd: {
+        id: '',
+      },
       name: config.moduleName || 'ngx.groundhog',
       banner: buildConfig.licenseBanner,
       file: config.dest,
