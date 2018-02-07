@@ -9,11 +9,6 @@ $gh-select-panel-max-height: 242px !default;
 $gh-select-panel-min-width: 112px !default;
 $gh-select-panel-max-width: 280px !default;
 
-// TODO @ffriedl89: move variables (let's first discuss how to handle them)
-$mainfont: 'BerninaSans', 'Open Sans', sans-serif !default;
-$gray-300: #ccc;
-$disabledcolor: $gray-300;
-
 .gh-select {
   @include select-container();
 
@@ -55,6 +50,9 @@ $disabledcolor: $gray-300;
   @include select-panel();
   border-radius: 0 0 3px 3px;
 
+  // Moves the panel up so it overlaps the border of the trigger
+  margin-top: -2px;
+
   // Prevents the content from repainting on scroll.
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -71,5 +69,6 @@ $disabledcolor: $gray-300;
 
   &.gh-select-panel-top {
     border-radius: 3px 3px 0 0;
+    margin-top: 0px;
   }
 }

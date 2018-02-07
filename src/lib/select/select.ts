@@ -185,6 +185,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
   /** The scroll position of the overlay panel, calculated to center the selected option. */
   private _scrollTop = 0;
 
+  /** Last emitted position of the overlay */
   private _connectionPair: ConnectionPositionPair;
 
   /** Deals with the selection logic. */
@@ -194,7 +195,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
   _optionIds: string = '';
 
   /** The aria-describedby attribute on the select for improved a11y. */
-  _ariaDescribedby: string; // TODO @thomaspink: Implement when adding support for angular forms
+  _ariaDescribedby: string;
 
   /** Whether the select is focused. */
   focused: boolean = false;
@@ -213,13 +214,6 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
   /** Whether the panel's animation is done. */
   _panelDoneAnimating: boolean = false;
-
-  /**
-   * The y-offset of the overlay panel in relation to the trigger's top start corner.
-   * This must be adjusted to either -1 (if overlay opend below the trigger)
-   * or 1 (if overlay opens on top) to overlap the border of the overlay and trigger.
-   */
-  _offsetY = -1;
 
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
