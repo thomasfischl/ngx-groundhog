@@ -1,12 +1,17 @@
 import {NgModule} from '@angular/core';
+import {GhCalendar} from './calendar';
 import {GhDatepicker} from './datepicker';
+import {GhDatepickerIntl} from './datepicker-intl';
 
 @NgModule({
   exports: [
-    GhDatepicker
+    GhCalendar,
+    GhDatepicker,
   ],
   declarations: [
-    GhDatepicker
-  ]
+    GhCalendar,
+    GhDatepicker,
+  ],
+  providers: [GhDatepickerIntl]
 })
 export class GhDatepickerModule {}

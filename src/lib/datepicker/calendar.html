@@ -1,0 +1,18 @@
+<div class="gh-calendar-header">
+  <button class="gh-calendar-previous-button"
+    [disabled]="!_previousEnabled()"
+    (click)="_previousClicked()"
+    [attr.aria-label]="_prevButtonLabel"
+  >prev</button>
+
+  <span class="gh-calendar-period">{{_periodText}}</span>
+
+  <button class="gh-calendar-next-button"
+    [disabled]="!_nextEnabled()"
+    (click)="_nextClicked()"
+    [attr.aria-label]="_nextButtonLabel"
+  >next</button>
+</div>
+<div>
+  content
+</div>

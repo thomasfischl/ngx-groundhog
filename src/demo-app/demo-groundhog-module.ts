@@ -4,6 +4,7 @@ import {
   GhIconModule,
   GhSelectModule,
   GhDatepickerModule,
+  GhNativeDateModule,
 } from '@dynatrace/ngx-groundhog';
 
 /**
@@ -15,6 +16,7 @@ import {
     GhIconModule,
     GhSelectModule,
     GhDatepickerModule,
+    GhNativeDateModule
   ]
 })
 export class DemoGroundhogModule {}
