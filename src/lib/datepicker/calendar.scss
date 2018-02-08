@@ -33,7 +33,12 @@
   }
 }
 
-.gh-calendar-table-header {
+.gh-calendar-period {
+  font-size: 14px;
+}
+
+.gh-calendar-table-header,
+.gh-calendar-table-header th {
   font-family: "BerninaSans", "Open Sans", sans-serif;
   font-size: 12px;
   font-weight: 400;
