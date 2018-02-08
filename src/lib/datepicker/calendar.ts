@@ -54,6 +54,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   get selected(): D | null { return this._selected; }
   set selected(value: D | null) {
     this._selected = this._getValidDateOrNull(this._dateAdapter.deserialize(value));
+    this._selectedDate = this._getDateInCurrentMonth(this._selected);
   }
 
   /** A date representing the period (month or year) to start the calendar in. */
@@ -135,6 +136,12 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   /** The number of columns in the table. */
   _numCols = DAYS_PER_WEEK;
 
+  /**
+   * The date of the month that the currently selected Date falls on.
+   * Null if the currently selected Date is in another month.
+   */
+  _selectedDate: number | null;
+
   constructor(private _intl: GhDatepickerIntl,
     @Optional() private _dateAdapter: DateAdapter<D>,
     @Optional() @Inject(GH_DATE_FORMATS) private _dateFormats: GhDateFormats,
@@ -168,6 +175,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   _init() {
     const firstOfMonth = this._dateAdapter.createDate(this._dateAdapter.getYear(this._activeDate),
       this._dateAdapter.getMonth(this._activeDate), 1);
+    this._selectedDate = this._getDateInCurrentMonth(this.selected);
     this._firstWeekOffset = (DAYS_PER_WEEK + this._dateAdapter.getDayOfWeek(firstOfMonth) -
       this._dateAdapter.getFirstDayOfWeek()) % DAYS_PER_WEEK;
     this._createWeekCells();
@@ -205,12 +213,14 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
 
   /** Handles when a new date is selected. */
   _dateSelected(date: number) {
-    const selectedYear = this._dateAdapter.getYear(this._activeDate);
-    const selectedMonth = this._dateAdapter.getMonth(this._activeDate);
-    const selectedDate = this._dateAdapter.createDate(selectedYear, selectedMonth, date);
+    if (this._selectedDate != date) {
+      const selectedYear = this._dateAdapter.getYear(this._activeDate);
+      const selectedMonth = this._dateAdapter.getMonth(this._activeDate);
+      const selectedDate = this._dateAdapter.createDate(selectedYear, selectedMonth, date);
 
-    if (!this._dateAdapter.sameDate(selectedDate, this.selected)) {
-      this.selectedChange.emit(selectedDate);
+      if (!this._dateAdapter.sameDate(selectedDate, this.selected)) {
+        this.selectedChange.emit(selectedDate);
+      }
     }
 
     this._userSelection.emit();
@@ -229,6 +239,15 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   private _hasSameMonthAndYear(date1: D, date2: D): boolean {
       return this._dateAdapter.getYear(date1) == this._dateAdapter.getYear(date2) &&
           this._dateAdapter.getMonth(date1) == this._dateAdapter.getMonth(date2);
+  }
+
+  /**
+   * Gets the date in this month that the given Date falls on.
+   * Returns null if the given Date is in another month.
+   */
+  private _getDateInCurrentMonth(date: D | null): number | null {
+    return date && this._hasSameMonthAndYear(date, this._activeDate) ?
+        this._dateAdapter.getDate(date) : null;
   }
 
   /**
