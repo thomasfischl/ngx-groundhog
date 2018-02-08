@@ -1,5 +1,6 @@
 <div class="gh-calendar-header">
-  <button gh-icon-button class="gh-calendar-previous-button"
+  <button gh-icon-button
+    class="gh-calendar-previous-button"
     [disabled]="!_previousEnabled()"
     (click)="_previousClicked()"
     [attr.aria-label]="_prevButtonLabel">
@@ -10,7 +11,8 @@
 
   <span class="gh-calendar-period">{{_periodText}}</span>
 
-  <button gh-icon-button class="gh-calendar-next-button"
+  <button gh-icon-button
+    class="gh-calendar-next-button"
     [disabled]="!_nextEnabled()"
     (click)="_nextClicked()"
     [attr.aria-label]="_nextButtonLabel">
@@ -19,6 +21,28 @@
     </svg>
   </button>
 </div>
-<div>
-  content
+<div class="gh-calendar-body">
+  <table class="gh-calendar-table">
+    <thead class="gh-calendar-table-header">
+      <tr>
+        <th *ngFor="let day of _weekdays" [attr.aria-label]="day.long">{{day.short}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of _weeks; let rowIndex = index" role="row">
+        <td *ngIf="rowIndex === 0 && _firstRowOffset"
+          aria-hidden="true"
+          class="mat-calendar-body-label"
+          [attr.colspan]="_firstRowOffset">
+        </td>
+        <td *ngFor="let item of row; let colIndex = index"
+          role="gridcell"
+          class="gh-calendar-body-cell">
+          <div class="gh-calendar-body-cell-content">
+            {{item.displayValue}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

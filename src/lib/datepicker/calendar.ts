@@ -9,12 +9,24 @@ import {
   OnDestroy,
   EventEmitter,
   Inject,
-  AfterContentInit
+  OnInit
 } from '@angular/core';
 import {DateAdapter, GH_DATE_FORMATS, GhDateFormats} from '@dynatrace/ngx-groundhog/core';
 import {GhDatepickerIntl} from './datepicker-intl';
 import {createMissingDateImplError} from './datepicker-errors';
 import { Subscription } from 'rxjs/Subscription';
+
+const DAYS_PER_WEEK = 7;
+
+/**
+ * An internal class that represents the data corresponding to a single calendar cell.
+ */
+export interface GhCalendarCell {
+  value: number;
+  displayValue: string;
+  ariaLabel: string;
+  enabled: boolean;
+}
 
 @Component({
   moduleId: module.id,
@@ -26,7 +38,7 @@ import { Subscription } from 'rxjs/Subscription';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
 })
-export class GhCalendar<D> implements OnDestroy, AfterContentInit {
+export class GhCalendar<D> implements OnDestroy, OnInit {
   private _intlChanges: Subscription;
   private _selected: D | null;
   private _startAt: D | null;
@@ -74,7 +86,11 @@ export class GhCalendar<D> implements OnDestroy, AfterContentInit {
    */
   get _activeDate(): D { return this._clampedActiveDate; }
   set _activeDate(value: D) {
+    const oldActiveDate = this._activeDate;
     this._clampedActiveDate = this._dateAdapter.clampDate(value, this.minDate, this.maxDate);
+    if (!oldActiveDate || !this._hasSameMonthAndYear(oldActiveDate, this._activeDate)) {
+      this._init();
+    }
   }
 
   /** The label for the the previous button. */
@@ -90,6 +106,24 @@ export class GhCalendar<D> implements OnDestroy, AfterContentInit {
       .toLocaleUpperCase();
   }
 
+  /** The number of blank cells to put at the beginning for the first row. */
+  get _firstRowOffset(): number {
+    return this._weeks && this._weeks.length && this._weeks[0].length ?
+        this._numCols - this._weeks[0].length : 0;
+  }
+
+  /** The names of the weekdays. */
+  _weekdays: {long: string, short: string}[];
+
+  /** Grid of calendar cells representing the dates of the month. */
+  _weeks: GhCalendarCell[][];
+
+  /** The number of blank cells in the first row before the 1st of the month. */
+  _firstWeekOffset: number;
+
+  /** The number of columns in the table. */
+  _numCols = DAYS_PER_WEEK;
+
   constructor(private _intl: GhDatepickerIntl,
     @Optional() private _dateAdapter: DateAdapter<D>,
     @Optional() @Inject(GH_DATE_FORMATS) private _dateFormats: GhDateFormats,
@@ -98,15 +132,34 @@ export class GhCalendar<D> implements OnDestroy, AfterContentInit {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
+
     this._intlChanges = _intl.changes.subscribe(() => changeDetectorRef.markForCheck());
+
+    const firstDayOfWeek = this._dateAdapter.getFirstDayOfWeek();
+    const shortWeekdays = this._dateAdapter.getDayOfWeekNames('short');
+    const longWeekdays = this._dateAdapter.getDayOfWeekNames('long');
+
+    // Rotate the labels for days of the week based on the configured first day of the week.
+    let weekdays = longWeekdays.map((long, i) => {
+      return {long, short: shortWeekdays[i]};
+    });
+    this._weekdays = weekdays.slice(firstDayOfWeek).concat(weekdays.slice(0, firstDayOfWeek));
   }
 
-  ngAfterContentInit() {
+  ngOnInit() {
     this._activeDate = this.startAt || this._dateAdapter.today();
   }
 
   ngOnDestroy() {
     this._intlChanges.unsubscribe();
+  }
+
+  _init() {
+    const firstOfMonth = this._dateAdapter.createDate(this._dateAdapter.getYear(this._activeDate),
+      this._dateAdapter.getMonth(this._activeDate), 1);
+    this._firstWeekOffset = (DAYS_PER_WEEK + this._dateAdapter.getDayOfWeek(firstOfMonth) -
+      this._dateAdapter.getFirstDayOfWeek()) % DAYS_PER_WEEK;
+    this._createWeekCells();
   }
 
   /** Handles date selection in the month view. */
@@ -131,16 +184,16 @@ export class GhCalendar<D> implements OnDestroy, AfterContentInit {
     if (!this.minDate) {
       return true;
     }
-    return !this.minDate || !this._isSame(this._activeDate, this.minDate);
+    return !this.minDate || !this._hasSameMonthAndYear(this._activeDate, this.minDate);
   }
 
   /** Whether the next period button is enabled. */
   _nextEnabled(): boolean {
-    return !this.maxDate || !this._isSame(this._activeDate, this.maxDate);
+    return !this.maxDate || !this._hasSameMonthAndYear(this._activeDate, this.maxDate);
   }
 
   /** Whether the two dates represent the same month and year. */
-  private _isSame(date1: D, date2: D): boolean {
+  private _hasSameMonthAndYear(date1: D, date2: D): boolean {
       return this._dateAdapter.getYear(date1) == this._dateAdapter.getYear(date2) &&
           this._dateAdapter.getMonth(date1) == this._dateAdapter.getMonth(date2);
   }
@@ -152,4 +205,37 @@ export class GhCalendar<D> implements OnDestroy, AfterContentInit {
   private _getValidDateOrNull(obj: any): D | null {
     return (this._dateAdapter.isDateInstance(obj) && this._dateAdapter.isValid(obj)) ? obj : null;
   }
+
+  /** Creates MatCalendarCells for the dates in this month. */
+  private _createWeekCells() {
+    const daysInMonth = this._dateAdapter.getNumDaysInMonth(this._activeDate);
+    const dateNames = this._dateAdapter.getDateNames();
+    this._weeks = [[]];
+    for (let i = 0, cell = this._firstWeekOffset; i < daysInMonth; i++, cell++) {
+      if (cell == DAYS_PER_WEEK) {
+        this._weeks.push([]);
+        cell = 0;
+      }
+      const date = this._dateAdapter.createDate(
+        this._dateAdapter.getYear(this._activeDate),
+        this._dateAdapter.getMonth(this._activeDate), i + 1);
+      const enabled = this._shouldEnableDate(date);
+      const ariaLabel = this._dateAdapter.format(date, this._dateFormats.display.dateA11yLabel);
+      this._weeks[this._weeks.length - 1]
+        .push(createCell(i + 1, dateNames[i], ariaLabel, enabled));
+    }
+  }
+
+  /** Date filter for the month */
+  private _shouldEnableDate(date: D): boolean {
+    return !!date &&
+      (!this.dateFilter || this.dateFilter(date)) &&
+      (!this.minDate || this._dateAdapter.compareDate(date, this.minDate) >= 0) &&
+      (!this.maxDate || this._dateAdapter.compareDate(date, this.maxDate) <= 0);
+  }
+}
+
+function createCell(value: number, displayValue: string,
+  ariaLabel: string, enabled: boolean): GhCalendarCell {
+  return { value, displayValue, ariaLabel, enabled };
 }
