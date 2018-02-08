@@ -1,7 +1,10 @@
 @import '@dynatrace/groundhog/src/select/option-common';
+@import '@dynatrace/groundhog/src/common/mixins';
 
 .gh-option {
 
+  @include apply-font-family();
+  @include apply-body-font-size();
   @include option-common();
 
   &.gh-active,

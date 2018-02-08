@@ -2,6 +2,7 @@
 @import '@dynatrace/groundhog/src/common/colors';
 @import '@dynatrace/groundhog/src/common/mixins';
 @import '@dynatrace/groundhog/src/select/select-common';
+@import '@dynatrace/groundhog/src/base/typography';
 
 @include cdk-overlay();
 
@@ -10,6 +11,9 @@ $gh-select-panel-min-width: 112px !default;
 $gh-select-panel-max-width: 280px !default;
 
 .gh-select {
+
+  @include apply-font-family();
+  @include apply-body-font-size();
   @include select-container();
 
   display: inline-block;
