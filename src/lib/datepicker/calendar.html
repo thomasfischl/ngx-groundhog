@@ -1,17 +1,23 @@
 <div class="gh-calendar-header">
-  <button class="gh-calendar-previous-button"
+  <button gh-icon-button class="gh-calendar-previous-button"
     [disabled]="!_previousEnabled()"
     (click)="_previousClicked()"
-    [attr.aria-label]="_prevButtonLabel"
-  >prev</button>
+    [attr.aria-label]="_prevButtonLabel">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path d="M322.8 66L147.5 241.2v29.5L322.8 446l41.7-41.7L216.2 256l148.3-148.3z"></path>
+    </svg>
+  </button>
 
   <span class="gh-calendar-period">{{_periodText}}</span>
 
-  <button class="gh-calendar-next-button"
+  <button gh-icon-button class="gh-calendar-next-button"
     [disabled]="!_nextEnabled()"
     (click)="_nextClicked()"
-    [attr.aria-label]="_nextButtonLabel"
-  >next</button>
+    [attr.aria-label]="_nextButtonLabel">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path d="M189.2 446l175.3-175.2v-29.5L189.2 66l-41.7 41.7L295.8 256 147.5 404.3z"></path>
+    </svg>
+  </button>
 </div>
 <div>
   content
