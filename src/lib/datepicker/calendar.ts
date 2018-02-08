@@ -111,8 +111,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   /** The label for the current period (month & year). */
   get _periodText(): string {
     return this._dateAdapter
-      .format(this._activeDate, this._dateFormats.display.monthYearLabel)
-      .toLocaleUpperCase();
+      .format(this._activeDate, this._dateFormats.display.monthYearLabel);
   }
 
   /** The number of blank cells to put at the beginning for the first row. */
