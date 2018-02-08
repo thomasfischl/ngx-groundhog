@@ -32,8 +32,11 @@ export interface GhCalendarCell {
   moduleId: module.id,
   selector: 'gh-calendar',
   templateUrl: 'calendar.html',
-  styleUrls: ['calendar.scss'],
+  styleUrls: ['calendar.css'],
   exportAs: 'ghCalendar',
+  host: {
+    'class': 'gh-calendar',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
@@ -77,8 +80,14 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   /** A function used to filter which dates are selectable. */
   @Input() dateFilter: (date: D) => boolean;
 
+  /** Whether to allow selection of disabled cells. */
+  @Input() allowDisabledSelection = false;
+
   /** Emits when the currently selected date changes. */
   @Output() readonly selectedChange: EventEmitter<D> = new EventEmitter<D>();
+
+  /** Emits when any date is selected. */
+  @Output() readonly _userSelection: EventEmitter<void> = new EventEmitter<void>();
 
   /**
    * The current active date. This determines which time period is shown and which date is
@@ -111,6 +120,9 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     return this._weeks && this._weeks.length && this._weeks[0].length ?
         this._numCols - this._weeks[0].length : 0;
   }
+
+  /** The cell number of the active cell in the table. */
+  get _activeCell() { return Math.max(0, this._dateAdapter.getDate(this._activeDate) - 1); }
 
   /** The names of the weekdays. */
   _weekdays: {long: string, short: string}[];
@@ -162,13 +174,6 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     this._createWeekCells();
   }
 
-  /** Handles date selection in the month view. */
-  _dateSelected(date: D) {
-    if (!this._dateAdapter.sameDate(date, this.selected)) {
-      this.selectedChange.emit(date);
-    }
-  }
-
   /** Handles user clicks on the previous button. */
   _previousClicked() {
     this._activeDate = this._dateAdapter.addCalendarMonths(this._activeDate, -1);
@@ -190,6 +195,35 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   /** Whether the next period button is enabled. */
   _nextEnabled(): boolean {
     return !this.maxDate || !this._hasSameMonthAndYear(this._activeDate, this.maxDate);
+  }
+
+  _cellClicked(cell: GhCalendarCell): void {
+    if (!this.allowDisabledSelection && !cell.enabled) {
+      return;
+    }
+    this._dateSelected(cell.value);
+  }
+
+  /** Handles when a new date is selected. */
+  _dateSelected(date: number) {
+    const selectedYear = this._dateAdapter.getYear(this._activeDate);
+    const selectedMonth = this._dateAdapter.getMonth(this._activeDate);
+    const selectedDate = this._dateAdapter.createDate(selectedYear, selectedMonth, date);
+
+    if (!this._dateAdapter.sameDate(selectedDate, this.selected)) {
+      this.selectedChange.emit(selectedDate);
+    }
+
+    this._userSelection.emit();
+  }
+
+  _isActiveCell(rowIndex: number, colIndex: number): boolean {
+    let cellNumber = rowIndex * this._numCols + colIndex;
+    // Account for the fact that the first row may not have as many cells.
+    if (rowIndex) {
+      cellNumber -= this._firstRowOffset;
+    }
+    return cellNumber == this._activeCell;
   }
 
   /** Whether the two dates represent the same month and year. */

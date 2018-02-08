@@ -32,12 +32,18 @@
       <tr *ngFor="let row of _weeks; let rowIndex = index" role="row">
         <td *ngIf="rowIndex === 0 && _firstRowOffset"
           aria-hidden="true"
-          class="mat-calendar-body-label"
+          class="gh-calendar-body-label"
           [attr.colspan]="_firstRowOffset">
         </td>
         <td *ngFor="let item of row; let colIndex = index"
           role="gridcell"
-          class="gh-calendar-body-cell">
+          class="gh-calendar-body-cell"
+          [tabindex]="_isActiveCell(rowIndex, colIndex) ? 0 : -1"
+          [class.gh-calendar-body-disabled]="!item.enabled"
+          [class.gh-calendar-body-active]="_isActiveCell(rowIndex, colIndex)"
+          [attr.aria-label]="item.ariaLabel"
+          [attr.aria-disabled]="!item.enabled || null"
+          (click)="_cellClicked(item)">
           <div class="gh-calendar-body-cell-content">
             {{item.displayValue}}
           </div>

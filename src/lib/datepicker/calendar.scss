@@ -1,0 +1,64 @@
+.gh-calendar {
+  display: block;
+  max-width: 282px;
+}
+
+.gh-calendar-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.gh-icon-button.gh-calendar-previous-button,
+.gh-icon-button.gh-calendar-next-button {
+  background-color: #fff;
+  border: transparent;
+
+  svg {
+    margin-top: 5px;
+    fill: #00a1b2;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background-color: #f2f2f2;
+  }
+}
+
+.gh-calendar-table-header {
+  font-family: "BerninaSans", "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #898989;
+  line-height: 32px;
+}
+
+.gh-calendar-body-cell-content {
+  font-size: 14px;
+  color: #454646;
+  width: 32px;
+  height: 32px;
+  line-height: 30px;
+  border: 1px solid transparent;
+  margin: 2px;
+  text-align: center;
+
+  &:hover:not(.gh-calendar-body-disabled) {
+    cursor: pointer;
+    border: 1px solid #00a1b2;
+    background-color: #f8f8f8;
+  }
+
+  &.gh-calendar-body-active{
+    border-color: #006d75;
+    background-color: #f8f8f8;
+  }
+}
