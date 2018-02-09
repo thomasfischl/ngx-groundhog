@@ -28,7 +28,7 @@ $gh-select-panel-max-width: 280px !default;
 
 .gh-select-trigger {
   @include select-trigger();
-  padding-right: 8px + 20px + 8px
+  padding-right: 8px + 20px + 8px;
 }
 
 .gh-select-arrow {
@@ -74,6 +74,6 @@ $gh-select-panel-max-width: 280px !default;
 
   &.gh-select-panel-top {
     border-radius: 3px 3px 0 0;
-    margin-top: 0px;
+    margin-top: 0;
   }
 }
