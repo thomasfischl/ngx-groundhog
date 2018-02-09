@@ -99,6 +99,10 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     const oldActiveDate = this._activeDate;
     this._clampedActiveDate = this._dateAdapter.clampDate(value, this.minDate, this.maxDate);
     if (oldActiveDate && !this._hasSameMonthAndYear(oldActiveDate, this._clampedActiveDate)) {
+      // Call init and reset stuff once _activeDate has been set and we are currently
+      // in the same month and year as the old value.
+      // Note: We only do this if we have an old value otherwise _init will be called
+      // in the ngOnInit method.
       this._init();
     }
   }
@@ -152,6 +156,9 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     }
 
     this._intlChanges = _intl.changes.subscribe(() => changeDetectorRef.markForCheck());
+
+    // We need to set _activeDate right from the beginning so _getDateInCurrentMonth
+    // has something to work with when input selected has been set from outside.
     this._activeDate = this._dateAdapter.today();
 
     const firstDayOfWeek = this._dateAdapter.getFirstDayOfWeek();
@@ -167,8 +174,11 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
 
   ngOnInit() {
     if (this.startAt) {
+      // Change _activeDate now as we know startAt has been set
       this._activeDate = this.startAt;
     }
+
+    // Call _init now once here and from now on when _activeDate has been set
     this._init();
   }
 
@@ -176,6 +186,10 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     this._intlChanges.unsubscribe();
   }
 
+  /**
+   * (Re)Initializes properties needed for creating the calendar.
+   * Needs to be done at the beginning and everytime the month/year changes
+   */
   _init() {
     const firstOfMonth = this._dateAdapter.createDate(this._dateAdapter.getYear(this._activeDate),
       this._dateAdapter.getMonth(this._activeDate), 1);
@@ -230,6 +244,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     this._userSelection.emit();
   }
 
+  /** Whether the provided row/cell is active */
   _isActiveCell(rowIndex: number, colIndex: number): boolean {
     let cellNumber = rowIndex * this._numCols + colIndex;
     // Account for the fact that the first row may not have as many cells.
@@ -291,6 +306,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   }
 }
 
+/** Helper for creating a cell object */
 function createCell(value: number, displayValue: string,
   ariaLabel: string, enabled: boolean): GhCalendarCell {
   return { value, displayValue, ariaLabel, enabled };
