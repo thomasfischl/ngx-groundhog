@@ -54,6 +54,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   get selected(): D | null { return this._selected; }
   set selected(value: D | null) {
     this._selected = this._getValidDateOrNull(this._dateAdapter.deserialize(value));
+    this._selectedDate = this._getDateInCurrentMonth(this._selected);
   }
 
   /** A date representing the period (month or year) to start the calendar in. */
@@ -97,7 +98,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   set _activeDate(value: D) {
     const oldActiveDate = this._activeDate;
     this._clampedActiveDate = this._dateAdapter.clampDate(value, this.minDate, this.maxDate);
-    if (!oldActiveDate || !this._hasSameMonthAndYear(oldActiveDate, this._clampedActiveDate)) {
+    if (oldActiveDate && !this._hasSameMonthAndYear(oldActiveDate, this._clampedActiveDate)) {
       this._init();
     }
   }
@@ -151,6 +152,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     }
 
     this._intlChanges = _intl.changes.subscribe(() => changeDetectorRef.markForCheck());
+    this._activeDate = this._dateAdapter.today();
 
     const firstDayOfWeek = this._dateAdapter.getFirstDayOfWeek();
     const shortWeekdays = this._dateAdapter.getDayOfWeekNames('short');
@@ -164,7 +166,10 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this._activeDate = this.startAt || this._dateAdapter.today();
+    if (this.startAt) {
+      this._activeDate = this.startAt;
+    }
+    this._init();
   }
 
   ngOnDestroy() {
