@@ -12,9 +12,11 @@
     "demo-app": "gulp serve:devapp",
     "build": "gulp :publish:build-releases",
     "test": "gulp test",
+    "test:single-run": "gulp test:single-run",
     "stylelint": "gulp lint",
     "e2e": "gulp e2e",
-    "webdriver-manager": "webdriver-manager"
+    "webdriver-manager": "webdriver-manager",
+    "universal": "gulp universal"
   },
   "engines": {
     "node": ">= 5.4.1"
@@ -58,6 +60,7 @@
     "http-rewrite-middleware": "^0.1.6",
     "jasmine-core": "^2.9.1",
     "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.1",
     "karma-sourcemap-loader": "^0.3.7",
     "minimatch": "^3.0.4",
