@@ -10,6 +10,9 @@ $gh-select-panel-min-width: 112px !default;
 $gh-select-panel-max-width: 280px !default;
 
 .gh-select {
+
+  @include apply-font-family();
+  @include apply-body-font-size();
   @include select-container();
 
   display: inline-block;
