@@ -5,13 +5,6 @@
     "./tools/stylelint/no-nested-mixin/index.js"
   ],
   "rules": {
-    "groundhog/no-prefixes": [
-      [
-        "last 2 versions",
-        "not ie <= 10",
-        "not ie_mob <= 10"
-      ]
-    ],
     "groundhog/selector-no-deep": true,
     "groundhog/no-nested-mixin": true,
     "color-hex-case": "lower",
