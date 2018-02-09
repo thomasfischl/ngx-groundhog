@@ -6,4 +6,11 @@ import {Component} from '@angular/core';
   templateUrl: 'datepicker-demo.html',
   styleUrls: ['datepicker-demo.css'],
 })
-export class DatepickerDemo { }
+export class DatepickerDemo {
+  currentDate1 = new Date();
+
+  _selectedChange(d: Date) {
+    this.currentDate1 = d;
+  }
+}
+

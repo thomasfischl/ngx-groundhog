@@ -9,7 +9,7 @@ import {
   OnDestroy,
   EventEmitter,
   Inject,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import {DateAdapter, GH_DATE_FORMATS, GhDateFormats} from '@dynatrace/ngx-groundhog/core';
 import {GhDatepickerIntl} from './datepicker-intl';
@@ -54,7 +54,6 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   get selected(): D | null { return this._selected; }
   set selected(value: D | null) {
     this._selected = this._getValidDateOrNull(this._dateAdapter.deserialize(value));
-    this._selectedDate = this._getDateInCurrentMonth(this._selected);
   }
 
   /** A date representing the period (month or year) to start the calendar in. */
@@ -98,7 +97,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   set _activeDate(value: D) {
     const oldActiveDate = this._activeDate;
     this._clampedActiveDate = this._dateAdapter.clampDate(value, this.minDate, this.maxDate);
-    if (!oldActiveDate || !this._hasSameMonthAndYear(oldActiveDate, this._activeDate)) {
+    if (!oldActiveDate || !this._hasSameMonthAndYear(oldActiveDate, this._clampedActiveDate)) {
       this._init();
     }
   }
