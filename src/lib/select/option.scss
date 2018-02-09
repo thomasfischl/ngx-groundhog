@@ -12,7 +12,7 @@
     @include option-hover();
   }
 
-  &[aria-selected="true"] {
+  &[aria-selected='true'] {
     @include option-selected();
   }
 
