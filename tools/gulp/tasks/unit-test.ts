@@ -32,7 +32,10 @@ task('test:single-run', [':test:build'], (done: () => void) => {
   // Load karma not outside. Karma pollutes Promise with a different implementation.
   const karma = require('karma');
 
-  new karma.Server({...defaultOptions, singleRun: true}, (exitCode: number) => {
+  new karma.Server({
+    ...defaultOptions,
+    singleRun: true,
+  }, (exitCode: number) => {
     // Immediately exit the process if Karma reported errors, because due to
     // potential still running tunnel-browsers gulp won't exit properly.
     exitCode === 0 ? done() : process.exit(exitCode);
@@ -45,7 +48,7 @@ task('test:single-run', [':test:build'], (done: () => void) => {
  *
  * This task should be used when running unit tests locally.
  */
-task('test', [':test:build'], karmaWatchTask());
+task('test', [':test:build'], karmaWatchTask({ browsers: ['Chrome'] }));
 
 /**
  * Runs a Karma server which will run the unit tests against any browser that connects to it.

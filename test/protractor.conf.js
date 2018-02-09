@@ -35,27 +35,15 @@ const config = {
   // ]
 };
 
-// if (process.env['TRAVIS']) {
-//   const key = require('../scripts/saucelabs/sauce_config');
-
-//   config.sauceUser = process.env['SAUCE_USERNAME'];
-//   config.sauceKey = key;
-//   config.capabilities = {
-//     'browserName': 'chrome',
-//     'version': 'latest',
-//     'tunnel-identifier': process.env['TRAVIS_JOB_ID'],
-//     'build': process.env['TRAVIS_JOB_ID'],
-//     'name': 'Material E2E Tests',
-
-//     // Enables concurrent testing in the Webdriver. Currently runs five e2e files in parallel.
-//     'maxInstances': 5,
-//     'shardTestFiles': true,
-
-//     // By default Saucelabs tries to record the whole e2e run. This can slow down the builds.
-//     'recordVideo': false,
-//     'recordScreenshots': false
-//   };
-// }
+if (process.env['TRAVIS']) {
+  config.capabilities = {
+    'browserName': 'chrome',
+    chromeOptions: {
+      args: [ "--headless", "--disable-gpu", "--window-size=800x600", '--no-sandbox'],
+    },
+    name: 'NGX Groundhog E2E Tests',
+  };
+}
 
 
 exports.config = config;

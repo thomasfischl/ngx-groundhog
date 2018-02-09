@@ -28,7 +28,6 @@ task('e2e', sequenceTask(
   [':test:protractor:setup', 'serve:e2eapp'],
   ':test:protractor',
   ':serve:e2eapp:stop',
-  // 'screenshots',
 ));
 
 /** Task that builds the e2e-app in AOT mode. */
