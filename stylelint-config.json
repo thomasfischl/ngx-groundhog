@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "./tools/stylelint/no-prefixes/no-prefixes.js",
     "./tools/stylelint/selector-no-deep/index.js",
     "./tools/stylelint/no-nested-mixin/index.js"
   ],
