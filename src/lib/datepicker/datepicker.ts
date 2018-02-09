@@ -4,7 +4,7 @@ import {Component, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/co
   moduleId: module.id,
   selector: 'gh-datepicker',
   templateUrl: 'datepicker.html',
-  styleUrls: ['datepicker.scss'],
+  styleUrls: ['datepicker.css'],
   exportAs: 'ghDatepicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
