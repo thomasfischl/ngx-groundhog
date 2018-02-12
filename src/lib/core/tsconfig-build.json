@@ -8,7 +8,7 @@
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",
-    "flatModuleId": "@angular/ngx-groundhog/core",
+    "flatModuleId": "@dynatrace/ngx-groundhog/core",
     "skipTemplateCodegen": true,
     "fullTemplateTypeCheck": true
   }
