@@ -3,6 +3,7 @@
 // Tracking issue: https://github.com/angular/material2/issues/9839
 
 import {NgModule} from '@angular/core';
+import {PlatformModule} from '@angular/cdk/platform';
 import {DateAdapter, GH_DATE_LOCALE_PROVIDER} from './date-adapter';
 import {GH_DATE_FORMATS} from './date-formats';
 import {NativeDateAdapter} from './native-date-adapter';
@@ -15,6 +16,7 @@ export * from './native-date-formats';
 
 
 @NgModule({
+  imports: [PlatformModule],
   providers: [
     {provide: DateAdapter, useClass: NativeDateAdapter},
     GH_DATE_LOCALE_PROVIDER
