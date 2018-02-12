@@ -363,7 +363,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     return (this._dateAdapter.isDateInstance(obj) && this._dateAdapter.isValid(obj)) ? obj : null;
   }
 
-  /** Creates MatCalendarCells for the dates in this month. */
+  /** Creates GhCalendarCells for the dates in this month. */
   private _createWeekCells() {
     const daysInMonth = this._dateAdapter.getNumDaysInMonth(this._activeDate);
     const dateNames = this._dateAdapter.getDateNames();
