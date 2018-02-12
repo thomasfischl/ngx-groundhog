@@ -1,0 +1,11 @@
+@import '../../../node_modules/@angular/cdk/overlay';
+
+.gh-datepicker-content {
+  display: block;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  max-height: 80vh;
+
+  // make sure the dialog scrolls rather than being cropped on ludicrously small screens
+  overflow: auto;
+}
