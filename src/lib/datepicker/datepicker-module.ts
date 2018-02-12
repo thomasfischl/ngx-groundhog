@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {GhCalendar} from './calendar';
-import {GhDatepicker} from './datepicker';
+import {GhDatepicker, GhDatepickerContent} from './datepicker';
 import {GhDatepickerIntl} from './datepicker-intl';
 import {GhButtonModule} from '@dynatrace/ngx-groundhog/button';
 import {GhDatepickerInput} from './datepicker-input';
@@ -14,13 +14,16 @@ import {GhDatepickerInput} from './datepicker-input';
   exports: [
     GhCalendar,
     GhDatepicker,
-    GhDatepickerInput
+    GhDatepickerInput,
+    GhDatepickerContent
   ],
   declarations: [
     GhCalendar,
     GhDatepicker,
-    GhDatepickerInput
+    GhDatepickerInput,
+    GhDatepickerContent
   ],
-  providers: [GhDatepickerIntl]
+  entryComponents: [GhDatepickerContent],
+  providers: [GhDatepickerIntl],
 })
 export class GhDatepickerModule {}
