@@ -9,6 +9,7 @@ import {
   GhSelectModule,
   GhTileModule,
   GhThemingModule,
+  GhContextActionMenuModule,
 } from '@dynatrace/ngx-groundhog';
 
 /**
@@ -25,6 +26,7 @@ import {
     GhSelectModule,
     GhTileModule,
     GhThemingModule,
+    GhContextActionMenuModule,
   ]
 })
 export class DemoGroundhogModule {}

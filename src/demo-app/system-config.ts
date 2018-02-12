@@ -57,6 +57,8 @@ System.config({
     '@dynatrace/ngx-groundhog/select': 'dist/packages/ngx-groundhog/select/index.js',
     '@dynatrace/ngx-groundhog/tile': 'dist/packages/ngx-groundhog/tile/index.js',
     '@dynatrace/ngx-groundhog/theming': 'dist/packages/ngx-groundhog/theming/index.js',
+    '@dynatrace/ngx-groundhog/context-action-menu':
+      'dist/packages/ngx-groundhog/context-action-menu/index.js',
   },
   packages: {
     // Thirdparty barrels.
