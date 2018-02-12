@@ -1,5 +1,5 @@
-import { ElementRef } from '@angular/core';
-import { Constructor } from './constructor';
+import {ElementRef} from '@angular/core';
+import {Constructor} from './constructor';
 
 export interface CanColor {
   /** Theme color palette for the component. */
