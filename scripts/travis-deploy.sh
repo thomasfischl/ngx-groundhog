@@ -7,7 +7,7 @@
 set -e
 
 # Go to the project root directory
-cd $(dirname $0)/../..
+cd $(dirname $0)/..
 
 # If the current Travis job is triggered by a pull request skip the deployment.
 # This check is necessary because Travis still tries to run the deploy build-stage for
