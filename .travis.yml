@@ -20,6 +20,7 @@ jobs:
     - env: "MODE=universal"
     - env: "MODE=e2e"
     - env: "MODE=test"
+    - env: "DEPLOY_MODE=build-artifacts"
 
 env:
   global:
