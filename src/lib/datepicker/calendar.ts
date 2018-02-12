@@ -10,11 +10,26 @@ import {
   EventEmitter,
   Inject,
   OnInit,
+  NgZone,
+  ElementRef,
 } from '@angular/core';
+import {
+  LEFT_ARROW,
+  RIGHT_ARROW,
+  UP_ARROW,
+  HOME,
+  DOWN_ARROW,
+  END,
+  PAGE_UP,
+  PAGE_DOWN,
+  ENTER
+} from '@angular/cdk/keycodes';
 import {DateAdapter, GH_DATE_FORMATS, GhDateFormats} from '@dynatrace/ngx-groundhog/core';
 import {GhDatepickerIntl} from './datepicker-intl';
 import {createMissingDateImplError} from './datepicker-errors';
 import { Subscription } from 'rxjs/Subscription';
+import { take } from 'rxjs/operators/take';
+
 
 const DAYS_PER_WEEK = 7;
 
@@ -54,7 +69,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   get selected(): D | null { return this._selected; }
   set selected(value: D | null) {
     this._selected = this._getValidDateOrNull(this._dateAdapter.deserialize(value));
-    this._selectedDate = this._getDateInCurrentMonth(this._selected);
+    this._selectedDateIndex = this._getDateInCurrentMonth(this._selected);
   }
 
   /** A date representing the period (month or year) to start the calendar in. */
@@ -144,9 +159,11 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
    * The date of the month that the currently selected Date falls on.
    * Null if the currently selected Date is in another month.
    */
-  _selectedDate: number | null;
+  _selectedDateIndex: number | null;
 
-  constructor(private _intl: GhDatepickerIntl,
+  constructor(private _elementRef: ElementRef,
+    private _intl: GhDatepickerIntl,
+    private _ngZone: NgZone,
     @Optional() private _dateAdapter: DateAdapter<D>,
     @Optional() @Inject(GH_DATE_FORMATS) private _dateFormats: GhDateFormats,
     changeDetectorRef: ChangeDetectorRef,
@@ -180,6 +197,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
 
     // Call _init now once here and from now on when _activeDate has been set
     this._init();
+    this._focusActiveCell();
   }
 
   ngOnDestroy() {
@@ -193,7 +211,7 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
   _init() {
     const firstOfMonth = this._dateAdapter.createDate(this._dateAdapter.getYear(this._activeDate),
       this._dateAdapter.getMonth(this._activeDate), 1);
-    this._selectedDate = this._getDateInCurrentMonth(this.selected);
+    this._selectedDateIndex = this._getDateInCurrentMonth(this.selected);
     this._firstWeekOffset = (DAYS_PER_WEEK + this._dateAdapter.getDayOfWeek(firstOfMonth) -
       this._dateAdapter.getFirstDayOfWeek()) % DAYS_PER_WEEK;
     this._createWeekCells();
@@ -226,15 +244,15 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     if (!this.allowDisabledSelection && !cell.enabled) {
       return;
     }
-    this._dateSelected(cell.value);
+    this._dateSelectedByIndex(cell.value);
   }
 
   /** Handles when a new date is selected. */
-  _dateSelected(date: number) {
-    if (this._selectedDate != date) {
+  _dateSelectedByIndex(index: number) {
+    if (this._selectedDateIndex != index) {
       const selectedYear = this._dateAdapter.getYear(this._activeDate);
       const selectedMonth = this._dateAdapter.getMonth(this._activeDate);
-      const selectedDate = this._dateAdapter.createDate(selectedYear, selectedMonth, date);
+      const selectedDate = this._dateAdapter.createDate(selectedYear, selectedMonth, index);
 
       if (!this._dateAdapter.sameDate(selectedDate, this.selected)) {
         this.selectedChange.emit(selectedDate);
@@ -242,6 +260,13 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
     }
 
     this._userSelection.emit();
+  }
+
+  /** Handles date selection */
+  _dateSelected(date: D): void {
+    if (!this._dateAdapter.sameDate(date, this.selected)) {
+      this.selectedChange.emit(date);
+    }
   }
 
   /** Whether the provided row/cell is active */
@@ -252,6 +277,67 @@ export class GhCalendar<D> implements OnDestroy, OnInit {
       cellNumber -= this._firstRowOffset;
     }
     return cellNumber == this._activeCell;
+  }
+
+  /** Handles keydown events on the calendar body. */
+  _handleCalendarBodyKeydown(event: KeyboardEvent): void {
+    switch (event.keyCode) {
+      case LEFT_ARROW:
+        this._activeDate = this._dateAdapter.addCalendarDays(this._activeDate, -1);
+        break;
+      case RIGHT_ARROW:
+        this._activeDate = this._dateAdapter.addCalendarDays(this._activeDate, 1);
+        break;
+      case UP_ARROW:
+        this._activeDate = this._dateAdapter.addCalendarDays(this._activeDate, -7);
+        break;
+      case DOWN_ARROW:
+        this._activeDate = this._dateAdapter.addCalendarDays(this._activeDate, 7);
+        break;
+      case HOME:
+        this._activeDate = this._dateAdapter.addCalendarDays(this._activeDate,
+            1 - this._dateAdapter.getDate(this._activeDate));
+        break;
+      case END:
+        this._activeDate = this._dateAdapter.addCalendarDays(this._activeDate,
+            (this._dateAdapter.getNumDaysInMonth(this._activeDate) -
+             this._dateAdapter.getDate(this._activeDate)));
+        break;
+      case PAGE_UP:
+        this._activeDate = event.altKey ?
+            this._dateAdapter.addCalendarYears(this._activeDate, -1) :
+            this._dateAdapter.addCalendarMonths(this._activeDate, -1);
+        break;
+      case PAGE_DOWN:
+        this._activeDate = event.altKey ?
+            this._dateAdapter.addCalendarYears(this._activeDate, 1) :
+            this._dateAdapter.addCalendarMonths(this._activeDate, 1);
+        break;
+      case ENTER:
+        if (!this.dateFilter || this.dateFilter(this._activeDate)) {
+          this._dateSelected(this._activeDate);
+          this._userSelection.emit();
+          // Prevent unexpected default actions such as form submission.
+          event.preventDefault();
+        }
+        return;
+      default:
+        // Don't prevent default or focus active cell on keys that we don't explicitly handle.
+        return;
+    }
+
+    this._focusActiveCell();
+    // Prevent unexpected default actions such as form submission.
+    event.preventDefault();
+  }
+
+  /** Focuses the active cell after the microtask queue is empty. */
+  _focusActiveCell() {
+    this._ngZone.runOutsideAngular(() => {
+      this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
+        this._elementRef.nativeElement.querySelector('.gh-calendar-body-active').focus();
+      });
+    });
   }
 
   /** Whether the two dates represent the same month and year. */

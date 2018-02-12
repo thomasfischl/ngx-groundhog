@@ -1,3 +1,6 @@
+@import '@dynatrace/groundhog/src/common/variables';
+@import '@dynatrace/groundhog/src/common/mixins';
+
 .gh-calendar {
   display: block;
   max-width: 282px;
@@ -66,5 +69,12 @@
 .gh-calendar-body-cell.gh-calendar-body-selected .gh-calendar-body-cell-content {
   border-color: #006d75;
   background-color: #f8f8f8;
+}
 
+.gh-calendar-body-cell.gh-calendar-body-active {
+  outline: none;
+}
+
+.gh-calendar-body-cell.gh-calendar-body-active .gh-calendar-body-cell-content {
+  @include focusStyle();
 }

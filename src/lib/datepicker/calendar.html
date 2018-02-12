@@ -21,7 +21,7 @@
     </svg>
   </button>
 </div>
-<div class="gh-calendar-body">
+<div class="gh-calendar-body" (keydown)="_handleCalendarBodyKeydown($event)">
   <table class="gh-calendar-table">
     <thead class="gh-calendar-table-header">
       <tr>
@@ -41,7 +41,7 @@
           [tabindex]="_isActiveCell(rowIndex, colIndex) ? 0 : -1"
           [class.gh-calendar-body-disabled]="!item.enabled"
           [class.gh-calendar-body-active]="_isActiveCell(rowIndex, colIndex)"
-          [class.gh-calendar-body-selected]="_selectedDate === item.value"
+          [class.gh-calendar-body-selected]="_selectedDateIndex === item.value"
           [attr.aria-label]="item.ariaLabel"
           [attr.aria-disabled]="!item.enabled || null"
           (click)="_cellClicked(item)">
