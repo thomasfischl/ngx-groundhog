@@ -23,8 +23,6 @@ echo ""
 
 # Deployment of the build artifacts and docs-content should only happen on a per-commit base.
 # The target is to provide build artifacts in the GitHub repository for every commit.
-else
-  if [[ "${DEPLOY_MODE}" == "build-artifacts" ]]; then
-    ./scripts/deploy/publish-build-artifacts.sh
-  fi
+if [[ "${DEPLOY_MODE}" == "build-artifacts" ]]; then
+  ./scripts/deploy/publish-build-artifacts.sh
 fi
