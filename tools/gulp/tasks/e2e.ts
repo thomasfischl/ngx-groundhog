@@ -54,7 +54,8 @@ task(':watch:e2eapp', () => {
 });
 
 /** Ensures that protractor and webdriver are set up to run. */
-task(':test:protractor:setup', execNodeTask('protractor', 'webdriver-manager', ['update']));
+task(':test:protractor:setup',
+  execNodeTask('protractor', 'webdriver-manager', ['update', '--gecko=false']));
 
 /** Runs protractor tests (assumes that server is already running. */
 task(':test:protractor', execNodeTask('protractor', [PROTRACTOR_CONFIG_PATH]));
