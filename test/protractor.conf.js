@@ -39,7 +39,7 @@ if (process.env['TRAVIS']) {
   config.capabilities = {
     'browserName': 'chrome',
     chromeOptions: {
-      args: [ '--headless', '--disable-gpu', '--window-size=800x600', '--no-sandbox', '--gecko false'],
+      args: [ '--headless', '--disable-gpu', '--window-size=800x600', '--no-sandbox'],
     },
     name: 'NGX Groundhog E2E Tests',
   };
