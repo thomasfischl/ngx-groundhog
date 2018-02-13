@@ -1,5 +1,7 @@
 @import '../../../node_modules/@angular/cdk/overlay';
 
+@include cdk-overlay();
+
 .gh-datepicker-content {
   display: block;
   background-color: #fff;

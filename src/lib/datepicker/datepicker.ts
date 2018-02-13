@@ -8,15 +8,18 @@ import {
   ComponentRef,
   ViewContainerRef,
 } from '@angular/core';
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {Overlay, OverlayConfig, PositionStrategy, OverlayRef} from '@angular/cdk/overlay';
-import {ComponentPortal} from '@angular/cdk/portal';
-import {ESCAPE} from '@angular/cdk/keycodes';
-import {Subscription} from 'rxjs/Subscription';
-import {merge} from 'rxjs/observable/merge';
-import {filter} from 'rxjs/operators/filter';
-import {GhDatepickerInput} from './datepicker-input';
-import {GhCalendar} from './calendar';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Overlay, OverlayConfig, PositionStrategy, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { ESCAPE } from '@angular/cdk/keycodes';
+import { Subscription } from 'rxjs/Subscription';
+import { merge } from 'rxjs/observable/merge';
+import { filter } from 'rxjs/operators/filter';
+import { GhDatepickerInput } from './datepicker-input';
+import { GhCalendar } from './calendar';
+
+/** Used to generate a unique ID for each datepicker instance. */
+let datepickerUid = 0;
 
 @Component({
   moduleId: module.id,
@@ -38,16 +41,31 @@ export class GhDatepicker<D> {
   @Input()
   get disabled(): boolean {
     return this._disabled === undefined && this._datepickerInput ?
-        this._datepickerInput.disabled : !!this._disabled;
+      this._datepickerInput.disabled : !!this._disabled;
   }
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
   }
-  private _disabled: boolean;
+
+  /** Classes to be passed to the date picker panel. */
+  @Input() panelClass: string | string[];
 
   /** The currently selected date. */
   get _selected(): D | null { return this._validSelected; }
   set _selected(value: D | null) { this._validSelected = value; }
+
+  /** The minimum selectable date. */
+  get _minDate(): D | null {
+    return this._datepickerInput && this._datepickerInput.min;
+  }
+
+  /** The maximum selectable date. */
+  get _maxDate(): D | null {
+    return this._datepickerInput && this._datepickerInput.max;
+  }
+
+  /** The id for the datepicker calendar. */
+  readonly id: string = `gh-datepicker-${datepickerUid++}`;
 
   /** The input element this datepicker is associated with. */
   _datepickerInput: GhDatepickerInput<D>;
@@ -59,10 +77,11 @@ export class GhDatepicker<D> {
   private _popupRef: OverlayRef;
 
   private _opened = false;
+  private _disabled: boolean;
   private _validSelected: D | null = null;
   private _inputSubscription = Subscription.EMPTY;
 
-  constructor (
+  constructor(
     private _overlay: Overlay,
     private _viewContainerRef: ViewContainerRef) { }
 
@@ -93,7 +112,18 @@ export class GhDatepicker<D> {
   }
 
   /** Close the calendar. */
-  close() {}
+  close() {
+    if (!this._opened) { return; }
+    if (this._popupRef && this._popupRef.hasAttached()) {
+      this._popupRef.detach();
+    }
+    if (this._calendarPortal && this._calendarPortal.isAttached) {
+      this._calendarPortal.detach();
+    }
+    if (this._opened) {
+      this._opened = false;
+    }
+  }
 
   /**
    * Register an input with this datepicker.
@@ -113,6 +143,7 @@ export class GhDatepicker<D> {
     const overlayConfig = new OverlayConfig({
       positionStrategy: this._createPopupPositionStrategy(),
       hasBackdrop: true,
+      backdropClass: 'gh-overlay-transparent-backdrop',
       scrollStrategy: this._overlay.scrollStrategies.reposition(),
       panelClass: 'gh-datepicker-popup',
     });
@@ -130,13 +161,13 @@ export class GhDatepicker<D> {
   private _createPopupPositionStrategy(): PositionStrategy {
     return this._overlay.position()
       .connectedTo(this._datepickerInput._getConnectedOverlayOrigin(),
-        {originX: 'start', originY: 'bottom'},
-        {overlayX: 'start', overlayY: 'bottom'}
+        { originX: 'start', originY: 'bottom' },
+        { overlayX: 'start', overlayY: 'top' }
       )
       .withFallbackPosition(
-        {originX: 'start', originY: 'top'},
-        {overlayX: 'start', overlayY: 'bottom'},
-      );
+        { originX: 'start', originY: 'top' },
+        { overlayX: 'start', overlayY: 'bottom' },
+    );
   }
 }
 

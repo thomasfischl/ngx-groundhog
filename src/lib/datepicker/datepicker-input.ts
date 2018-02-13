@@ -17,7 +17,7 @@ import { DOWN_ARROW } from '@angular/cdk/keycodes';
   selector: 'input[ghDatepicker]',
   host: {
     'aria-haspopup': 'true',
-    // '[attr.aria-owns]': '(_datepicker?.opened && _datepicker.id) || null',
+    '[attr.aria-owns]': '(_datepicker?.opened && _datepicker.id) || null',
     '[attr.min]': 'min ? _dateAdapter.toIso8601(min) : null',
     '[attr.max]': 'max ? _dateAdapter.toIso8601(max) : null',
     '[disabled]': 'disabled',
