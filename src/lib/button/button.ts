@@ -7,7 +7,6 @@ import {
   OnDestroy
 } from '@angular/core';
 import {FocusMonitor} from '@angular/cdk/a11y';
-import {Platform} from '@angular/cdk/platform';
 import {
   CanDisable,
   mixinDisabled,
@@ -53,7 +52,6 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
   _isIconButton: boolean = this._hasHostAttributes('gh-icon-button');
 
   constructor(elementRef: ElementRef,
-              private _platform: Platform,
               private _focusMonitor: FocusMonitor) {
     super(elementRef);
 
@@ -83,13 +81,6 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
 
   /** Gets whether the button has one of the given attributes. */
   private _hasHostAttributes(...attributes: string[]) {
-    // If not on the browser, say that there are none of the attributes present.
-    // Since these only affect how the ripple displays (and ripples only happen on the client),
-    // detecting these attributes isn't necessary when not on the browser.
-    if (!this._platform.isBrowser) {
-      return false;
-    }
-
     return attributes.some(attribute => this._getHostElement().hasAttribute(attribute));
   }
 
@@ -117,9 +108,8 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
 })
 export class GhAnchor extends GhButton {
   constructor(elementRef: ElementRef,
-              platform: Platform,
               focusMonitor: FocusMonitor) {
-    super(elementRef, platform, focusMonitor);
+    super(elementRef, focusMonitor);
   }
 
   _haltDisabledEvents(event: Event) {
