@@ -1,0 +1,20 @@
+.gh-progresscircle {
+  display: block;
+}
+
+.gh-progresscircle-background,
+.gh-progresscircle-progress {
+  fill: transparent;
+  stroke-width: 15;
+}
+
+.gh-progresscircle-background {
+  stroke: #e6e6e6;
+}
+
+.gh-progresscircle-progress {
+  stroke: #00b9cc;
+  stroke-dasharray: 1514;
+  stroke-dashoffset: 1514;
+  transition: stroke-dashoffset 450ms ease-out;
+}

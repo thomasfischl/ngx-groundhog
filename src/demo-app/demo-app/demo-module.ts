@@ -7,7 +7,8 @@ import {ButtonDemo} from '../button/button-demo';
 import {IconDemo} from '../icon/icon-demo';
 import {DemoApp, Home} from './demo-app';
 import {DEMO_APP_ROUTES} from './routes';
-import { SelectDemo } from '../select/select-demo';
+import {SelectDemo} from '../select/select-demo';
+import {ProgresscircleDemo} from '../progresscircle/progresscircle-demo';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { SelectDemo } from '../select/select-demo';
   declarations: [
     ButtonDemo,
     IconDemo,
+    ProgresscircleDemo,
     SelectDemo,
     DemoApp,
     Home,
