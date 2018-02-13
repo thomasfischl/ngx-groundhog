@@ -1,0 +1,36 @@
+<button 
+  gh-icon-button
+  color="secondary"
+  #trigger
+  cdk-overlay-origin
+  #origin="cdkOverlayOrigin"
+  (click)="open()"
+  [tabindex]="tabIndex">
+  <gh-icon svgIcon="more"></gh-icon>
+</button>
+<ng-template
+  cdk-connected-overlay
+  backdropClass="cdk-overlay-transparent-backdrop"
+  hasBackdrop
+  (backdropClick)="close()"
+  (attach)="_onAttached()"
+  (detach)="close()"
+  [origin]="origin"
+  [open]="panelOpen"
+  [positions]="_positions">
+  <div
+    class="gh-ca-menu-panel"
+    role="menu"
+    #panel>
+    <div class="gh-menu-content">
+      <ng-content></ng-content>
+    </div>
+    <button
+      gh-icon-button
+      color="secondary"
+      class="gh-ca-menu-close-trigger"
+      (click)="close()">
+      <gh-icon svgIcon="more"></gh-icon>
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,49 @@
+@import '../../../node_modules/@angular/cdk/overlay';
+@import '@dynatrace/groundhog/src/common/colors';
+
+$panel-padding-btn: 32px;
+$panel-padding: 8px;
+
+
+@include cdk-overlay();
+
+.gh-ca-menu-panel {
+  background-color: $gray-700;
+  padding: $panel-padding-btn $panel-padding $panel-padding $panel-padding;
+  display: inline-block;
+  border-radius: 3px;
+  position: relative;
+  transform-origin: top right;
+}
+
+.gh-ca-menu-close-trigger {
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    background-color: $gray-700;
+  }
+}
+
+.gh-ca-menu-panel-bottom {
+  transform-origin: bottom right;
+  padding: $panel-padding $panel-padding $panel-padding-btn $panel-padding;
+}
+
+.gh-ca-menu-panel-bottom .gh-ca-menu-close-trigger {
+  top: auto;
+  bottom: 0;
+}
+
+// Button
+.gh-ca-menu-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.gh-ca-menu-btn:last-child {
+  margin-bottom: 0;
+}
