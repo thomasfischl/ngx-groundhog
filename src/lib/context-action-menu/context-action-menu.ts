@@ -18,6 +18,7 @@ import {
   OnDestroy,
   AfterContentInit,
   isDevMode,
+  Inject,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GhButton } from '@dynatrace/ngx-groundhog/button';
@@ -35,6 +36,8 @@ import {map} from 'rxjs/operators/map';
 import {filter} from 'rxjs/operators/filter';
 import {merge} from 'rxjs/observable/merge';
 import {Subject} from 'rxjs/Subject';
+import { FocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
+import { DOCUMENT } from '@angular/common';
 
 // Boilerplate for applying mixins to GhContextActionMenu.
 export class GhContextActionMenuBase {
@@ -65,6 +68,13 @@ export class GhContextActionMenu extends _GhContextActionMenuBase implements OnD
 
   /** Last emitted position of the overlay */
   private _connectionPair: ConnectionPositionPair;
+
+  /** The class that traps and manages focus within the overlay. */
+  private _focusTrap: FocusTrap | null;
+
+  // Element that was focused before the context-action-menu was opened.
+  // Save this to restore upon close.
+  private _elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
   /** Event emitted when the select has been opened. */
   @Output() readonly openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -97,11 +107,12 @@ export class GhContextActionMenu extends _GhContextActionMenuBase implements OnD
 
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
-    private _ngZone: NgZone,
+    private _focusTrapFactory: FocusTrapFactory,
     iconRegistry: GhIconRegistry,
     sanitizer: DomSanitizer,
     _elementRef: ElementRef,
     @Attribute('tabindex') tabIndex: string,
+    @Optional() @Inject(DOCUMENT) private _document: any
   ) {
     super(_elementRef);
 
@@ -118,6 +129,7 @@ export class GhContextActionMenu extends _GhContextActionMenuBase implements OnD
     if (!this.disabled && !this._panelOpen) {
       this._panelOpen = true;
       this.openedChange.emit(true);
+      this._savePreviouslyFocusedElement();
       this._changeDetectorRef.markForCheck();
     }
   }
@@ -127,22 +139,48 @@ export class GhContextActionMenu extends _GhContextActionMenuBase implements OnD
     if (this._panelOpen) {
       this._panelOpen = false;
       this.openedChange.emit(false);
+      this._restoreFocus();
       this._changeDetectorRef.markForCheck();
     }
   }
 
-  /** focuses the first non disabled item */
-  _focusFirstItem(): void {
-    /** search for the first enabled button */
-    const firstFocusableItem = this.items.find(item => !item.disabled);
-    /** focus the first one if found */
-    if (firstFocusableItem) {
-      firstFocusableItem.focus();
+  /** Moves the focus inside the focus trap. */
+  private _trapFocus() {
+    if (!this._focusTrap) {
+      this._focusTrap = this._focusTrapFactory.create(this.overlayDir.overlayRef.overlayElement);
+    }
+    this._focusTrap.focusInitialElementWhenReady();
+  }
+
+  /** Restores focus to the element that was focused before the overlay opened. */
+  private _restoreFocus() {
+    const toFocus = this._elementFocusedBeforeDialogWasOpened;
+
+    // We need the extra check, because IE can set the `activeElement` to null in some cases.
+    if (toFocus && typeof toFocus.focus === 'function') {
+      toFocus.focus();
+    }
+
+    if (this._focusTrap) {
+      /** Destroy the focus trap */
+      this._focusTrap.destroy();
+      /** reset the focus trap to null to create a new one on subsequent open calls */
+      this._focusTrap = null;
+    }
+  }
+
+  /** Saves a reference to the element that was focused before the overlay was opened. */
+  private _savePreviouslyFocusedElement() {
+    if (this._document) {
+      this._elementFocusedBeforeDialogWasOpened = this._document.activeElement as HTMLElement;
     }
   }
 
   /** Callback that is invoked when the overlay panel has been attached. */
   _onAttached(): void {
+    /** trap focus within the overlay */
+    this._trapFocus();
+
     const positionChange = this.overlayDir.positionChange;
 
     // Set classes depending on the position of the overlay
@@ -164,7 +202,6 @@ export class GhContextActionMenu extends _GhContextActionMenuBase implements OnD
         this.panel.nativeElement.classList.add(`gh-ca-menu-panel-${connectionPair.originY}`);
         this._connectionPair = connectionPair;
       });
-    this._focusFirstItem();
   }
 
   /** Hook thats triggered when all contentchildren (buttons) are initialized */
