@@ -2,6 +2,11 @@
   display: block;
 }
 
+.gh-progresscircle-body {
+  display: inline-block;
+  position: relative;
+}
+
 .gh-progresscircle-background,
 .gh-progresscircle-progress {
   fill: transparent;
@@ -17,4 +22,12 @@
   stroke-dasharray: 1514;
   stroke-dashoffset: 1514;
   transition: stroke-dashoffset 450ms ease-out;
+}
+
+.gh-progresscircle-content {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

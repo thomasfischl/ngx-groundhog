@@ -1,5 +1,7 @@
 <h1>Progresscircle</h1>
-<gh-progresscircle [value]="progress" [min]="min" [max]="max" #progresscircle></gh-progresscircle>
+<gh-progresscircle [value]="progress" [min]="min" [max]="max" #progresscircle>
+  <gh-icon svgIcon="ai" size="big"></gh-icon>
+</gh-progresscircle>
 <div>Set value: <strong>{{progress}}</strong></div>
 <div>Calculated value: <strong>{{progresscircle.value}}</strong></div>
 <div>Calculated min/max: <strong>{{progresscircle.min}}/{{progresscircle.max}}</strong></div>
