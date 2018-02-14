@@ -43,5 +43,6 @@ export class DemoApp {
     {name: 'Button', route: '/button'},
     {name: 'Icon', route: '/icon'},
     {name: 'Select', route: '/select'},
+    {name: 'Inputfield', route: '/inputfield'},
   ];
 }
