@@ -42,6 +42,7 @@ export class DemoApp {
     {name: 'Start', route: '/'},
     {name: 'Button', route: '/button'},
     {name: 'Icon', route: '/icon'},
+    {name: 'Progress circle', route: '/progress-circle'},
     {name: 'Select', route: '/select'},
   ];
 }
