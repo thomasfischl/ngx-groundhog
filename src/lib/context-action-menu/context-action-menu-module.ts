@@ -5,7 +5,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { GhButtonModule } from '@dynatrace/ngx-groundhog/button';
 import { GhIconModule } from '@dynatrace/ngx-groundhog/icon';
 
-import { GhContextActionMenu } from './context-action-menu';
+import { GhContextActionMenu, GhContextActionMenuItem } from './context-action-menu';
 
 @NgModule({
   imports: [
@@ -17,9 +17,11 @@ import { GhContextActionMenu } from './context-action-menu';
   ],
   exports: [
     GhContextActionMenu,
+    GhContextActionMenuItem,
   ],
   declarations: [
     GhContextActionMenu,
+    GhContextActionMenuItem,
   ]
 })
 export class GhContextActionMenuModule {}

@@ -41,9 +41,7 @@ import { DOCUMENT } from '@angular/common';
 
 // Boilerplate for applying mixins to GhContextActionMenu.
 export class GhContextActionMenuBase {
-  constructor(
-    public _elementRef: ElementRef
-  ) { }
+  constructor() { }
 }
 export const _GhContextActionMenuBase = mixinTabIndex(mixinDisabled(GhContextActionMenuBase));
 
@@ -57,8 +55,8 @@ export const _GhContextActionMenuBase = mixinTabIndex(mixinDisabled(GhContextAct
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhContextActionMenu extends _GhContextActionMenuBase implements OnDestroy,
-  AfterContentInit, HasTabIndex {
+export class GhContextActionMenu extends _GhContextActionMenuBase
+  implements OnDestroy, HasTabIndex, CanDisable {
 
   /** Whether or not the overlay panel is open. */
   private _panelOpen = false;
@@ -110,11 +108,10 @@ export class GhContextActionMenu extends _GhContextActionMenuBase implements OnD
     private _focusTrapFactory: FocusTrapFactory,
     iconRegistry: GhIconRegistry,
     sanitizer: DomSanitizer,
-    _elementRef: ElementRef,
     @Attribute('tabindex') tabIndex: string,
     @Optional() @Inject(DOCUMENT) private _document: any
   ) {
-    super(_elementRef);
+    super();
 
     this.tabIndex = parseInt(tabIndex) || 0;
 
@@ -204,25 +201,25 @@ export class GhContextActionMenu extends _GhContextActionMenuBase implements OnD
       });
   }
 
-  /** Hook thats triggered when all contentchildren (buttons) are initialized */
-  ngAfterContentInit() {
-
-    this.items.forEach((item) => {
-      /** set the item color to secondary since only secondary
-       * buttons are allowed within a context action menu */
-      if (item.color !== 'secondary' && isDevMode()) {
-        console.info('Buttons inside gh-ca-menu will get the color="secondary" set');
-      }
-      item.color = 'secondary';
-      /** add the class to have proper item styling */
-      item._elementRef.nativeElement.classList
-        .add('gh-ca-menu-btn');
-    });
-  }
-
   /** Hook that trigger right before the component will be destroyed. */
   ngOnDestroy(): void {
     this._destroy.next();
     this._destroy.complete();
+    this.close();
   }
+}
+
+
+
+@Component({
+  selector: 'gh-context-action-menu-item, gh-ca-menu-item',
+  templateUrl: './context-action-menu-item.html',
+  inputs: ['disabled'],
+})
+export class GhContextActionMenuItem extends _GhContextActionMenuBase
+  implements CanDisable, HasTabIndex {
+  constructor() {
+    super();
+  }
+
 }
