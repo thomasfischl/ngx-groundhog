@@ -9,13 +9,13 @@
 
   <div class="gh-form-field-container">
     <div class="gh-form-field-prefix">
-      <ng-content select="[ghPrefix]"></ng-content>
+      <ng-content select="[ghPrefix]" *ngIf="_prefixChildren.length"></ng-content>
     </div>
     <div class="gh-form-field-infix">
       <ng-content></ng-content>
     </div>
     <div class="gh-form-field-suffix">
-      <ng-content select="[ghSuffix]"></ng-content>
+      <ng-content select="[ghSuffix]" *ngIf="_suffixChildren.length"></ng-content>
     </div>
   </div>
 

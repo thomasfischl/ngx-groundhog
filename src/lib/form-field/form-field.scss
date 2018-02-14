@@ -4,6 +4,28 @@
   text-align: left;
 }
 
+.gh-form-field-container {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.gh-form-field-prefix,
+.gh-form-field-suffix {
+  white-space: nowrap;
+  flex: none;
+  position: relative;
+}
+
+.gh-form-field-infix {
+  display: block;
+  position: relative;
+  flex: auto;
+  min-width: 0;
+  width: 180px;
+}
+
 .gh-form-field-infix > *{
   // We need to enforce display block here
   // so the control fills the form field
