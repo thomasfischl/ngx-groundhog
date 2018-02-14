@@ -1,3 +1,0 @@
-# Progresscircle
-
-TODO

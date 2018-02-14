@@ -4,11 +4,11 @@ import {GhIconRegistry} from '@dynatrace/ngx-groundhog';
 
 @Component({
   moduleId: module.id,
-  selector: 'progresscircle-demo',
-  templateUrl: 'progresscircle-demo.html',
-  styleUrls: ['progresscircle-demo.css'],
+  selector: 'progress-circle-demo',
+  templateUrl: 'progress-circle-demo.html',
+  styleUrls: ['progress-circle-demo.css'],
 })
-export class ProgresscircleDemo {
+export class ProgressCircleDemo {
 
   progress = 150;
   min = 100;

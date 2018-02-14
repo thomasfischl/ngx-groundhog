@@ -11,16 +11,16 @@ import { coerceNumberProperty } from '@angular/cdk/coercion';
 const CIRCLE_CIRCUMFERENCE = 1514;
 
 @Component({
-  selector: 'gh-progresscircle',
-  templateUrl: 'progresscircle.html',
-  styleUrls: ['progresscircle.css'],
+  selector: 'gh-progress-circle',
+  templateUrl: 'progress-circle.html',
+  styleUrls: ['progress-circle.css'],
   exportAs: 'ghProgressCircle',
   host: {
     'role': 'progressbar',
     '[attr.aria-valuemin]': 'min',
     '[attr.aria-valuemax]': 'max',
     '[attr.aria-valuenow]': 'value',
-    'class': 'gh-progresscircle',
+    'class': 'gh-progress-circle',
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,

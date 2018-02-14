@@ -21,7 +21,7 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(BasicProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     expect(progressElement.componentInstance.value).toBe(0);
   });
 
@@ -29,7 +29,7 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(BasicProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     expect(progressElement.componentInstance.min).toBe(0);
   });
 
@@ -37,7 +37,7 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(BasicProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     expect(progressElement.componentInstance.max).toBe(100);
   });
 
@@ -45,7 +45,7 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(BasicProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     const progressComponent = progressElement.componentInstance;
 
     progressComponent.value = 50;
@@ -68,7 +68,7 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(ValueProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     expect(progressElement.componentInstance.value).toBe(150);
     expect(progressElement.componentInstance.min).toBe(100);
     expect(progressElement.componentInstance.max).toBe(200);
@@ -78,7 +78,7 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(ValueProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     expect(progressElement.componentInstance.percent).toBe(50);
   });
 
@@ -86,7 +86,7 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(ValueProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     expect(progressElement.componentInstance._dashOffset).toBe(757);
   });
 
@@ -94,18 +94,18 @@ describe('GhProgressCircle', () => {
     const fixture = TestBed.createComponent(ValueProgressCircle);
     fixture.detectChanges();
 
-    const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
+    const progressElement = fixture.debugElement.query(By.css('gh-progress-circle'));
     expect(progressElement.nativeElement.getAttribute('aria-valuemin')).toBe('100');
     expect(progressElement.nativeElement.getAttribute('aria-valuemax')).toBe('200');
     expect(progressElement.nativeElement.getAttribute('aria-valuenow')).toBe('150');
   });
 });
 
-@Component({template: '<gh-progresscircle></gh-progresscircle>'})
+@Component({template: '<gh-progress-circle></gh-progress-circle>'})
 class BasicProgressCircle {}
 
 @Component({
-  template: '<gh-progresscircle [value]="value" [min]="min" [max]="max"></gh-progresscircle>'
+  template: '<gh-progress-circle [value]="value" [min]="min" [max]="max"></gh-progress-circle>'
 })
 class ValueProgressCircle {
   value = 150;

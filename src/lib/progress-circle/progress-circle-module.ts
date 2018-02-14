@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { GhProgressCircle } from './progresscircle';
+import { GhProgressCircle } from './progress-circle';
 
 @NgModule({
   exports: [GhProgressCircle],
