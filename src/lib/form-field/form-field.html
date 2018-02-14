@@ -1,0 +1,31 @@
+<div class="gh-form-field-wrapper">
+  <label class="gh-form-field-label"
+    *ngIf="!!this._labelChild"
+    [attr.for]="_control.id"
+    [attr.aria-owns]="_control.id"
+    [class.mat-empty]="_control.empty">
+    <ng-content select="gh-label"></ng-content>
+  </label>
+
+  <div class="gh-form-field-container">
+    <div class="gh-form-field-prefix">
+      <ng-content select="[ghPrefix]"></ng-content>
+    </div>
+    <div class="gh-form-field-infix">
+      <ng-content></ng-content>
+    </div>
+    <div class="gh-form-field-suffix">
+      <ng-content select="[ghSuffix]"></ng-content>
+    </div>
+  </div>
+
+  <div class="gh-form-field-subscript-wrapper" [ngSwitch]="_getDisplayedMessages()">
+    <div class="gh-form-field-error" *ngSwitchCase="'error'">
+    </div>
+    <div class="gh-form-field-hint" *ngSwitchCase="'hint'">
+      <gh-hint *ngIf="hintLabel" [id]="_hintLabelId">{{hintLabel}}</gh-hint>
+      <ng-content select="gh-hint:not([align='end'])"></ng-content>
+      <ng-content select="gh-hint[align='end']"></ng-content>
+    </div>
+  </div>
+</div>

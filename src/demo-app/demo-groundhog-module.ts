@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
   GhButtonModule,
+  GhFormFieldModule,
   GhIconModule,
   GhProgressCircleModule,
   GhSelectModule,
@@ -12,6 +13,7 @@ import {
 @NgModule({
   exports: [
     GhButtonModule,
+    GhFormFieldModule,
     GhIconModule,
     GhProgressCircleModule,
     GhSelectModule,

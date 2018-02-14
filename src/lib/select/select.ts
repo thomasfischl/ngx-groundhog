@@ -57,6 +57,7 @@ import {
   CanUpdateErrorState,
   mixinErrorState
 } from '@dynatrace/ngx-groundhog/core';
+import { GhFormFieldControl } from '@dynatrace/ngx-groundhog/form-field';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
 import {trigger, state, style, animate, transition} from '@angular/animations';
@@ -157,9 +158,13 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(Gh
       ])
     ])
   ],
+  providers: [
+    {provide: GhFormFieldControl, useExisting: GhSelect},
+  ]
 })
-export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, DoCheck,
-  AfterContentInit, OnDestroy, CanDisable, HasTabIndex, ControlValueAccessor, CanUpdateErrorState {
+export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, OnDestroy, DoCheck,
+  AfterContentInit, CanDisable, HasTabIndex, ControlValueAccessor, CanUpdateErrorState,
+  GhFormFieldControl<any> {
 
   /** The placeholder displayed in the trigger of the select. */
   private _placeholder: string;
@@ -502,6 +507,11 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     this.disabled = isDisabled;
     this._changeDetectorRef.markForCheck();
     this.stateChanges.next();
+  }
+
+  /** Implemented as part of GhFormFieldControl. */
+  setDescribedByIds(ids: string[]) {
+    this._ariaDescribedby = ids.join(' ');
   }
 
   /** Drops current option subscriptions and resets from scratch. */
