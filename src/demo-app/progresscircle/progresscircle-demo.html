@@ -9,8 +9,8 @@
 <div>Dash offset: <strong>{{progresscircle._dashOffset}}</strong></div>
 <div>
   <button gh-button (click)="progress = 0" [disabled]="progress <= 0">0</button>
-  <button gh-button (click)="progress = progress - 25" [disabled]="progress <= 0">Decrease</button>
-  <button gh-button (click)="progress = progress + 25" [disabled]="progress >= 100">Increase</button>
+  <button gh-button (click)="progress = progress - 25" [disabled]="progress <= progresscircle.min">Decrease</button>
+  <button gh-button (click)="progress = progress + 25" [disabled]="progress >= progresscircle.max">Increase</button>
   <button gh-button (click)="progress = 100" [disabled]="progress >= 100">100</button>
   <div>
     <label for="min">Min</label>
