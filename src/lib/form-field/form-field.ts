@@ -45,16 +45,6 @@ export class GhHint {
 })
 export class GhLabel { }
 
-@Directive({
-  selector: '[ghPrefix]',
-})
-export class GhPrefix {}
-
-@Directive({
-  selector: '[ghSuffix]',
-})
-export class GhSuffix {}
-
 
 @Component({
   moduleId: module.id,
@@ -95,8 +85,6 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
   @ContentChild(GhLabel) _labelChild: GhLabel;
   @ContentChildren(GhHint) _hintChildren: QueryList<GhHint>;
   @ContentChild(GhFormFieldControl) _control: GhFormFieldControl<any>;
-  @ContentChildren(GhPrefix) _prefixChildren: QueryList<GhPrefix>;
-  @ContentChildren(GhSuffix) _suffixChildren: QueryList<GhSuffix>;
 
   private _hintLabel = '';
 

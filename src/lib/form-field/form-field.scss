@@ -3,22 +3,7 @@
   position: relative;
   text-align: left;
 }
-
-.gh-form-field-container {
-  display: inline-flex;
-  align-items: baseline;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.gh-form-field-prefix,
-.gh-form-field-suffix {
-  white-space: nowrap;
-  flex: none;
-  position: relative;
-}
-
-.gh-form-field-infix {
+.gh-form-field-control {
   display: block;
   position: relative;
   flex: auto;
@@ -26,10 +11,11 @@
   width: 180px;
 }
 
-.gh-form-field-infix > *{
+.gh-form-field-control.gh-form-field-control > * {
   // We need to enforce display block here
   // so the control fills the form field
-  display: block !important;
+  display: block;
+  width: 100%;
 }
 
 .gh-form-field-label {

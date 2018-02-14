@@ -35,4 +35,7 @@ export abstract class GhFormFieldControl<T> {
 
   /** Sets the list of element IDs that currently describe this control. */
   abstract setDescribedByIds(ids: string[]): void;
+
+  /** Handles a click on the control's container. */
+  abstract onContainerClick(event: MouseEvent): void;
 }

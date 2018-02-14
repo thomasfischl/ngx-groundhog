@@ -1,21 +1,15 @@
 <div class="gh-form-field-wrapper">
-  <label class="gh-form-field-label"
-    *ngIf="!!this._labelChild"
-    [attr.for]="_control.id"
-    [attr.aria-owns]="_control.id"
-    [class.mat-empty]="_control.empty">
-    <ng-content select="gh-label"></ng-content>
-  </label>
+  <div class="gh-form-field-container" (click)="_control.onContainerClick && _control.onContainerClick($event)">
+    <label class="gh-form-field-label"
+      *ngIf="!!this._labelChild"
+      [attr.for]="_control.id"
+      [attr.aria-owns]="_control.id"
+      [class.mat-empty]="_control.empty">
+      <ng-content select="gh-label"></ng-content>
+    </label>
 
-  <div class="gh-form-field-container">
-    <div class="gh-form-field-prefix">
-      <ng-content select="[ghPrefix]" *ngIf="_prefixChildren.length"></ng-content>
-    </div>
-    <div class="gh-form-field-infix">
+    <div class="gh-form-field-control">
       <ng-content></ng-content>
-    </div>
-    <div class="gh-form-field-suffix">
-      <ng-content select="[ghSuffix]" *ngIf="_suffixChildren.length"></ng-content>
     </div>
   </div>
 
