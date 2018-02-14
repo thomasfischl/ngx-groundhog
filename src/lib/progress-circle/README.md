@@ -1,6 +1,6 @@
 # Progress circle
 
-`<gh-progress-circle>` are a circular indicators of progress and activity.
+`<gh-progress-circle>` is a circular indicators of progress and activity.
 
 ##  Usage
 The `<gh-progress-circle>` takes the following values:
