@@ -10,9 +10,9 @@ import {GhIconRegistry} from '@dynatrace/ngx-groundhog';
 })
 export class ProgresscircleDemo {
 
-  progress = 25;
-  min = 0;
-  max = 100;
+  progress = 150;
+  min = 100;
+  max = 200;
 
   constructor(iconRegistry: GhIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry
