@@ -3,20 +3,26 @@ import {BrowserModule} from '@angular/platform-browser';
 import {ServerModule} from '@angular/platform-server';
 import {
   GhButtonModule,
-  GhIconModule
+  GhIconModule,
+  GhProgressCircleModule
 } from '@dynatrace/ngx-groundhog';
 
 @Component({
   selector: 'kitchen-sink',
   templateUrl: './kitchen-sink.html',
 })
-export class KitchenSink {}
+export class KitchenSink {
+  progressCircleMin = 100;
+  progressCircleMax = 200;
+  progressCircleValue = 150;
+}
 
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({appId: 'kitchen-sink'}),
     GhButtonModule,
-    GhIconModule
+    GhIconModule,
+    GhProgressCircleModule
   ],
   bootstrap: [KitchenSink],
   declarations: [KitchenSink],
