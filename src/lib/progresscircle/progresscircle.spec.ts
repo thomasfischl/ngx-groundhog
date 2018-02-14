@@ -70,8 +70,8 @@ describe('GhProgressCircle', () => {
 
     const progressElement = fixture.debugElement.query(By.css('gh-progresscircle'));
     expect(progressElement.componentInstance.value).toBe(150);
-    // expect(progressElement.componentInstance.min).toBe(100);
-    // expect(progressElement.componentInstance.max).toBe(200);
+    expect(progressElement.componentInstance.min).toBe(100);
+    expect(progressElement.componentInstance.max).toBe(200);
   });
 
   it('should calculate the percentage based on value, min and max', () => {
