@@ -16,7 +16,7 @@ echo "Starting publish process of ngx-groundhog-builds"
 rm -rf ${repoDir}
 mkdir -p ${repoDir}
 
-echo "Starting cloning process of ${repoUrl} into ${repoDir}.."
+echo "Started cloning process of ${repoUrl} into ${repoDir}.."
 
 commitSha=$(git rev-parse --short HEAD)
 buildVersion=$(node -pe "require('./package.json').version")
