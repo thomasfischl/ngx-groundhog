@@ -13,6 +13,7 @@ addons:
 branches:
   only:
   - master
+  - feat/ci-npm-publish
 
 jobs:
   include:
