@@ -1,1 +1,21 @@
-<p>this is my checkbox</p>
+<input 
+  type="checkbox"
+  class="gh-checkbox-input"
+  [name]="name"
+  [value]="value"
+  [id]="id"
+  [checked]="checked" />
+<label 
+  class="gh-checkbox-label"
+  [for]="id">
+  <div class="gh-checkbox-container">
+    <div class="gh-checkbox-checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M453.448 132.553l-49.026-41.138-200.55 239.005L99.69 243.001l-41.138 49.027L211.76 420.586z"/>
+        </svg>
+    </div>
+  </div>
+  <div class="gh-checkbox-caption">
+    <ng-content></ng-content>
+  </div>
+</label>
