@@ -109,6 +109,6 @@ for ((i = 0; i < ${#PACKAGES[@]}; i++)); do
 done
 
 # Publish to npm
-if [[ $TRAVIS_TAG =~ ^release-v(\d+\.){2}\d+(-\S+)? ]]; then
+if [[ $TRAVIS_TAG =~ ^release-v([0-9]+\.){2}[0-9]+(-[a-z]+)? ]]; then
   ./npm-publish.sh
 fi
