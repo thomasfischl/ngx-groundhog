@@ -21,6 +21,9 @@ jobs:
     - env: "MODE=e2e"
     - env: "MODE=test"
     - env: "DEPLOY_MODE=build-artifacts"
+    -
+      if: tag =~ ^release-v(\d+\.){2}\d+(-\S+)?
+      env: "DEPLOY_MODE=npm"
 
 env:
   global:
