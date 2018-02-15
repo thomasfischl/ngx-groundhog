@@ -108,7 +108,9 @@ for ((i = 0; i < ${#PACKAGES[@]}; i++)); do
   (publishPackage ${packageName} ${packageRepo})
 done
 
+tag=$(git describe --exact-match ${commitSha})
+
 # Publish to npm
-if [[ $TRAVIS_TAG =~ ^release-v([0-9]+\.){2}[0-9]+(-[a-z]+)? ]]; then
-  ./npm-publish.sh
+if [[ ${tag} =~ ^release-v([0-9]+\.){2}[0-9]+(-[a-z]+)? ]]; then
+  ./scripts/deploy/npm-publish.sh
 fi
