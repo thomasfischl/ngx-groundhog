@@ -19,6 +19,7 @@ import {
   AfterContentInit,
   isDevMode,
   Inject,
+  Input,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GhButton } from '@dynatrace/ngx-groundhog/button';
@@ -119,6 +120,10 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
       // Registering an icon named 'more' in the default namespace
       .addSvgIcon('more',
         sanitizer.bypassSecurityTrustResourceUrl('/assets/more.svg'));
+    iconRegistry
+      // Registering an icon named 'abort' in the default namespace
+      .addSvgIcon('abort',
+        sanitizer.bypassSecurityTrustResourceUrl('/assets/abort.svg'));
   }
 
   /** Opens the panel */
@@ -209,8 +214,6 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
   }
 }
 
-
-
 @Component({
   selector: 'gh-context-action-menu-item, gh-ca-menu-item',
   templateUrl: './context-action-menu-item.html',
@@ -218,8 +221,17 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
 })
 export class GhContextActionMenuItem extends _GhContextActionMenuBase
   implements CanDisable, HasTabIndex {
-  constructor() {
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {
     super();
   }
 
+  /** Event emitted when the item has been clicked. */
+  @Output() onClick: EventEmitter<Event> = new EventEmitter<Event>();
+
+  // Call is invoked when the button in the item is clicked
+  _actionClicked(event: Event) {
+    event.preventDefault();
+    this.onClick.emit(event);
+    this._changeDetectorRef.markForCheck();
+  }
 }
