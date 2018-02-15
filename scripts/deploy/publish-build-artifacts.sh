@@ -107,3 +107,8 @@ for ((i = 0; i < ${#PACKAGES[@]}; i++)); do
   # directory changes.
   (publishPackage ${packageName} ${packageRepo})
 done
+
+# Publish to npm
+if [[ $TRAVIS_TAG =~ ^release-v([0-9]+\.){2}[0-9]+(-[a-z]+)? ]]; then
+  ./npm-publish.sh
+fi
