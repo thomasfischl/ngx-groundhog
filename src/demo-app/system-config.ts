@@ -47,6 +47,7 @@ System.config({
 
     '@dynatrace/ngx-groundhog': 'dist/packages/ngx-groundhog/public-api.js',
     '@dynatrace/ngx-groundhog/button': 'dist/packages/ngx-groundhog/button/index.js',
+    '@dynatrace/ngx-groundhog/checkbox': 'dist/packages/ngx-groundhog/checkbox/index.js',
     '@dynatrace/ngx-groundhog/core': 'dist/packages/ngx-groundhog/core/index.js',
     '@dynatrace/ngx-groundhog/icon': 'dist/packages/ngx-groundhog/icon/index.js',
     '@dynatrace/ngx-groundhog/progress-circle':
