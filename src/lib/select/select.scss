@@ -60,7 +60,7 @@ $gh-select-panel-max-width: 280px !default;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 
-  // Makes sure the opening scale animation starts from the tom
+  // Makes sure the opening scale animation starts from the top
   transform-origin: left top;
   &.gh-select-panel-top {
     transform-origin: left bottom;
