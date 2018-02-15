@@ -26,8 +26,3 @@ echo ""
 if [[ "${DEPLOY_MODE}" == "build-artifacts" ]]; then
   ./scripts/deploy/publish-build-artifacts.sh
 fi
-
-# Publish to npm
-if [[ "${DEPLOY_MODE}" == "npm" ]]; then
-  ./scripts/deploy/npm-publish.sh
-fi
