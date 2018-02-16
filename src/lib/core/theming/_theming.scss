@@ -14,7 +14,7 @@
 @function gh-light-theme($theme-palette, $accent-palette) {
   @return (
     theme: $theme-palette,
-    accent: $theme-palette,
+    accent: $accent-palette,
     is-dark: false,
   );
 }

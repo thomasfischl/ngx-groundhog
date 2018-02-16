@@ -7,63 +7,132 @@
   $theme-hover-color: gh-color($theme-color-palette, 'hover');
   $theme-active-color: gh-color($theme-color-palette, 'active');
 
+  $accent-color-palette: map-get($theme, 'accent');
+  $accent-default-color: gh-color($accent-color-palette, 'default');
+  $accent-hover-color: gh-color($accent-color-palette, 'hover');
+  $accent-active-color: gh-color($accent-color-palette, 'active');
+
   .gh-button,
   .gh-icon-button {
-    &.gh-primary {
+    &.gh-button-primary {
       background: $theme-default-color;
       border-color: $theme-default-color;
       color: #fff;
     }
-    &.gh-primary:hover:not([disabled]) {
+    &.gh-button-primary:hover:not([disabled]) {
       background: $theme-hover-color;
       border-color: $theme-hover-color;
+      color: #fff;
     }
-    &.gh-primary:active:not([disabled]) {
+    &.gh-button-primary:active:not([disabled]) {
       background: $theme-active-color;
       border-color: $theme-active-color;
+      color: #fff;
     }
-    &.gh-primary[disabled] {
+    &.gh-button-primary[disabled] {
       background: $disabledcolor;
       border-color: $disabledcolor;
       color: #fff;
     }
-    &.gh-primary .gh-icon svg {
+    &.gh-button-primary .gh-icon svg {
       fill: #fff;
     }
 
-    &.gh-secondary {
+    &.gh-button-secondary {
       background: #fff;
       border-color: $theme-default-color;
       color: $theme-default-color;
     }
-    &.gh-secondary:hover:not([disabled]) {
+    &.gh-button-secondary:hover:not([disabled]) {
       background: $gray-100;
       border-color: $theme-hover-color;
       color: $theme-hover-color;
     }
 
-    &.gh-secondary:active:not([disabled]) {
+    &.gh-button-secondary:active:not([disabled]) {
       background: $gray-100;
       border-color: $theme-active-color;
       color: $theme-active-color;
     }
 
-    &.gh-secondary[disabled] {
+    &.gh-button-secondary[disabled] {
       background: #fff;
       border-color: $disabledcolor;
       color: $disabledcolor;
     }
-    &.gh-secondary .gh-icon svg {
+    &.gh-button-secondary .gh-icon svg {
       fill: $theme-default-color;
     }
-    &.gh-secondary:hover:not([disabled]) .gh-icon svg {
+    &.gh-button-secondary:hover:not([disabled]) .gh-icon svg {
       fill: $theme-hover-color;
     }
-    &.gh-secondary:active:not([disabled]) .gh-icon svg {
+    &.gh-button-secondary:active:not([disabled]) .gh-icon svg {
       fill: $theme-active-color;
     }
-    &.gh-secondary[disabled] .gh-icon svg {
+    &.gh-button-secondary[disabled] .gh-icon svg {
       fill: $disabledcolor;
+    }
+
+
+    &.gh-button-accent {
+      &.gh-button-primary {
+        background: $accent-default-color;
+        border-color: $accent-default-color;
+        color: #fff;
+      }
+      &.gh-button-primary:hover:not([disabled]) {
+        background: $accent-hover-color;
+        border-color: $accent-hover-color;
+        color: #fff;
+      }
+      &.gh-button-primary:active:not([disabled]) {
+        background: $accent-active-color;
+        border-color: $accent-active-color;
+        color: #fff;
+      }
+      &.gh-button-primary[disabled] {
+        background: $disabledcolor;
+        border-color: $disabledcolor;
+        color: #fff;
+      }
+      &.gh-button-primary .gh-icon svg {
+        fill: #fff;
+      }
+
+      &.gh-button-secondary {
+        background: #fff;
+        border-color: $accent-default-color;
+        color: $accent-default-color;
+      }
+      &.gh-button-secondary:hover:not([disabled]) {
+        background: $gray-100;
+        border-color: $accent-hover-color;
+        color: $accent-hover-color;
+      }
+
+      &.gh-button-secondary:active:not([disabled]) {
+        background: $gray-100;
+        border-color: $accent-active-color;
+        color: $accent-active-color;
+      }
+
+      &.gh-button-secondary[disabled] {
+        background: #fff;
+        border-color: $disabledcolor;
+        color: $disabledcolor;
+      }
+      &.gh-button-secondary .gh-icon svg {
+        fill: $accent-default-color;
+      }
+      &.gh-button-secondary:hover:not([disabled]) .gh-icon svg {
+        fill: $accent-hover-color;
+      }
+      &.gh-button-secondary:active:not([disabled]) .gh-icon svg {
+        fill: $accent-active-color;
+      }
+      &.gh-button-secondary[disabled] .gh-icon svg {
+        fill: $disabledcolor;
+      }
     }
   }
 }

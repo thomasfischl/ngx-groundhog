@@ -47,6 +47,74 @@ describe('GhButton', () => {
       fixture.detectChanges();
       expect(buttonNativeElement.disabled).toBeTruthy('Expected button to be disabled');
     });
+
+    it('should augment an existing class with a color property', () => {
+      const fixture = TestBed.createComponent(TestApp);
+      fixture.detectChanges();
+
+      const buttonElement = fixture.debugElement.query(By.css('button'));
+      const instance = buttonElement.componentInstance;
+
+      expect(instance.color)
+        .toBe('default', 'Expected the mixed-into class to have a color property');
+
+      instance.color = 'accent';
+
+      expect(instance.color)
+          .toBe('accent', 'Expected the mixed-into class to have an updated color property');
+    });
+
+    it('should remove old color classes if new color is set', () => {
+      const fixture = TestBed.createComponent(TestApp);
+      fixture.detectChanges();
+
+      const buttonElement = fixture.debugElement.query(By.css('button'));
+      const instance = buttonElement.componentInstance;
+
+      expect(buttonElement.nativeElement.classList)
+        .toContain('gh-button-default', 'Expected the element to have the "gh-button-default" class set');
+
+      instance.color = 'accent';
+
+      expect(buttonElement.nativeElement.classList)
+        .not.toContain('gh-button-default', 'Expected the element to no longer have "gh-button-default" set.');
+      expect(buttonElement.nativeElement.classList)
+        .toContain('gh-button-accent', 'Expected the element to have the "gh-button-accent" class set');
+    });
+
+    it('should augment an existing class with a variant property', () => {
+      const fixture = TestBed.createComponent(TestApp);
+      fixture.detectChanges();
+
+      const buttonElement = fixture.debugElement.query(By.css('button'));
+      const instance = buttonElement.componentInstance;
+
+      expect(instance.variant)
+        .toBe('primary', 'Expected the mixed-into class to have a variant property');
+
+      instance.variant = 'secondary';
+
+      expect(instance.variant)
+          .toBe('secondary', 'Expected the mixed-into class to have an updated variant property');
+    });
+
+    it('should remove old variant classes if new variant is set', () => {
+      const fixture = TestBed.createComponent(TestApp);
+      fixture.detectChanges();
+
+      const buttonElement = fixture.debugElement.query(By.css('button'));
+      const instance = buttonElement.componentInstance;
+
+      expect(buttonElement.nativeElement.classList)
+        .toContain('gh-button-primary', 'Expected the element to have the "gh-button-primary" class set');
+
+      instance.variant = 'secondary';
+
+      expect(buttonElement.nativeElement.classList)
+        .not.toContain('gh-button-primary', 'Expected the element to no longer have "gh-button-primary" set.');
+      expect(buttonElement.nativeElement.classList)
+        .toContain('gh-button-secondary', 'Expected the element to have the "gh-button-secondary" class set');
+    });
   });
 
   // Anchor button tests
