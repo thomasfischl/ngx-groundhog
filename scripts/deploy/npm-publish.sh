@@ -38,6 +38,6 @@ npm set init.author.name "${NPM_AUTHOR}"
 npm set init.author.email "${NPM_AUTHOR_EMAIL}"
 echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
 
-npm publish
+npm publish --access=public
 
 echo "npm publish done"
