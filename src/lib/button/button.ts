@@ -99,7 +99,7 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
     '[attr.aria-disabled]': 'disabled.toString()',
     '(click)': '_haltDisabledEvents($event)',
   },
-  inputs: ['disabled'],
+  inputs: ['disabled', 'color'],
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
   encapsulation: ViewEncapsulation.None,

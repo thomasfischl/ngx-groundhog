@@ -1,11 +1,20 @@
-@function gh-palette($base-palette, $default, $active, $hover) {
-
+@function gh-palette($default, $active, $hover) {
+  $result: (
+    default: $default,
+    active: $active,
+    hover: $hover
+  );
+  @return $result;
 }
 
-@function gh-light-theme($theme-color, $accent-color) {
+@function gh-color($palette, $flavor: default) {
+  @return map-get($palette, $flavor);
+}
+
+@function gh-light-theme($theme-palette, $accent-palette) {
   @return (
-    theme-color: $primary,
-    accent-color: $accent-color,
+    theme: $theme-palette,
+    accent: $theme-palette,
     is-dark: false,
   );
 }

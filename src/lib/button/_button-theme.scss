@@ -1,5 +1,43 @@
+@import '../core/theming/theming';
+@import '../core/style/variables';
+
 @mixin gh-button-theme($theme) {
-  .gh-primary {
-    background: blue;
+  $theme-color-palette: map-get($theme, 'theme');
+  $theme-default-color: gh-color($theme-color-palette, 'default');
+  $theme-hover-color: gh-color($theme-color-palette, 'hover');
+
+  .gh-button,
+  .gh-icon-button {
+    &.gh-primary {
+      background: $theme-default-color;
+      border-color: $theme-default-color;
+      color: #fff;
+    }
+    &.gh-primary:hover:not([disabled]) {
+      background: $theme-hover-color;
+      border-color: $theme-hover-color;
+    }
+    &.gh-primary[disabled] {
+      background: $disabledcolor;
+      border-color: $disabledcolor;
+      color: #fff;
+    }
+    &.gh-primary .gh-icon svg {
+      fill: #fff;
+    }
+
+    &.gh-secondary {
+      background: #fff;
+      border-color: $theme-default-color;
+      color: $theme-default-color;
+    }
+    &.gh-secondary[disabled] {
+      background: #fff;
+      border-color: $disabledcolor;
+      color: $disabledcolor;
+    }
+    &.gh-secondary .gh-icon svg {
+      fill: $theme-default-color;
+    }
   }
 }

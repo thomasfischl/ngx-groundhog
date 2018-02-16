@@ -36,9 +36,10 @@
   &[disabled] {
     cursor: default;
     box-shadow: none;
+    outline: none;
   }
 
-  &:focus {
+  &:focus:not([disabled]) {
     @include gh-focus-style();
   }
 
