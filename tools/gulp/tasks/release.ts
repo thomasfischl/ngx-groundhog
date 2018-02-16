@@ -45,14 +45,14 @@ task('ngx-groundhog:build-release', ['ngx-groundhog:prepare-release'], () => com
  */
 task('ngx-groundhog:prepare-release', sequenceTask(
   'ngx-groundhog:build',
-  ['ngx-groundhog:copy-prebuilt-themes', 'ngx-groundhog:bundle-theming-scss']
+  ['ngx-groundhog:copy-themes', 'ngx-groundhog:bundle-theming-scss']
 ));
 
-/** Copies all prebuilt themes into the release package under `prebuilt-themes/` */
-task('ngx-groundhog:copy-prebuilt-themes', () => {
+/** Copies all prebuilt themes into the release package under `themes/` */
+task('ngx-groundhog:copy-themes', () => {
   src(prebuiltThemeGlob)
     .pipe(gulpRename({dirname: ''}))
-    .pipe(dest(join(releasePath, 'prebuilt-themes')));
+    .pipe(dest(join(releasePath, 'themes')));
 });
 
 /** Bundles all scss requires for theming into a single scss file in the root of the package. */
