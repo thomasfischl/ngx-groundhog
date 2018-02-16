@@ -12,6 +12,7 @@ import {DEMO_APP_ROUTES} from './routes';
 import {SelectDemo} from '../select/select-demo';
 import {ProgressCircleDemo} from '../progress-circle/progress-circle-demo';
 import {TileDemo} from 'tile/tile-demo';
+import { ExpandableDemo } from '../expandable/expandable-demo';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import {TileDemo} from 'tile/tile-demo';
     TileDemo,
     DemoApp,
     Home,
+    ExpandableDemo,
   ],
   entryComponents: [
     DemoApp,

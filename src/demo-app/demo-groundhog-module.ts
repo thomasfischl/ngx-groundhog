@@ -8,6 +8,7 @@ import {
   GhProgressCircleModule,
   GhSelectModule,
   GhTileModule,
+  GhExpandableModule,
 } from '@dynatrace/ngx-groundhog';
 
 /**
@@ -23,6 +24,7 @@ import {
     GhProgressCircleModule,
     GhSelectModule,
     GhTileModule,
+    GhExpandableModule,
   ]
 })
 export class DemoGroundhogModule {}

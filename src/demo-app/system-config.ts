@@ -56,6 +56,7 @@ System.config({
       'dist/packages/ngx-groundhog/progress-circle/index.js',
     '@dynatrace/ngx-groundhog/select': 'dist/packages/ngx-groundhog/select/index.js',
     '@dynatrace/ngx-groundhog/tile': 'dist/packages/ngx-groundhog/tile/index.js',
+    '@dynatrace/ngx-groundhog/expandable': 'dist/packages/ngx-groundhog/expandable/index.js',
   },
   packages: {
     // Thirdparty barrels.
