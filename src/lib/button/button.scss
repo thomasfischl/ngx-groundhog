@@ -1,30 +1,73 @@
-@import '@dynatrace/groundhog/src/button/button-common';
-@import '@dynatrace/groundhog/src/button/button-variants';
+@import '../core/style/variables';
+@import '../core/style/interactive-common';
 
-.gh-button {
-  @include btn-common();
+%gh-button-base {
+  font-family: $mainfont;
+  box-sizing: border-box;
+  position: relative;
+
+  // Reset browser <button> styles.
+  @include gh-interactive-reset();
+
+  // Make anchors render like buttons.
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  overflow: hidden;
+
+  height: 32px;
+  border-style: solid;
+  border-radius: 3px;
+  border-width: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 14px;
+  line-height: 32px;
+  line-height: -moz-block-height;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &[disabled] {
+    cursor: default;
+    box-shadow: none;
+  }
+
+  &:focus {
+    @include gh-focus-style();
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
 
   .gh-icon {
-    @include btn-icon-element();
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    margin-top: 5px;
+    vertical-align: top;
   }
+}
+
+.gh-button {
+  @extend %gh-button-base;
 }
 
 .gh-icon-button {
-  // This subselector has to be first so the icon selector
-  // in btn-common can override this one
+  @extend %gh-button-base;
+
+  padding-left: 0;
+  padding-right: 0;
+  width: 32px;
+  text-align: center;
+
   .gh-icon {
-    @include btn-icon-element();
+    margin-right: 0;
   }
-
-  @include btn-common('.gh-icon');
-  @include btn-icon();
-
-}
-
-.gh-primary {
-  @include btn-primary('.gh-icon');
-}
-
-.gh-secondary {
-  @include btn-secondary('.gh-icon');
 }
