@@ -7,32 +7,13 @@ set -e
 
 echo "Starting npm publish"
 
-repoUrl="https://github.com/Dynatrace/ngx-groundhog-builds.git"
-repoDir="tmp/ngx-groundhog-builds"
+releaseDir="dist/releases/ngx-groundhog"
 
-echo "Starting publish process of ngx-groundhog-builds"
-
-# Prepare cloning the builds repository
-rm -rf ${repoDir}
-mkdir -p ${repoDir}
-
-echo "Started cloning process of ${repoUrl} into ${repoDir}.."
-
-commitSha=$(git rev-parse --short HEAD)
-buildVersion=$(node -pe "require('./package.json').version")
-commitTag="${buildVersion}-${commitSha}"
-
-# Clone the repository and only fetch the last commit to download less unused data.
-git clone ${repoUrl} ${repoDir} --depth 1
+# Copy readme md to release to have it on npm
+cp ./README.md ${releaseDir}
 
 # Changes to the repository.
-cd ${repoDir}
-
-# Checkout specific release tag
-git fetch --tags
-git checkout tags/${commitTag}
-
-echo "Successfully cloned ${repoUrl} into ${repoDir} and checked out ${commitTag}"
+cd ${releaseDir}
 
 npm set init.author.name "${NPM_AUTHOR}"
 npm set init.author.email "${NPM_AUTHOR_EMAIL}"

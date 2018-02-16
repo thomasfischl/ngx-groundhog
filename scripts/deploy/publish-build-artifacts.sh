@@ -106,7 +106,7 @@ publishPackage() {
 code=$?
 
 if [[ ${code} == 0 ]]; then
-  commitShaLong=$(git rev-parse --short HEAD)
+  commitShaLong=$(git rev-parse HEAD)
   if [[ $(git describe --tags --exact-match ${commitShaLong}) ]]; then
     tag=$(git describe --tags --exact-match ${commitShaLong})
   else
