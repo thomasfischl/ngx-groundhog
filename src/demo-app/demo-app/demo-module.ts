@@ -8,6 +8,7 @@ import {IconDemo} from '../icon/icon-demo';
 import {DemoApp, Home} from './demo-app';
 import {DEMO_APP_ROUTES} from './routes';
 import { SelectDemo } from '../select/select-demo';
+import { ExpandableDemo } from '../expandable/expandable-demo';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { SelectDemo } from '../select/select-demo';
     SelectDemo,
     DemoApp,
     Home,
+    ExpandableDemo,
   ],
   entryComponents: [
     DemoApp,
