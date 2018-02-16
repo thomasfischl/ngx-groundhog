@@ -2,8 +2,8 @@
 @import '../../style/variables';
 
 @mixin gh-turquoise-theme($default: false) {
-  $theme-palette: gh-palette($turquoise-600, $turquoise-700, $turquoise-700);
-  $accent-palette: gh-palette($blue-600, $blue-700, $blue-700);
+  $theme-palette: gh-palette($turquoise-600, $turquoise-700, $turquoise-800);
+  $accent-palette: gh-palette($blue-600, $blue-700, $blue-800);
   $theme: gh-light-theme($theme-palette, $accent-palette);
 
   @if $default == false {

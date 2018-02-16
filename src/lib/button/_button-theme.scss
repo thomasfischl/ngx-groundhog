@@ -5,6 +5,7 @@
   $theme-color-palette: map-get($theme, 'theme');
   $theme-default-color: gh-color($theme-color-palette, 'default');
   $theme-hover-color: gh-color($theme-color-palette, 'hover');
+  $theme-active-color: gh-color($theme-color-palette, 'active');
 
   .gh-button,
   .gh-icon-button {
@@ -16,6 +17,10 @@
     &.gh-primary:hover:not([disabled]) {
       background: $theme-hover-color;
       border-color: $theme-hover-color;
+    }
+    &.gh-primary:active:not([disabled]) {
+      background: $theme-active-color;
+      border-color: $theme-active-color;
     }
     &.gh-primary[disabled] {
       background: $disabledcolor;
@@ -31,6 +36,18 @@
       border-color: $theme-default-color;
       color: $theme-default-color;
     }
+    &.gh-secondary:hover:not([disabled]) {
+      background: $gray-100;
+      border-color: $theme-hover-color;
+      color: $theme-hover-color;
+    }
+
+    &.gh-secondary:active:not([disabled]) {
+      background: $gray-100;
+      border-color: $theme-active-color;
+      color: $theme-active-color;
+    }
+
     &.gh-secondary[disabled] {
       background: #fff;
       border-color: $disabledcolor;
@@ -38,6 +55,15 @@
     }
     &.gh-secondary .gh-icon svg {
       fill: $theme-default-color;
+    }
+    &.gh-secondary:hover:not([disabled]) .gh-icon svg {
+      fill: $theme-hover-color;
+    }
+    &.gh-secondary:active:not([disabled]) .gh-icon svg {
+      fill: $theme-active-color;
+    }
+    &.gh-secondary[disabled] .gh-icon svg {
+      fill: $disabledcolor;
     }
   }
 }

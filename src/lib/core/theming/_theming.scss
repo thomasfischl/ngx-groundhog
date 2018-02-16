@@ -1,8 +1,8 @@
-@function gh-palette($default, $active, $hover) {
+@function gh-palette($default, $hover, $active) {
   $result: (
     default: $default,
+    hover: $hover,
     active: $active,
-    hover: $hover
   );
   @return $result;
 }
