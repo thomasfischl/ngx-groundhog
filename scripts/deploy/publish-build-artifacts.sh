@@ -22,17 +22,18 @@ REPOSITORIES=(ngx-groundhog-builds)
 # Command line arguments.
 COMMAND_ARGS=${*}
 
+commitSha=$(git rev-parse --short HEAD)
+
 # Function to publish artifacts of a package to Github.
 #   @param ${1} Name of the package
 #   @param ${2} Repository name of the package.
 publishPackage() {
   packageName=${1}
   packageRepo=${2}
-
+  commitSha=${3}
   buildDir="dist/releases/${packageName}"
   buildVersion=$(node -pe "require('./package.json').version")
 
-  commitSha=$(git rev-parse --short HEAD)
   commitAuthorName=$(git --no-pager show -s --format='%an' HEAD)
   commitAuthorEmail=$(git --no-pager show -s --format='%ae' HEAD)
   commitMessage=$(git log --oneline -n 1)
@@ -99,18 +100,22 @@ publishPackage() {
   echo "Published package artifacts for ${packageName}#${commitSha}."
 }
 
-for ((i = 0; i < ${#PACKAGES[@]}; i++)); do
-  packageName=${PACKAGES[${i}]}
-  packageRepo=${REPOSITORIES[${i}]}
+# Publish artifacts of the current package. Run publishing in a sub-shell to avoid working
+# directory changes.
+(publishPackage ngx-groundhog ngx-groundhog-builds ${commitSha})
+code=$?
 
-  # Publish artifacts of the current package. Run publishing in a sub-shell to avoid working
-  # directory changes.
-  (publishPackage ${packageName} ${packageRepo})
-done
-
-tag=$(git describe --exact-match ${commitSha})
-
-# Publish to npm
-if [[ ${tag} =~ ^release-v([0-9]+\.){2}[0-9]+(-[a-z]+)? ]]; then
-  ./scripts/deploy/npm-publish.sh
+if [[ ${code} == 0 ]]; then
+  if [[ $(git describe --exact-match ${commitSha}) ]]; then
+    tag=$(git describe --exact-match ${commitSha})
+  else
+    tag=""
+  fi
+  #tag=$(git describe --exact-match ${commitSha} || echo "")
+  # Publish to npm
+  if [[ ${tag} =~ ^release-v([0-9]+\.){2}[0-9]+(-[a-z]+)? ]]; then
+    echo "Tag found for ${commitSha}: ${tag}"
+    ./scripts/deploy/npm-publish.sh
+  fi
 fi
+
