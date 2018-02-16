@@ -56,7 +56,7 @@ describe('GhButton', () => {
       const instance = buttonElement.componentInstance;
 
       expect(instance.color)
-        .toBe('default', 'Expected the mixed-into class to have a color property');
+        .toBe('main', 'Expected the mixed-into class to have a color property');
 
       instance.color = 'accent';
 
@@ -72,12 +72,12 @@ describe('GhButton', () => {
       const instance = buttonElement.componentInstance;
 
       expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-default', 'Expected the element to have the "gh-button-default" class set');
+        .toContain('gh-button-main', 'Expected the element to have the "gh-button-main" class set');
 
       instance.color = 'accent';
 
       expect(buttonElement.nativeElement.classList)
-        .not.toContain('gh-button-default', 'Expected the element to no longer have "gh-button-default" set.');
+        .not.toContain('gh-button-main', 'Expected the element to no longer have "gh-button-main" set.');
       expect(buttonElement.nativeElement.classList)
         .toContain('gh-button-accent', 'Expected the element to have the "gh-button-accent" class set');
     });

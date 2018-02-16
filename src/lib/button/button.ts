@@ -28,9 +28,9 @@ export class GhButtonBase {
 }
 export const _GhButtonMixinBase = mixinDisabled(GhButtonBase);
 
-export type ButtonColor = 'default' | 'accent' | 'warning' | 'error'  | 'cta' | undefined;
+export type ButtonColor = 'main' | 'accent' | 'warning' | 'error'  | 'cta';
 export type ButtonVariant = 'primary' | 'secondary';
-const defaultColor = 'default';
+const defaultColor = 'main';
 const defaultVariant = 'primary';
 
 /**

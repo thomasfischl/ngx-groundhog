@@ -11,10 +11,13 @@
   @return map-get($palette, $flavor);
 }
 
-@function gh-light-theme($theme-palette, $accent-palette) {
+@function gh-light-theme($main-palette, $accent-palette, $warning-palette, $error-palette, $cta-palette) {
   @return (
-    theme: $theme-palette,
+    main: $main-palette,
     accent: $accent-palette,
+    warning: $warning-palette,
+    error: $error-palette,
+    cta: $cta-palette,
     is-dark: false,
   );
 }
