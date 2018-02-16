@@ -10,8 +10,9 @@ There are currently two button variants that can be applied by adding an attribu
 | `gh-icon-button` | Icon only button                     |
 
 ## Theming & Coloring
-The button component exposes a `color` property. It can be used to set a specific Theme Palette.
-Possible values are `primary` or `secondary`. When not applied, the default value `primary` will be set.
+The button component exposes a `color` and a `variant`property.
+`color` can be used to set a specific color palette on this button. Possible values are `default`, `accent`, `warning`, `error` or `cta`.
+With `variant` you can set the button to be a `primary`(default) or `secondary` button.
 
 ## Accessibility
 By using native `<button>` or `<a>` elements accessibility is ensured per default. Buttons or links containing only icons (`gh-icon-button`) should be given a meaningful label via `aria-label` or `aria-labelledby`.
