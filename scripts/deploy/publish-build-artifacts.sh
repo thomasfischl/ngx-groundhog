@@ -106,15 +106,15 @@ publishPackage() {
 code=$?
 
 if [[ ${code} == 0 ]]; then
-  if [[ $(git describe --exact-match ${commitSha}) ]]; then
-    tag=$(git describe --exact-match ${commitSha})
+  commitShaLong=$(git rev-parse --short HEAD)
+  if [[ $(git describe --tags --exact-match ${commitShaLong}) ]]; then
+    tag=$(git describe --tags --exact-match ${commitShaLong})
   else
     tag=""
   fi
-  #tag=$(git describe --exact-match ${commitSha} || echo "")
   # Publish to npm
   if [[ ${tag} =~ ^release-v([0-9]+\.){2}[0-9]+(-[a-z]+)? ]]; then
-    echo "Tag found for ${commitSha}: ${tag}"
+    echo "Tag found for ${commitShaLong}: ${tag}"
     ./scripts/deploy/npm-publish.sh
   fi
 fi
