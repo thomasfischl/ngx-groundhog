@@ -4,13 +4,11 @@ import {IconDemo} from '../icon/icon-demo';
 import {DemoApp, Home} from './demo-app';
 import {SelectDemo} from '../select/select-demo';
 import {ProgressCircleDemo} from '../progress-circle/progress-circle-demo';
-import {FormFieldDemo} from 'form-field/form-field-demo';
 
 export const DEMO_APP_ROUTES: Routes = [
   {path: '', component: DemoApp, children: [
     {path: '', component: Home},
     {path: 'button', component: ButtonDemo},
-    {path: 'form-field', component: FormFieldDemo},
     {path: 'icon', component: IconDemo},
     {path: 'progress-circle', component: ProgressCircleDemo},
     {path: 'select', component: SelectDemo},

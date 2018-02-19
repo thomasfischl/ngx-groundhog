@@ -41,7 +41,6 @@ export class DemoApp {
   navItems = [
     {name: 'Start', route: '/'},
     {name: 'Button', route: '/button'},
-    {name: 'Form field', route: '/form-field'},
     {name: 'Icon', route: '/icon'},
     {name: 'Progress circle', route: '/progress-circle'},
     {name: 'Select', route: '/select'},

@@ -15,6 +15,7 @@
 
   <div class="gh-form-field-subscript-wrapper" [ngSwitch]="_getDisplayedMessages()">
     <div class="gh-form-field-error" *ngSwitchCase="'error'">
+        <ng-content select="gh-error"></ng-content>
     </div>
     <div class="gh-form-field-hint-wrapper" *ngSwitchCase="'hint'">
       <gh-hint *ngIf="hintLabel" [id]="_hintLabelId">{{hintLabel}}</gh-hint>

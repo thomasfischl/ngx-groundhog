@@ -45,6 +45,19 @@ export class GhHint {
 })
 export class GhLabel { }
 
+/** Single error message to be shown underneath the form field. */
+@Directive({
+  selector: 'gh-error',
+  host: {
+    'class': 'gh-error',
+    'role': 'alert',
+    '[attr.id]': 'id',
+  }
+})
+export class GhError {
+  @Input() id: string = `gh-error-${nextUniqueId++}`;
+}
+
 
 @Component({
   moduleId: module.id,
@@ -84,6 +97,7 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
 
   @ContentChild(GhLabel) _labelChild: GhLabel;
   @ContentChildren(GhHint) _hintChildren: QueryList<GhHint>;
+  @ContentChildren(GhError) _errorChildren: QueryList<GhError>;
   @ContentChild(GhFormFieldControl) _control: GhFormFieldControl<any>;
 
   private _hintLabel = '';
@@ -110,6 +124,12 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
       this._processHints();
       this._changeDetectorRef.markForCheck();
     });
+
+    // Update the aria-described by when the number of errors changes.
+    this._errorChildren.changes.pipe(startWith(null)).subscribe(() => {
+      this._syncDescribedByIds();
+      this._changeDetectorRef.markForCheck();
+    });
   }
 
   ngAfterContentChecked() {
@@ -124,9 +144,8 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
 
   /** Determines whether to display hints or errors. */
   _getDisplayedMessages(): 'error' | 'hint' {
-    return 'hint';
-    // return (this._errorChildren && this._errorChildren.length > 0 &&
-    //     this._control.errorState) ? 'error' : 'hint';
+    return (this._errorChildren && this._errorChildren.length > 0 &&
+      this._control.errorState) ? 'error' : 'hint';
   }
 
   /** Throws an error if the form field's control is missing. */
@@ -188,9 +207,9 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
 
         if (endHint) {
           ids.push(endHint.id);
+        } else if (this._errorChildren) {
+          ids = this._errorChildren.map(error => error.id);
         }
-        // } else if (this._errorChildren) {
-        //   ids = this._errorChildren.map(error => error.id);
       }
       this._control.setDescribedByIds(ids);
     }

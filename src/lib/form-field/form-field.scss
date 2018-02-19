@@ -26,6 +26,10 @@
   padding-bottom: 6px;
 }
 
+.gh-form-field-subscript-wrapper {
+  padding-top: 6px;
+}
+
 .gh-form-field-hint-wrapper {
   display: flex;
 }
@@ -34,15 +38,22 @@
   flex: 1 0 1em;
 }
 
-.gh-hint {
+.gh-hint,
+.gh-error {
   font-family: "BerninaSans", "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
   text-decoration: none;
   appearance: none;
   display: block;
   box-sizing: border-box;
   white-space: normal;
-  padding-top: 6px;
-  font-size: 12px;
+}
+
+.gh-hint {
   color: #898989;
-  font-weight: 400;
+}
+
+.gh-error {
+  color: red;
 }

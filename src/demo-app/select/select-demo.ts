@@ -28,6 +28,7 @@ export class SelectDemo implements OnInit {
 
   currentDrink: string;
   drinkDisabled = false;
+  drinksRequired = true;
   drinks = [
     { key: 'Beer', label: 'Beer label', disabled: false },
     { key: 'Wine', label: 'wine label', disabled: false },
