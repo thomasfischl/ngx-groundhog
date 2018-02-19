@@ -11,7 +11,13 @@
   @return map-get($palette, $flavor);
 }
 
-@function gh-light-theme($main-palette, $accent-palette, $warning-palette, $error-palette, $cta-palette) {
+@function gh-light-theme(
+  $main-palette,
+  $accent-palette,
+  $warning-palette,
+  $error-palette,
+  $cta-palette
+) {
   @return (
     main: $main-palette,
     accent: $accent-palette,

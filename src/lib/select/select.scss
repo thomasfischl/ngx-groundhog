@@ -23,8 +23,6 @@ $gh-select-panel-max-width: 280px !default;
   overflow: hidden;
   background-color: #fff;
 
-  display: inline-block;
-
   &:hover:not(.gh-select-disabled) {
     border-color: $gray-500;
   }
