@@ -1,0 +1,29 @@
+@function gh-palette($default, $hover, $active) {
+  $result: (
+    default: $default,
+    hover: $hover,
+    active: $active,
+  );
+  @return $result;
+}
+
+@function gh-color($palette, $flavor: default) {
+  @return map-get($palette, $flavor);
+}
+
+@function gh-light-theme(
+  $main-palette,
+  $accent-palette,
+  $warning-palette,
+  $error-palette,
+  $cta-palette
+) {
+  @return (
+    main: $main-palette,
+    accent: $accent-palette,
+    warning: $warning-palette,
+    error: $error-palette,
+    cta: $cta-palette,
+    is-dark: false,
+  );
+}

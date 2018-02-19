@@ -1,0 +1,16 @@
+@import '../core/style/variables';
+@import '../core/theming/theming';
+
+@mixin gh-select-theme($theme) {
+  $palette: map-get($theme, 'main');
+  $default-color: gh-color($palette, 'default');
+
+  .gh-select-arrow  svg {
+    fill: $default-color;
+  }
+
+  .gh-select[disabled] .gh-select-arrow  svg,
+  .gh-select-disabled .gh-select-arrow  svg {
+    fill: $disabledcolor;
+  }
+}

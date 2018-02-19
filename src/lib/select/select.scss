@@ -1,33 +1,47 @@
-@import '../../../node_modules/@angular/cdk/overlay';
-@import '@dynatrace/groundhog/src/common/colors';
-@import '@dynatrace/groundhog/src/common/mixins';
-@import '@dynatrace/groundhog/src/select/select-common';
-
-@include cdk-overlay();
+@import '../core/style/variables';
+@import '../core/style/interactive-common';
 
 $gh-select-panel-max-height: 242px !default;
 $gh-select-panel-min-width: 112px !default;
 $gh-select-panel-max-width: 280px !default;
 
 .gh-select {
-
-  @include apply-font-family();
-  @include apply-body-font-size();
-  @include select-container();
-
+  appearance: none;
+  position: relative;
   display: inline-block;
+  box-sizing: border-box;
+  height: 32px;
+  border: 1px solid $disabledcolor;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: $mainfont;
+  font-size: 14px;
+  line-height: 30px;
+  line-height: -moz-block-height;
+  white-space: nowrap;
+  text-align: left;
+  overflow: hidden;
+  background-color: #fff;
+
+  &:hover:not(.gh-select-disabled) {
+    border-color: $gray-500;
+  }
+
   &[disabled],
   &.gh-select-disabled {
-    @include select-container-disabled();
+    background-color: $gray-100;
+    color: $disabledcolor;
   }
 
   &:focus:not(.gh-select-disabled) {
-    @include focusStyle();
+    @include gh-focus-style();
   }
 }
 
 .gh-select-trigger {
-  @include select-trigger();
+  line-height: 32px;
+  padding: 0;
+  padding-left: 11px;
   padding-right: 8px + 20px + 8px;
 }
 
@@ -40,17 +54,15 @@ $gh-select-panel-max-width: 280px !default;
   top: 5px;
   transition: transform 150ms ease-out;
 
-  svg {
-    fill: $turquoise-600;
-  }
-
   .gh-select-open & {
     transform: rotate(180deg);
   }
 }
 
 .gh-select-panel {
-  @include select-panel();
+  box-sizing: border-box;
+  border: 1px solid $disabledcolor;
+  background-color: #fff;
   border-radius: 0 0 3px 3px;
 
   // Moves the panel up so it overlaps the border of the trigger

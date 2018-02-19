@@ -9,6 +9,15 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['button-demo.css'],
 })
 export class ButtonDemo {
+
+  colors = [
+    { name: 'Default', key: null},
+    { name: 'Accent', key: 'accent'},
+    { name: 'Warning', key: 'warning'},
+    { name: 'Error', key: 'error'},
+    { name: 'Call to action', key: 'cta'}
+  ]
+
   constructor(iconRegistry: GhIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry
       .addSvgIcon('sensor',

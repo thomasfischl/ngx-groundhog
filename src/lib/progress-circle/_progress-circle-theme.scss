@@ -1,0 +1,10 @@
+@import '../core/theming/theming';
+
+@mixin gh-progress-circle-theme($theme) {
+  $palette: map-get($theme, 'main');
+  $default-color: gh-color($palette, 'default');
+
+  .gh-progress-circle-progress {
+    stroke: $default-color;
+  }
+}

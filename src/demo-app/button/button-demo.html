@@ -1,26 +1,31 @@
 <div class="demo-button">
   <h1>Button</h1>
   <section>
-    <h2>Default Button</h2>
-    <button gh-button>Primary Button</button>
-    <button disabled gh-button>Disabled primary button</button>
+    <div *ngFor="let color of colors">
+      <h2>{{color.name}} Button</h2>
+      <h3>Primary</h3>
+      <button gh-button [color]="color.key">Primary Button</button>
+      <button disabled gh-button [color]="color.key">Disabled primary button</button>
 
-    <button gh-button color="secondary">Secondary Button</button>
-    <button disabled gh-button color="secondary">Disabled secondary button</button>
+      <a gh-button [color]="color.key">Anchor</a>
+      <a disabled gh-button [color]="color.key">Disabled Anchor</a>
 
-    <h2>Anchor Buttons</h2>
-    <a gh-button>Anchor</a>
-    <a disabled gh-button>Disabled Anchor</a>
+      <button gh-button [color]="color.key"><gh-icon svgIcon="sensor"></gh-icon>Primary Button</button>
+      <button gh-icon-button [color]="color.key"><gh-icon svgIcon="sensor"></gh-icon></button>
+      <button gh-icon-button disabled [color]="color.key"><gh-icon svgIcon="sensor"></gh-icon></button>
 
-    <a gh-button color="secondary">Secondary anchor</a>
-    <a disabled gh-button color="secondary">Disabled secondary anchor</a>
 
-    <h2>Icon Button</h2>
-    <button gh-button><gh-icon svgIcon="sensor"></gh-icon>Primary Button</button>
-    <button gh-icon-button><gh-icon svgIcon="sensor"></gh-icon></button>
+      <h3>Secondary Buttons</h3>
+      <button gh-button variant="secondary" [color]="color.key">Secondary Button</button>
+      <button disabled gh-button variant="secondary" [color]="color.key">Disabled secondary button</button>
 
-    <button gh-button color="secondary"><gh-icon svgIcon="ai"></gh-icon>Primary Button</button>
-    <button gh-icon-button color="secondary"><gh-icon svgIcon="ai"></gh-icon></button>
+      <a gh-button variant="secondary" [color]="color.key">Secondary anchor</a>
+      <a disabled gh-button variant="secondary" [color]="color.key">Disabled secondary anchor</a>
+
+      <button gh-button variant="secondary" [color]="color.key"><gh-icon svgIcon="ai"></gh-icon>Secondary Button</button>
+      <button gh-icon-button variant="secondary" [color]="color.key"><gh-icon svgIcon="ai"></gh-icon></button>
+      <button gh-icon-button variant="secondary" disabled [color]="color.key"><gh-icon svgIcon="ai"></gh-icon></button>
+    </div>
 
   </section>
 </div>
