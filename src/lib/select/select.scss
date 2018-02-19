@@ -22,9 +22,12 @@ $gh-select-panel-max-width: 280px !default;
   text-align: left;
   overflow: hidden;
   background-color: #fff;
+  outline: 0;
+  cursor: default;
 
   &:hover:not(.gh-select-disabled) {
     border-color: $gray-500;
+    cursor: pointer;
   }
 
   &[disabled],
