@@ -15,9 +15,9 @@
 
 <h4>ngModel (Angular Forms)</h4>
 <p>Current value: {{currentDrink || 'none'}}</p>
-<p> Touched: {{ drinkControl.touched }} </p>
-<p> Dirty: {{ drinkControl.dirty }} </p>
-<p> Status: {{ drinkControl.control?.status }} </p>
+<p>Touched: {{ drinkControl.touched }}</p>
+<p>Dirty: {{ drinkControl.dirty }}</p>
+<p>Status: {{ drinkControl.control?.status }}</p>
 <gh-form-field>
   <gh-label>Select a drink:</gh-label>
   <gh-select placeholder="Please select value" [(ngModel)]="currentDrink" #drinkControl="ngModel" [disabled]="drinkDisabled" [required]="drinksRequired">
