@@ -9,7 +9,6 @@ import {DemoApp, Home} from './demo-app';
 import {DEMO_APP_ROUTES} from './routes';
 import {SelectDemo} from '../select/select-demo';
 import {ProgressCircleDemo} from '../progress-circle/progress-circle-demo';
-import {FormFieldDemo} from 'form-field/form-field-demo';
 
 @NgModule({
   imports: [
@@ -21,7 +20,6 @@ import {FormFieldDemo} from 'form-field/form-field-demo';
   ],
   declarations: [
     ButtonDemo,
-    FormFieldDemo,
     IconDemo,
     ProgressCircleDemo,
     SelectDemo,
