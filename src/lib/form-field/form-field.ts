@@ -147,9 +147,9 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
   }
 
   /** Determines whether to display hints or errors. */
-  _getDisplayedMessages(): 'error' | 'hint' {
-    return (this._errorChildren && this._errorChildren.length > 0 &&
-      this._control.errorState) ? 'error' : 'hint';
+  _getDisplayedError(): boolean {
+    return this._errorChildren && this._errorChildren.length > 0 &&
+      this._control.errorState;
   }
 
   /** Throws an error if the form field's control is missing. */
@@ -197,23 +197,21 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
     if (this._control) {
       let ids: string[] = [];
 
-      if (this._getDisplayedMessages() === 'hint') {
-        const startHint = this._hintChildren ?
-          this._hintChildren.find(hint => hint.align === 'start') : null;
-        const endHint = this._hintChildren ?
-          this._hintChildren.find(hint => hint.align === 'end') : null;
+      const startHint = this._hintChildren ?
+        this._hintChildren.find(hint => hint.align === 'start') : null;
+      const endHint = this._hintChildren ?
+        this._hintChildren.find(hint => hint.align === 'end') : null;
 
-        if (startHint) {
-          ids.push(startHint.id);
-        } else if (this._hintLabel) {
-          ids.push(this._hintLabelId);
-        }
+      if (startHint) {
+        ids.push(startHint.id);
+      } else if (this._hintLabel) {
+        ids.push(this._hintLabelId);
+      }
 
-        if (endHint) {
-          ids.push(endHint.id);
-        } else if (this._errorChildren) {
-          ids = this._errorChildren.map(error => error.id);
-        }
+      if (endHint) {
+        ids.push(endHint.id);
+      } else if (this._errorChildren) {
+        ids = this._errorChildren.map(error => error.id);
       }
       this._control.setDescribedByIds(ids);
     }

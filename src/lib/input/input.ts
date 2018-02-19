@@ -44,6 +44,7 @@ export const _GhInputMixinBase = mixinErrorState(GhInputBase);
   exportAs: 'ghInput',
   host: {
     'class': 'gh-input',
+    '[class.gh-input-invalid]': 'errorState',
     '[attr.id]': 'id',
     '[placeholder]': 'placeholder',
     '[disabled]': 'disabled',

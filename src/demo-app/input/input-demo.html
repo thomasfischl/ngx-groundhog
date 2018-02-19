@@ -3,16 +3,18 @@
 <p>Touched: {{ emailControl.touched }}</p>
 <p>Dirty: {{ emailControl.dirty }}</p>
 <p>Status: {{ emailControl.control?.status }}</p>
-<gh-form-field>
-  <gh-label>E-Mail:</gh-label>
-  <input ghInput
-    required
-    type="email"
-    placeholder="Enter your email address"
-    [(ngModel)]="emailValue"
-    [disabled]="emailDisabled"
-    #emailControl="ngModel">
-  <gh-hint>We will send daily stuff to this address</gh-hint>
-  <gh-error>Please insert a valid email address</gh-error>
-</gh-form-field>
+<div>
+  <gh-form-field>
+    <gh-label>E-Mail:</gh-label>
+    <input ghInput
+      required
+      type="email"
+      placeholder="Enter"
+      [(ngModel)]="emailValue"
+      [disabled]="emailDisabled"
+      #emailControl="ngModel">
+    <gh-hint>Awesome hint appears</gh-hint>
+    <gh-error>Enter a valid email address</gh-error>
+  </gh-form-field>
+</div>
 <button gh-button (click)="emailDisabled=!emailDisabled">Toggle disabled</button>
