@@ -18,7 +18,7 @@ export function buildScssTask(outputDir: string, sourceDir: string) {
     return src(join(sourceDir, '**/*.scss'))
       .pipe(gulpSass({
         // We need to include node_modules to the includePaths
-        // so we can @import from @dynatrace/groundhog/...
+        // so we can @import from @angular/cdk/...
         includePaths: ['node_modules/']
       }).on('error', gulpSass.logError))
       // .pipe(gulpIf(minifyOutput, gulpCleanCss()))
