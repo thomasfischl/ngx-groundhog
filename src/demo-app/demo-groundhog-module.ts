@@ -3,6 +3,7 @@ import {
   GhButtonModule,
   GhFormFieldModule,
   GhIconModule,
+  GhInputModule,
   GhProgressCircleModule,
   GhSelectModule,
 } from '@dynatrace/ngx-groundhog';
@@ -15,6 +16,7 @@ import {
     GhButtonModule,
     GhFormFieldModule,
     GhIconModule,
+    GhInputModule,
     GhProgressCircleModule,
     GhSelectModule,
   ]

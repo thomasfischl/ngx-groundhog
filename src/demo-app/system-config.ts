@@ -50,6 +50,7 @@ System.config({
     '@dynatrace/ngx-groundhog/core': 'dist/packages/ngx-groundhog/core/index.js',
     '@dynatrace/ngx-groundhog/form-field': 'dist/packages/ngx-groundhog/form-field/index.js',
     '@dynatrace/ngx-groundhog/icon': 'dist/packages/ngx-groundhog/icon/index.js',
+    '@dynatrace/ngx-groundhog/input': 'dist/packages/ngx-groundhog/input/index.js',
     '@dynatrace/ngx-groundhog/progress-circle':
       'dist/packages/ngx-groundhog/progress-circle/index.js',
     '@dynatrace/ngx-groundhog/select': 'dist/packages/ngx-groundhog/select/index.js',
