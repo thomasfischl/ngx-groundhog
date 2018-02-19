@@ -1,7 +1,7 @@
 <h1>Input</h1>
-
 <gh-form-field>
   <gh-label>E-Mail:</gh-label>
-  <input type="email" ghInput placeholder="Enter your email address">
+  <input type="email" ghInput placeholder="Enter your email address" [value]="emailValue" [disabled]="emailDisabled" required>
   <gh-hint>We will send daily stuff to this address</gh-hint>
 </gh-form-field>
+<button gh-button (click)="emailDisabled=!emailDisabled">Toggle disabled</button>

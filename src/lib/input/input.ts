@@ -43,7 +43,7 @@ export const _GhInputMixinBase = mixinErrorState(GhInputBase);
   selector: `input[ghInput], textarea[ghInput]`,
   exportAs: 'ghInput',
   host: {
-    'class': 'gh-input-element',
+    'class': 'gh-input',
     '[attr.id]': 'id',
     '[placeholder]': 'placeholder',
     '[disabled]': 'disabled',

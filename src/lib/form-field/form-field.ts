@@ -64,7 +64,11 @@ export class GhError {
   selector: 'gh-form-field',
   exportAs: 'ghFormField',
   templateUrl: 'form-field.html',
-  styleUrls: ['form-field.css'],
+  styleUrls: [
+    'form-field.css',
+    // GhInput is a directive and can't have styles, so we need to include its styles here.
+    '../input/input.css',
+  ],
   host: {
     'class': 'gh-form-field',
     '[class.gh-form-field-invalid]': '_control.errorState',

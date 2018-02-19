@@ -1,0 +1,25 @@
+.gh-input {
+  // font-family: $mainfont;
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  text-decoration: none;
+  height: 32px;
+  // border: 1px solid $disabledcolor;
+  border-radius: 3px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 11px;
+  padding-right: 11px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 32px;
+  line-height: -moz-block-height;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: left;
+  overflow: hidden;
+  width: 100%;
+  // color: $gray-700;
+}
