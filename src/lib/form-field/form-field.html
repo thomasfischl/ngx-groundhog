@@ -16,9 +16,10 @@
   <div class="gh-form-field-subscript-wrapper" [ngSwitch]="_getDisplayedMessages()">
     <div class="gh-form-field-error" *ngSwitchCase="'error'">
     </div>
-    <div class="gh-form-field-hint" *ngSwitchCase="'hint'">
+    <div class="gh-form-field-hint-wrapper" *ngSwitchCase="'hint'">
       <gh-hint *ngIf="hintLabel" [id]="_hintLabelId">{{hintLabel}}</gh-hint>
       <ng-content select="gh-hint:not([align='end'])"></ng-content>
+      <span class="gh-form-field-hint-spacer"></span>
       <ng-content select="gh-hint[align='end']"></ng-content>
     </div>
   </div>
