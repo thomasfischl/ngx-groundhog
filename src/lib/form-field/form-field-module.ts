@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PlatformModule } from '@angular/cdk/platform';
 import { GhFormField, GhLabel, GhHint, GhError } from './form-field';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    PlatformModule,
+  ],
   exports: [
     GhFormField,
     GhLabel,
