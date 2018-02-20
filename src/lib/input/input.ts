@@ -202,7 +202,10 @@ export class GhInput extends _GhInputMixinBase
   }
 
   /** Focuses the input. */
-  focus(): void { this._elementRef.nativeElement.focus(); }
+  focus(): void {
+    this._elementRef.nativeElement.focus();
+    // this._validateOnInput();
+  }
 
   /** Implemented as part of GhFormFieldControl. */
   setDescribedByIds(ids: string[]) { this._ariaDescribedby = ids.join(' '); }
@@ -214,8 +217,21 @@ export class GhInput extends _GhInputMixinBase
     // _onInput is basically just a noop function to trigger change detection
     // when the user types.
     // Note: Never remove this function, even if it's empty.
+    console.log('input');
+    // Trigger validation on a delay
+    this._validateOnInput();
+  }
 
+  /** Callback for the cases where the focused state of the input changes. */
+  _focusChanged(isFocused: boolean) {
+    if (isFocused !== this.focused && !this.readonly) {
+      this.focused = isFocused;
+      this.stateChanges.next();
+    }
+  }
 
+  /** Marks the input touched when typing stopped. Triggers validation */
+  private _validateOnInput() {
     // Stop the ongoing timeout
     this._stopInputTimer();
 
@@ -223,23 +239,29 @@ export class GhInput extends _GhInputMixinBase
     // to also show the error when the user starts typing and then
     // waits. In this case the form control has to be manually marked
     // as touched.
-    if (!this.ngControl.touched) {
-      this._inputTimer = setTimeout(() => {
-        if (this.ngControl.control) {
-          // Per default touched will only be updated on the blur event
-          // but as we need to set it manually and setting touched outside
-          // of angular forms is exposed we need this hacky line of code
-          (this.ngControl.control as{touched: boolean}).touched = true;
-          this.stateChanges.next();
-        }
-      }, INPUT_VALIDATION_DELAY);
+    if (this.focused) {
+      if (this.ngControl.touched && !this.ngControl.invalid) {
+        // Reset touched. Needs to be done to reactivate the timeouts in focus mode
+        this._setTouched(false);
+      } else if (this.ngControl.invalid) {
+        this._inputTimer = setTimeout(() => {
+          if (this.ngControl.control) {
+            // Set touched to true so the validation kicks in
+            this._setTouched(true);
+          }
+        }, INPUT_VALIDATION_DELAY);
+      }
     }
   }
 
-  /** Callback for the cases where the focused state of the input changes. */
-  _focusChanged(isFocused: boolean) {
-    if (isFocused !== this.focused && !this.readonly) {
-      this.focused = isFocused;
+  /**
+   * Per default touched will only be set on the blur event
+   * but as we need to set it manually and setting touched outside
+   * of angular forms is exposed we need this hacky line of code
+   */
+  private _setTouched(touched: boolean) {
+    if (this.ngControl.control) {
+      (this.ngControl.control as{touched: boolean}).touched = touched;
       this.stateChanges.next();
     }
   }
