@@ -1,7 +1,14 @@
-import { Component } from '@angular/core';
-import { TestBed, fakeAsync, inject } from '@angular/core/testing';
+import { Component, ViewChild } from '@angular/core';
+import { TestBed, fakeAsync, inject, ComponentFixture, flush } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  NgForm,
+  FormControl,
+  Validators,
+  FormGroup
+} from '@angular/forms';
 import { PlatformModule, Platform } from '@angular/cdk/platform';
 import {
   GhFormFieldModule,
@@ -358,6 +365,168 @@ describe('GhInput without forms', () => {
 
 });
 
+describe('GhInput with forms', () => {
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        GhFormFieldModule,
+        GhInputModule,
+        NoopAnimationsModule,
+        PlatformModule,
+        ReactiveFormsModule,
+      ],
+      declarations: [
+        GhInputWithFormErrorMessages
+      ],
+    });
+
+    TestBed.compileComponents();
+  }));
+
+  describe('error messages', () => {
+    let fixture: ComponentFixture<GhInputWithFormErrorMessages>;
+    let testComponent: GhInputWithFormErrorMessages;
+    let containerEl: HTMLElement;
+    let inputEl: HTMLElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(GhInputWithFormErrorMessages);
+      fixture.detectChanges();
+      testComponent = fixture.componentInstance;
+      containerEl = fixture.debugElement.query(By.css('gh-form-field')).nativeElement;
+      inputEl = fixture.debugElement.query(By.css('input')).nativeElement;
+    }));
+
+    it('should not show any errors if the user has not interacted', fakeAsync(() => {
+      expect(testComponent.formControl.untouched).toBe(true, 'Expected untouched form control');
+      expect(containerEl.querySelectorAll('gh-error').length).toBe(0, 'Expected no error message');
+      expect(inputEl.getAttribute('aria-invalid'))
+        .toBe('false', 'Expected aria-invalid to be set to "false".');
+    }));
+
+    it('should display an error message when the input is touched and invalid', fakeAsync(() => {
+      expect(testComponent.formControl.invalid).toBe(true, 'Expected form control to be invalid');
+      expect(containerEl.querySelectorAll('gh-error').length).toBe(0, 'Expected no error message');
+
+      testComponent.formControl.markAsTouched();
+      fixture.detectChanges();
+      flush();
+
+      expect(containerEl.classList)
+        .toContain('gh-form-field-invalid', 'Expected container to have the invalid CSS class.');
+      expect(containerEl.querySelectorAll('gh-error').length)
+        .toBe(1, 'Expected one error message to have been rendered.');
+      expect(inputEl.getAttribute('aria-invalid'))
+        .toBe('true', 'Expected aria-invalid to be set to "true".');
+    }));
+
+    // tslint:disable:max-line-length
+    // TODO @thomaspink: Add when testing files have been added
+    // it('should display an error message when the parent form is submitted', fakeAsync(() => {
+    //   expect(testComponent.form.submitted)
+    //     .toBe(false, 'Expected form not to have been submitted');
+    //   expect(testComponent.formControl.invalid)
+    //     .toBe(true, 'Expected form control to be invalid');
+    //   expect(containerEl.querySelectorAll('gh-error').length)
+    //     .toBe(0, 'Expected no error message');
+
+    //   dispatchFakeEvent(fixture.debugElement.query(By.css('form')).nativeElement, 'submit');
+    //   fixture.detectChanges();
+    //   flush();
+
+    //   expect(testComponent.form.submitted).toBe(true, 'Expected form to have been submitted');
+    //   expect(containerEl.classList)
+    //     .toContain('gh-form-field-invalid', 'Expected container to have the invalid CSS class.');
+    //   expect(containerEl.querySelectorAll('gh-error').length)
+    //     .toBe(1, 'Expected one error message to have been rendered.');
+    //   expect(inputEl.getAttribute('aria-invalid'))
+    //     .toBe('true', 'Expected aria-invalid to be set to "true".');
+    // }));
+
+    // TODO @thomaspink: Add when testing files have been added
+    // it('should display an error message when the parent form group is submitted', fakeAsync(() => {
+    //   fixture.destroy();
+
+    //   let groupFixture = TestBed.createComponent(GhInputWithFormGroupErrorMessages);
+    //   let component: GhInputWithFormGroupErrorMessages;
+
+    //   groupFixture.detectChanges();
+    //   component = groupFixture.componentInstance;
+    //   containerEl = groupFixture.debugElement.query(By.css('gh-form-field')).nativeElement;
+    //   inputEl = groupFixture.debugElement.query(By.css('input')).nativeElement;
+
+    //   expect(component.formGroup.invalid).toBe(true, 'Expected form control to be invalid');
+    //   expect(containerEl.querySelectorAll('gh-error').length).toBe(0, 'Expected no error message');
+    //   expect(inputEl.getAttribute('aria-invalid'))
+    //     .toBe('false', 'Expected aria-invalid to be set to "false".');
+    //   expect(component.formGroupDirective.submitted)
+    //     .toBe(false, 'Expected form not to have been submitted');
+
+    //   dispatchFakeEvent(groupFixture.debugElement.query(By.css('form')).nativeElement, 'submit');
+    //   groupFixture.detectChanges();
+    //   flush();
+
+    //   expect(component.formGroupDirective.submitted)
+    //     .toBe(true, 'Expected form to have been submitted');
+    //   expect(containerEl.classList)
+    //     .toContain('gh-form-field-invalid', 'Expected container to have the invalid CSS class.');
+    //   expect(containerEl.querySelectorAll('gh-error').length)
+    //     .toBe(1, 'Expected one error message to have been rendered.');
+    //   expect(inputEl.getAttribute('aria-invalid'))
+    //     .toBe('true', 'Expected aria-invalid to be set to "true".');
+    // }));
+    // tslint:enable:max-line-length
+
+    it('should hide the errors once the input becomes valid', fakeAsync(() => {
+      testComponent.formControl.markAsTouched();
+      fixture.detectChanges();
+      flush();
+
+      expect(containerEl.classList)
+        .toContain('gh-form-field-invalid', 'Expected container to have the invalid CSS class.');
+      expect(containerEl.querySelectorAll('gh-error').length)
+        .toBe(1, 'Expected one error message to have been rendered.');
+
+      testComponent.formControl.setValue('something');
+      fixture.detectChanges();
+      flush();
+
+      expect(containerEl.classList).not.toContain('gh-form-field-invalid',
+        'Expected container not to have the invalid class when valid.');
+      expect(containerEl.querySelectorAll('gh-error').length)
+        .toBe(0, 'Expected no error messages when the input is valid.');
+    }));
+
+    it('should set the proper role on the error messages', fakeAsync(() => {
+      testComponent.formControl.markAsTouched();
+      fixture.detectChanges();
+
+      expect(containerEl.querySelector('gh-error')!.getAttribute('role')).toBe('alert');
+    }));
+
+    it('sets the aria-describedby to reference errors when in error state', fakeAsync(() => {
+      let hintId = fixture.debugElement.query(By.css('.gh-hint')).nativeElement.getAttribute('id');
+      let describedBy = inputEl.getAttribute('aria-describedby');
+
+      expect(hintId).toBeTruthy('hint should be shown');
+      expect(describedBy).toBe(hintId);
+
+      fixture.componentInstance.formControl.markAsTouched();
+      fixture.detectChanges();
+
+      let errorIds = fixture.debugElement.queryAll(By.css('.gh-error'))
+        .map(el => el.nativeElement.getAttribute('id')).join(' ');
+      describedBy = inputEl.getAttribute('aria-describedby');
+
+      expect(errorIds).toBeTruthy('errors should be shown');
+      expect(describedBy).toBe(errorIds);
+    }));
+
+  });
+});
+
 @Component({
   template: `
     <gh-form-field>
@@ -510,3 +679,45 @@ class GhInputMultipleHintMixedTestController { }
   `
 })
 class GhInputWithReadonlyInput { }
+
+@Component({
+  template: `
+    <form #form="ngForm" novalidate>
+      <gh-form-field>
+        <input ghInput [formControl]="formControl">
+        <gh-hint>Please type something</gh-hint>
+        <gh-error *ngIf="renderError">This field is required</gh-error>
+      </gh-form-field>
+    </form>
+  `
+})
+class GhInputWithFormErrorMessages {
+  @ViewChild('form') form: NgForm;
+  formControl = new FormControl('', Validators.required);
+  renderError = true;
+}
+
+@Component({
+  template: `
+    <form [formGroup]="formGroup">
+      <gh-form-field>
+        <input ghInput
+            formControlName="name"
+            [errorStateMatcher]="customErrorStateMatcher">
+        <gh-hint>Please type something</gh-hint>
+        <gh-error>This field is required</gh-error>
+      </gh-form-field>
+    </form>
+  `
+})
+class GhInputWithCustomErrorStateMatcher {
+  formGroup = new FormGroup({
+    name: new FormControl('', Validators.required)
+  });
+
+  errorState = false;
+
+  customErrorStateMatcher = {
+    isErrorState: () => this.errorState
+  };
+}
