@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['input-demo.css'],
 })
 export class InputDemo {
-  emailValue: string = '';
+  emailValue: string = '0';
   emailDisabled = false;
   msgValue: string = '';
   msgDisabled = false;
