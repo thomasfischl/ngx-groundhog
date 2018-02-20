@@ -1,9 +1,22 @@
-import { Directive, Input, Optional, Self, OnChanges, OnDestroy, ElementRef, DoCheck } from '@angular/core';
+import {
+  Directive,
+  Input,
+  Optional,
+  Self,
+  OnChanges,
+  OnDestroy,
+  ElementRef,
+  DoCheck
+} from '@angular/core';
 import { NgControl, NgForm, FormGroupDirective } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Platform, getSupportedInputTypes } from '@angular/cdk/platform';
 import { Subject } from 'rxjs/Subject';
-import { ErrorStateMatcher, mixinErrorState, CanUpdateErrorState } from '@dynatrace/ngx-groundhog/core';
+import {
+  ErrorStateMatcher,
+  mixinErrorState,
+  CanUpdateErrorState
+} from '@dynatrace/ngx-groundhog/core';
 import { GhFormFieldControl } from '@dynatrace/ngx-groundhog/form-field';
 
 let nextUniqueId = 0;
@@ -29,6 +42,8 @@ const NEVER_EMPTY_INPUT_TYPES = [
   'time',
   'week'
 ].filter(t => getSupportedInputTypes().has(t));
+
+const INPUT_VALIDATION_DELAY = 250;
 
 // Boilerplate for applying mixins to GhInput.
 export class GhInputBase {
@@ -147,6 +162,7 @@ export class GhInput extends _GhInputMixinBase
   private _required = false;
   private _type = 'text';
   private _previousNativeValue: any;
+  private _inputTimer: number | null;
 
   constructor(private _elementRef: ElementRef,
     private _platform: Platform,
@@ -167,6 +183,7 @@ export class GhInput extends _GhInputMixinBase
   }
 
   ngOnDestroy() {
+    this._stopInputTimer();
     this.stateChanges.complete();
   }
 
@@ -194,13 +211,29 @@ export class GhInput extends _GhInputMixinBase
   onContainerClick() { this.focus(); }
 
   _onInput() {
-    // This is a noop function and is used to let Angular know whenever the value changes.
-    // Angular will run a new change detection each time the `input` event has been dispatched.
-    // It's necessary that Angular recognizes the value change, because when floatingLabel
-    // is set to false and Angular forms aren't used, the placeholder won't recognize the
-    // value changes and will not disappear.
-    // Listening to the input event wouldn't be necessary when the input is using the
-    // FormsModule or ReactiveFormsModule, because Angular forms also listens to input events.
+    // _onInput is basically just a noop function to trigger change detection
+    // when the user types.
+    // Note: Never remove this function, even if it's empty.
+
+
+    // Stop the ongoing timeout
+    this._stopInputTimer();
+
+    // We want to override the default behaviour on angular forms
+    // to also show the error when the user starts typing and then
+    // waits. In this case the form control has to be manually marked
+    // as touched.
+    if (!this.ngControl.touched) {
+      this._inputTimer = setTimeout(() => {
+        if (this.ngControl.control) {
+          // Per default touched will only be updated on the blur event
+          // but as we need to set it manually and setting touched outside
+          // of angular forms is exposed we need this hacky line of code
+          (this.ngControl.control as{touched: boolean}).touched = true;
+          this.stateChanges.next();
+        }
+      }, INPUT_VALIDATION_DELAY);
+    }
   }
 
   /** Callback for the cases where the focused state of the input changes. */
@@ -234,6 +267,14 @@ export class GhInput extends _GhInputMixinBase
     if (this._previousNativeValue !== newValue) {
       this._previousNativeValue = newValue;
       this.stateChanges.next();
+    }
+  }
+
+  /** Stops the current input timeout and resets it */
+  private _stopInputTimer() {
+    if (this._inputTimer) {
+      clearTimeout(this._inputTimer);
+      this._inputTimer = null;
     }
   }
 
