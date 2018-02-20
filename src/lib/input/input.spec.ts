@@ -18,6 +18,7 @@ import {
 import { GhInputModule } from './input-module';
 import { By } from '@angular/platform-browser';
 import { GhInput } from './input';
+import { ErrorStateMatcher } from '@dynatrace/ngx-groundhog/core';
 
 describe('GhInput without forms', () => {
   beforeEach(fakeAsync(() => {
@@ -378,7 +379,9 @@ describe('GhInput with forms', () => {
         ReactiveFormsModule,
       ],
       declarations: [
-        GhInputWithFormErrorMessages
+        GhInputWithFormErrorMessages,
+        GhInputWithCustomErrorStateMatcher,
+        GhInputWithFormControl
       ],
     });
 
@@ -406,11 +409,11 @@ describe('GhInput with forms', () => {
         .toBe('false', 'Expected aria-invalid to be set to "false".');
     }));
 
-    it('should display an error message when the input is touched and invalid', fakeAsync(() => {
+    it('should display an error message when the input is dirty and invalid', fakeAsync(() => {
       expect(testComponent.formControl.invalid).toBe(true, 'Expected form control to be invalid');
       expect(containerEl.querySelectorAll('gh-error').length).toBe(0, 'Expected no error message');
 
-      testComponent.formControl.markAsTouched();
+      testComponent.formControl.markAsDirty();
       fixture.detectChanges();
       flush();
 
@@ -480,7 +483,7 @@ describe('GhInput with forms', () => {
     // tslint:enable:max-line-length
 
     it('should hide the errors once the input becomes valid', fakeAsync(() => {
-      testComponent.formControl.markAsTouched();
+      testComponent.formControl.markAsDirty();
       fixture.detectChanges();
       flush();
 
@@ -500,7 +503,7 @@ describe('GhInput with forms', () => {
     }));
 
     it('should set the proper role on the error messages', fakeAsync(() => {
-      testComponent.formControl.markAsTouched();
+      testComponent.formControl.markAsDirty();
       fixture.detectChanges();
 
       expect(containerEl.querySelector('gh-error')!.getAttribute('role')).toBe('alert');
@@ -513,7 +516,7 @@ describe('GhInput with forms', () => {
       expect(hintId).toBeTruthy('hint should be shown');
       expect(describedBy).toBe(hintId);
 
-      fixture.componentInstance.formControl.markAsTouched();
+      fixture.componentInstance.formControl.markAsDirty();
       fixture.detectChanges();
 
       let errorIds = fixture.debugElement.queryAll(By.css('.gh-error'))
@@ -523,7 +526,97 @@ describe('GhInput with forms', () => {
       expect(errorIds).toBeTruthy('errors should be shown');
       expect(describedBy).toBe(errorIds);
     }));
+  });
 
+  describe('custom error behavior', () => {
+
+    it('should display an error message when a custom error matcher returns true', fakeAsync(() => {
+      let fixture = TestBed.createComponent(GhInputWithCustomErrorStateMatcher);
+      fixture.detectChanges();
+
+      let component = fixture.componentInstance;
+      let containerEl = fixture.debugElement.query(By.css('gh-form-field')).nativeElement;
+
+      const control = component.formGroup.get('name')!;
+
+      expect(control.invalid).toBe(true, 'Expected form control to be invalid');
+      expect(containerEl.querySelectorAll('gh-error').length)
+        .toBe(0, 'Expected no error messages');
+
+      control.markAsDirty();
+      fixture.detectChanges();
+
+      expect(containerEl.querySelectorAll('gh-error').length)
+        .toBe(0, 'Expected no error messages after being touched.');
+
+      component.errorState = true;
+      fixture.detectChanges();
+
+      expect(containerEl.querySelectorAll('gh-error').length)
+        .toBe(1, 'Expected one error messages to have been rendered.');
+    }));
+
+    it('should display an error message when global error matcher returns true', fakeAsync(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          FormsModule,
+          GhFormFieldModule,
+          GhInputModule,
+          NoopAnimationsModule,
+          ReactiveFormsModule
+        ],
+        declarations: [
+          GhInputWithFormErrorMessages
+        ],
+        providers: [{ provide: ErrorStateMatcher, useValue: { isErrorState: () => true } }]
+      });
+
+      let fixture = TestBed.createComponent(GhInputWithFormErrorMessages);
+
+      fixture.detectChanges();
+
+      let containerEl = fixture.debugElement.query(By.css('gh-form-field')).nativeElement;
+      let testComponent = fixture.componentInstance;
+
+      // Expect the control to still be untouched but the error to show due to the global setting
+      expect(testComponent.formControl.untouched).toBe(true, 'Expected untouched form control');
+      expect(containerEl.querySelectorAll('gh-error').length).toBe(1, 'Expected an error message');
+    }));
+
+    it('should update the value when using FormControl.setValue', fakeAsync(() => {
+      let fixture = TestBed.createComponent(GhInputWithFormControl);
+      fixture.detectChanges();
+
+      let input = fixture.debugElement.query(By.directive(GhInput))
+        .injector.get<GhInput>(GhInput);
+
+      expect(input.value).toBeFalsy();
+
+      fixture.componentInstance.formControl.setValue('something');
+
+      expect(input.value).toBe('something');
+    }));
+
+    it('should display disabled styles when using FormControl.disable()', fakeAsync(() => {
+      const fixture = TestBed.createComponent(GhInputWithFormControl);
+      fixture.detectChanges();
+
+      const formFieldEl =
+        fixture.debugElement.query(By.css('.gh-form-field')).nativeElement;
+      const inputEl = fixture.debugElement.query(By.css('input')).nativeElement;
+
+      expect(formFieldEl.classList)
+        .not.toContain('gh-form-field-disabled', `Expected form field not to start out disabled.`);
+      expect(inputEl.disabled).toBe(false);
+
+      fixture.componentInstance.formControl.disable();
+      fixture.detectChanges();
+
+      expect(formFieldEl.classList).toContain('gh-form-field-disabled',
+        `Expected form field to look disabled after disable() is called.`);
+      expect(inputEl.disabled).toBe(true);
+    }));
   });
 });
 
@@ -720,4 +813,15 @@ class GhInputWithCustomErrorStateMatcher {
   customErrorStateMatcher = {
     isErrorState: () => this.errorState
   };
+}
+
+@Component({
+  template: `
+    <gh-form-field>
+      <gh-label>test</gh-label>
+      <input ghInput placeholder="Hello" [formControl]="formControl">
+    </gh-form-field>`
+})
+class GhInputWithFormControl {
+  formControl = new FormControl();
 }
