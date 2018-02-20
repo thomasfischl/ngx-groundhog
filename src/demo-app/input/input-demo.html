@@ -18,3 +18,20 @@
   </gh-form-field>
 </div>
 <button gh-button (click)="emailDisabled=!emailDisabled">Toggle disabled</button>
+<div class="spacer">
+  <gh-form-field>
+    <gh-label>Message:</gh-label>
+    <textarea ghInput
+      required
+      placeholder="Please enter your message"
+      [(ngModel)]="msgValue"
+      [disabled]="msgDisabled"
+      cols="50"
+      [attr.rows]="msgRows"></textarea>
+    <gh-hint>Rows visible {{msgRows}}</gh-hint>
+    <gh-error>Message has to contain a message</gh-error>
+  </gh-form-field>
+</div>
+<button gh-button (click)="msgDisabled=!msgDisabled">Toggle disabled</button>
+<button gh-button (click)="(msgRows > 1 && msgRows = msgRows-1)" [disabled]="msgRows <= 1">Remove row</button>
+<button gh-button (click)="msgRows = msgRows+1">Add row</button>

@@ -8,7 +8,6 @@
   display: inline-block;
   box-sizing: border-box;
   text-decoration: none;
-  height: 32px;
   border: 1px solid $disabledcolor;
   border-radius: 3px;
   padding-top: 0;
@@ -37,4 +36,17 @@
   &:focus:not([disabled]) {
     @include gh-focus-style();
   }
+}
+
+input.gh-input {
+  height: 32px;
+  line-height: 32px;
+}
+
+textarea.gh-input {
+  line-height: 1.5;
+  resize: none;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  white-space: pre-wrap;
 }

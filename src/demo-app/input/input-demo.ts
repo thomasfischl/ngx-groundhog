@@ -9,4 +9,7 @@ import { Component } from '@angular/core';
 export class InputDemo {
   emailValue: string = '';
   emailDisabled = false;
+  msgValue: string = '';
+  msgDisabled = false;
+  msgRows = 10;
 }
