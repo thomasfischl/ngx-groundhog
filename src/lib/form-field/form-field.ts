@@ -90,6 +90,10 @@ export class GhError {
       transition('void => enter', [
         style({ opacity: 0, transform: 'scaleY(0)' }),
         animate('150ms cubic-bezier(0.55, 0, 0.55, 0.2)'),
+      ]),
+      transition('void => enter-delayed', [
+        style({ opacity: 0, transform: 'scaleY(0)' }),
+        animate(`250ms 150ms cubic-bezier(0.55, 0, 0.55, 0.2)`),
       ])
     ])
   ],
@@ -110,23 +114,26 @@ export class GhFormField implements AfterContentInit, AfterContentChecked, After
   // Unique id for the hint label.
   _hintLabelId: string = `gh-hint-${nextUniqueId++}`;
 
+  /** State of the gh-error animations. */
+  _errorAnimationState: '' | 'enter' | 'enter-delayed' = '';
+
   @ContentChild(GhLabel) _labelChild: GhLabel;
   @ContentChildren(GhHint) _hintChildren: QueryList<GhHint>;
   @ContentChildren(GhError) _errorChildren: QueryList<GhError>;
   @ContentChild(GhFormFieldControl) _control: GhFormFieldControl<any>;
 
   private _hintLabel = '';
+  private _displayedError: boolean = false;
 
-  /** State of the gh-error animations. */
-  _errorAnimationState: string = '';
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngAfterContentInit() {
     this._validateControlChild();
-     // Subscribe to changes in the child control state in order to update the form field UI.
-     this._control.stateChanges.pipe(startWith(null!)).subscribe(() => {
+    // Subscribe to changes in the child control state in order to update the form field UI.
+    this._control.stateChanges.pipe(startWith(null!)).subscribe(() => {
       this._syncDescribedByIds();
+      this._updateAnimationState();
       this._changeDetectorRef.markForCheck();
     });
 
@@ -146,6 +153,7 @@ export class GhFormField implements AfterContentInit, AfterContentChecked, After
     // Update the aria-described by when the number of errors changes.
     this._errorChildren.changes.pipe(startWith(null)).subscribe(() => {
       this._syncDescribedByIds();
+      this._updateAnimationState();
       this._changeDetectorRef.markForCheck();
     });
   }
@@ -183,6 +191,7 @@ export class GhFormField implements AfterContentInit, AfterContentChecked, After
   private _processHints() {
     this._validateHints();
     this._syncDescribedByIds();
+    this._updateAnimationState();
   }
 
   /**
@@ -219,7 +228,7 @@ export class GhFormField implements AfterContentInit, AfterContentChecked, After
 
       if (!this._getDisplayedError()) {
         const startHint = this._hintChildren ?
-        this._hintChildren.find(hint => hint.align === 'start') : null;
+          this._hintChildren.find(hint => hint.align === 'start') : null;
         const endHint = this._hintChildren ?
           this._hintChildren.find(hint => hint.align === 'end') : null;
 
@@ -237,5 +246,10 @@ export class GhFormField implements AfterContentInit, AfterContentChecked, After
       }
       this._control.setDescribedByIds(ids);
     }
+  }
+
+  private _updateAnimationState() {
+    this._errorAnimationState = this._getDisplayedError() &&
+      this._control.focused ? 'enter-delayed' : 'enter';
   }
 }

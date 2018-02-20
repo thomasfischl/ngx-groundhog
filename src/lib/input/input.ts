@@ -162,7 +162,6 @@ export class GhInput extends _GhInputMixinBase
   private _required = false;
   private _type = 'text';
   private _previousNativeValue: any;
-  private _inputTimer: number | null;
 
   constructor(private _elementRef: ElementRef,
     private _platform: Platform,
@@ -183,7 +182,6 @@ export class GhInput extends _GhInputMixinBase
   }
 
   ngOnDestroy() {
-    this._stopInputTimer();
     this.stateChanges.complete();
   }
 
@@ -202,10 +200,7 @@ export class GhInput extends _GhInputMixinBase
   }
 
   /** Focuses the input. */
-  focus(): void {
-    this._elementRef.nativeElement.focus();
-    // this._validateOnInput();
-  }
+  focus(): void { this._elementRef.nativeElement.focus(); }
 
   /** Implemented as part of GhFormFieldControl. */
   setDescribedByIds(ids: string[]) { this._ariaDescribedby = ids.join(' '); }
@@ -215,53 +210,13 @@ export class GhInput extends _GhInputMixinBase
 
   _onInput() {
     // _onInput is basically just a noop function to trigger change detection
-    // when the user types.
-    // Note: Never remove this function, even if it's empty.
-    console.log('input');
-    // Trigger validation on a delay
-    this._validateOnInput();
+    // when the user types. Never remove this function, even if it's empty.
   }
 
   /** Callback for the cases where the focused state of the input changes. */
   _focusChanged(isFocused: boolean) {
     if (isFocused !== this.focused && !this.readonly) {
       this.focused = isFocused;
-      this.stateChanges.next();
-    }
-  }
-
-  /** Marks the input touched when typing stopped. Triggers validation */
-  private _validateOnInput() {
-    // Stop the ongoing timeout
-    this._stopInputTimer();
-
-    // We want to override the default behaviour on angular forms
-    // to also show the error when the user starts typing and then
-    // waits. In this case the form control has to be manually marked
-    // as touched.
-    if (this.focused) {
-      if (this.ngControl.touched && !this.ngControl.invalid) {
-        // Reset touched. Needs to be done to reactivate the timeouts in focus mode
-        this._setTouched(false);
-      } else if (this.ngControl.invalid) {
-        this._inputTimer = setTimeout(() => {
-          if (this.ngControl.control) {
-            // Set touched to true so the validation kicks in
-            this._setTouched(true);
-          }
-        }, INPUT_VALIDATION_DELAY);
-      }
-    }
-  }
-
-  /**
-   * Per default touched will only be set on the blur event
-   * but as we need to set it manually and setting touched outside
-   * of angular forms is exposed we need this hacky line of code
-   */
-  private _setTouched(touched: boolean) {
-    if (this.ngControl.control) {
-      (this.ngControl.control as{touched: boolean}).touched = touched;
       this.stateChanges.next();
     }
   }
@@ -289,14 +244,6 @@ export class GhInput extends _GhInputMixinBase
     if (this._previousNativeValue !== newValue) {
       this._previousNativeValue = newValue;
       this.stateChanges.next();
-    }
-  }
-
-  /** Stops the current input timeout and resets it */
-  private _stopInputTimer() {
-    if (this._inputTimer) {
-      clearTimeout(this._inputTimer);
-      this._inputTimer = null;
     }
   }
 
