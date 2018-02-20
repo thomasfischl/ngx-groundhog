@@ -14,7 +14,7 @@
   </div>
 
   <div class="gh-form-field-subscript-wrapper">
-    <div class="gh-form-field-error" *ngIf="_getDisplayedError()">
+    <div class="gh-form-field-error" *ngIf="_getDisplayedError()" [@transitionErrors]="_errorAnimationState">
         <ng-content select="gh-error"></ng-content>
     </div>
     <div class="gh-form-field-hint-wrapper">

@@ -10,6 +10,7 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   AfterContentChecked,
+  AfterViewInit,
 } from '@angular/core';
 import { startWith } from 'rxjs/operators/startWith';
 import {
@@ -17,6 +18,7 @@ import {
   getFormFieldMissingControlError
 } from './form-field-errors';
 import { GhFormFieldControl } from './form-field-control';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 let nextUniqueId = 0;
 
@@ -82,11 +84,20 @@ export class GhError {
     '[class.ng-invalid]': '_shouldForward("invalid")',
     '[class.ng-pending]': '_shouldForward("pending")',
   },
+  animations: [
+    trigger('transitionErrors', [
+      state('enter', style({ opacity: 1, transform: 'scaleY(1)' })),
+      transition('void => enter', [
+        style({ opacity: 0, transform: 'scaleY(0)' }),
+        animate('150ms cubic-bezier(0.55, 0, 0.55, 0.2)'),
+      ])
+    ])
+  ],
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhFormField implements AfterContentInit, AfterContentChecked {
+export class GhFormField implements AfterContentInit, AfterContentChecked, AfterViewInit {
 
   /** Text for the form field hint. */
   @Input()
@@ -105,6 +116,9 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
   @ContentChild(GhFormFieldControl) _control: GhFormFieldControl<any>;
 
   private _hintLabel = '';
+
+  /** State of the gh-error animations. */
+  _errorAnimationState: string = '';
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) { }
 
@@ -138,6 +152,12 @@ export class GhFormField implements AfterContentInit, AfterContentChecked {
 
   ngAfterContentChecked() {
     this._validateControlChild();
+  }
+
+  ngAfterViewInit() {
+    // Avoid animations on load.
+    this._errorAnimationState = 'enter';
+    this._changeDetectorRef.detectChanges();
   }
 
   /** Determines whether a class from the NgControl should be forwarded to the host element. */
