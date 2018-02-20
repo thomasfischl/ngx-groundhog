@@ -217,19 +217,21 @@ export class GhFormField implements AfterContentInit, AfterContentChecked, After
     if (this._control) {
       let ids: string[] = [];
 
-      const startHint = this._hintChildren ?
+      if (!this._getDisplayedError()) {
+        const startHint = this._hintChildren ?
         this._hintChildren.find(hint => hint.align === 'start') : null;
-      const endHint = this._hintChildren ?
-        this._hintChildren.find(hint => hint.align === 'end') : null;
+        const endHint = this._hintChildren ?
+          this._hintChildren.find(hint => hint.align === 'end') : null;
 
-      if (startHint) {
-        ids.push(startHint.id);
-      } else if (this._hintLabel) {
-        ids.push(this._hintLabelId);
-      }
+        if (startHint) {
+          ids.push(startHint.id);
+        } else if (this._hintLabel) {
+          ids.push(this._hintLabelId);
+        }
 
-      if (endHint) {
-        ids.push(endHint.id);
+        if (endHint) {
+          ids.push(endHint.id);
+        }
       } else if (this._errorChildren) {
         ids = this._errorChildren.map(error => error.id);
       }
