@@ -157,11 +157,11 @@ describe('GhSelect', () => {
             'gh-select-required', `Expected the gh-select-required class to be set.`);
         }));
 
-        it('should set aria-invalid for selects that are invalid and touched', fakeAsync(() => {
+        it('should set aria-invalid for selects that are invalid and dirty', fakeAsync(() => {
           expect(select.getAttribute('aria-invalid'))
             .toEqual('false', `Expected aria-invalid attr to be false for valid selects.`);
           fixture.componentInstance.isRequired = true;
-          fixture.componentInstance.control.markAsTouched();
+          fixture.componentInstance.control.markAsDirty();
           fixture.detectChanges();
           expect(select.getAttribute('aria-invalid'))
             .toEqual('true', `Expected aria-invalid attr to be true for invalid selects.`);
