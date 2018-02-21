@@ -2,10 +2,12 @@
 @import '../../button/button-theme';
 @import '../../progress-circle/progress-circle-theme';
 @import '../../select/select-theme';
+@import '../../tile/tile-theme';
 
 @mixin gh-theme($theme) {
   @include gh-core-theme($theme);
   @include gh-button-theme($theme);
   @include gh-progress-circle-theme($theme);
   @include gh-select-theme($theme);
+  @include gh-tile-theme($theme);
 }
