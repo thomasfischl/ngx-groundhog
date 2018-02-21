@@ -13,6 +13,7 @@ TODO
 | Input            | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/input/README.md)             | - |
 | Progress circle  | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/progress-circle/README.md)   | - |
 | Select           | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/select/README.md)            | - |
+| Tile             | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/tile/README.md)              | - |
 | Expandable       | In-progress | - | #47 |
 | Checkbox         | In-progress | - | #12 / #53 |
 | Context menu     | In-progress | - | #48 / #45 |
