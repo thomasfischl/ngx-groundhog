@@ -1,6 +1,6 @@
 {
   "name": "ngx-groundhog",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Groundhog components for Angular",
   "homepage": "https://github.com/Dynatrace/ngx-groundhog",
   "bugs": "https://github.com/Dynatrace/ngx-groundhog/issues",
