@@ -70,9 +70,11 @@ export const _GhTileMixinBase = mixinTabIndex(mixinDisabled(mixinColor(GhTileBas
   host: {
     'role': 'button',
     '[attr.tabindex]': 'tabIndex',
+    '[attr.aria-disabled]': 'disabled.toString()',
     'class': 'gh-tile',
     '[class.gh-tile-small]': '!_subTitle',
-    '[class.gh-tile-disabled]': 'disabled'
+    '[class.gh-tile-disabled]': 'disabled',
+    '(click)': '_haltDisabledEvents($event)'
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
@@ -86,6 +88,14 @@ export class GhTile extends _GhTileMixinBase
 
   constructor(elementRef: ElementRef) {
     super(elementRef);
+  }
+
+  _haltDisabledEvents(event: Event) {
+    // A disabled tile shouldn't apply any actions
+    if (this.disabled) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
   }
 }
 
