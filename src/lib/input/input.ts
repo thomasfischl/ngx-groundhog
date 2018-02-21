@@ -141,7 +141,7 @@ export class GhInput extends _GhInputMixinBase
   /** An object used to control when error messages are shown. */
   @Input() errorStateMatcher: ErrorStateMatcher;
 
-  /** Implemented as part of MatFormFieldControl.*/
+  /** Implemented as part of GhFormFieldControl.*/
   get empty(): boolean {
     return !this._isNeverEmpty() && !this._elementRef.nativeElement.value && !this._isBadInput();
   }
