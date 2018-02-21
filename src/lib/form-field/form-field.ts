@@ -174,7 +174,7 @@ export class GhFormField implements AfterContentInit, AfterContentChecked, After
     return ngControl && (ngControl as any)[prop];
   }
 
-  /** Determines whether to display hints or errors. */
+  /** Determines whether to display errors or not. */
   _getDisplayedError(): boolean {
     return this._errorChildren && this._errorChildren.length > 0 &&
       this._control.errorState;
