@@ -105,15 +105,15 @@ describe('GhButton', () => {
       const buttonElement = fixture.debugElement.query(By.css('button'));
       const instance = buttonElement.componentInstance;
 
-      expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-primary', 'Expected the element to have the "gh-button-primary" class set');
+      expect(buttonElement.nativeElement.classList).toContain('gh-button-primary',
+        'Expected the element to have the "gh-button-primary" class set');
 
       instance.variant = 'secondary';
 
-      expect(buttonElement.nativeElement.classList)
-        .not.toContain('gh-button-primary', 'Expected the element to no longer have "gh-button-primary" set.');
-      expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-secondary', 'Expected the element to have the "gh-button-secondary" class set');
+      expect(buttonElement.nativeElement.classList).not.toContain('gh-button-primary',
+        'Expected the element to no longer have "gh-button-primary" set.');
+      expect(buttonElement.nativeElement.classList).toContain('gh-button-secondary',
+        'Expected the element to have the "gh-button-secondary" class set');
     });
   });
 
