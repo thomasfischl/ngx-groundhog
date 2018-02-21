@@ -5,6 +5,7 @@ import {RouterModule} from '@angular/router';
 import {DemoGroundhogModule} from '../demo-groundhog-module';
 import {ButtonDemo} from '../button/button-demo';
 import {IconDemo} from '../icon/icon-demo';
+import {InputDemo} from 'input/input-demo';
 import {DemoApp, Home} from './demo-app';
 import {DEMO_APP_ROUTES} from './routes';
 import {SelectDemo} from '../select/select-demo';
@@ -21,6 +22,7 @@ import {ProgressCircleDemo} from '../progress-circle/progress-circle-demo';
   declarations: [
     ButtonDemo,
     IconDemo,
+    InputDemo,
     ProgressCircleDemo,
     SelectDemo,
     DemoApp,

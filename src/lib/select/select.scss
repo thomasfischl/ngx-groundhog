@@ -41,6 +41,8 @@ $gh-select-panel-max-width: 280px !default;
 }
 
 .gh-select-trigger {
+  display: block;
+  height: 32px;
   line-height: 32px;
   padding: 0;
   padding-left: 11px;

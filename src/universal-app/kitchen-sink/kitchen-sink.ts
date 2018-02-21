@@ -4,6 +4,8 @@ import {ServerModule} from '@angular/platform-server';
 import {
   GhButtonModule,
   GhIconModule,
+  GhInputModule,
+  GhFormFieldModule,
   GhProgressCircleModule
 } from '@dynatrace/ngx-groundhog';
 
@@ -22,6 +24,8 @@ export class KitchenSink {
     BrowserModule.withServerTransition({appId: 'kitchen-sink'}),
     GhButtonModule,
     GhIconModule,
+    GhInputModule,
+    GhFormFieldModule,
     GhProgressCircleModule
   ],
   bootstrap: [KitchenSink],

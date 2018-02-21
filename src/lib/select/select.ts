@@ -33,6 +33,8 @@ import {HOME} from '@angular/cdk/keycodes';
 import {END} from '@angular/cdk/keycodes';
 import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
 import {
+  Overlay,
+  RepositionScrollStrategy,
   CdkConnectedOverlay,
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
@@ -57,6 +59,7 @@ import {
   CanUpdateErrorState,
   mixinErrorState
 } from '@dynatrace/ngx-groundhog/core';
+import { GhFormFieldControl } from '@dynatrace/ngx-groundhog/form-field';
 import {GhOption, GhOptionSelectionChange} from './option';
 import {Subject} from 'rxjs/Subject';
 import {trigger, state, style, animate, transition} from '@angular/animations';
@@ -157,9 +160,13 @@ export const _GhSelectMixinBase = mixinTabIndex(mixinDisabled(mixinErrorState(Gh
       ])
     ])
   ],
+  providers: [
+    {provide: GhFormFieldControl, useExisting: GhSelect},
+  ]
 })
-export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, DoCheck,
-  AfterContentInit, OnDestroy, CanDisable, HasTabIndex, ControlValueAccessor, CanUpdateErrorState {
+export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, OnDestroy, DoCheck,
+  AfterContentInit, CanDisable, HasTabIndex, ControlValueAccessor, CanUpdateErrorState,
+  GhFormFieldControl<any> {
 
   /** The placeholder displayed in the trigger of the select. */
   private _placeholder: string;
@@ -220,6 +227,24 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
 
   /** The max height of the select's overlay panel */
   _maxPanelHeight: number = SELECT_ITEM_HEIGHT * SELECT_MAX_ITEMS_VISIBLE;
+
+  /** Strategy that will be used to handle scrolling while the select panel is open. */
+  _scrollStrategy = this._overlay.scrollStrategies.reposition();
+
+  _positions = [
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom',
+    },
+  ];
 
   /** Classes to be passed to the select panel. Supports the same syntax as `ngClass`. */
   @Input() panelClass: string | Set<string> | string[] | {[key: string]: any};
@@ -372,6 +397,7 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     @Optional() _parentFormGroup: FormGroupDirective,
     @Self() @Optional() public ngControl: NgControl,
     @Attribute('tabindex') tabIndex: string,
+    private _overlay: Overlay
   ) {
     super(_elementRef, _defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
@@ -502,6 +528,17 @@ export class GhSelect extends _GhSelectMixinBase implements OnInit, OnChanges, D
     this.disabled = isDisabled;
     this._changeDetectorRef.markForCheck();
     this.stateChanges.next();
+  }
+
+  /** Implemented as part of GhFormFieldControl. */
+  setDescribedByIds(ids: string[]) {
+    this._ariaDescribedby = ids.join(' ');
+  }
+
+  /** Implemented as part of GhFormFieldControl. */
+  onContainerClick() {
+    this.focus();
+    this.open();
   }
 
   /** Drops current option subscriptions and resets from scratch. */

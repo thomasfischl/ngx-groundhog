@@ -1,7 +1,9 @@
 import {NgModule} from '@angular/core';
 import {
   GhButtonModule,
+  GhFormFieldModule,
   GhIconModule,
+  GhInputModule,
   GhProgressCircleModule,
   GhSelectModule,
 } from '@dynatrace/ngx-groundhog';
@@ -12,7 +14,9 @@ import {
 @NgModule({
   exports: [
     GhButtonModule,
+    GhFormFieldModule,
     GhIconModule,
+    GhInputModule,
     GhProgressCircleModule,
     GhSelectModule,
   ]

@@ -15,13 +15,19 @@
 
 <h4>ngModel (Angular Forms)</h4>
 <p>Current value: {{currentDrink || 'none'}}</p>
-<p> Touched: {{ drinkControl.touched }} </p>
-<p> Dirty: {{ drinkControl.dirty }} </p>
-<p> Status: {{ drinkControl.control?.status }} </p>
-<gh-select placeholder="Please select value" [(ngModel)]="currentDrink" #drinkControl="ngModel" [disabled]="drinkDisabled">
-  <gh-option>None</gh-option>
-  <gh-option *ngFor="let drink of drinks" [disabled]="drink.disabled" [value]="drink.key">{{drink.label}}</gh-option>
-</gh-select>
+<p>Touched: {{ drinkControl.touched }}</p>
+<p>Dirty: {{ drinkControl.dirty }}</p>
+<p>Status: {{ drinkControl.control?.status }}</p>
+<gh-form-field>
+  <gh-label>Select a drink:</gh-label>
+  <gh-select placeholder="Please select value" [(ngModel)]="currentDrink" #drinkControl="ngModel" [disabled]="drinkDisabled" [required]="drinksRequired">
+    <gh-option>None</gh-option>
+    <gh-option *ngFor="let drink of drinks" [disabled]="drink.disabled" [value]="drink.key">{{drink.label}}</gh-option>
+  </gh-select>
+  <gh-hint>Hint left</gh-hint>
+  <gh-hint align="end">See, an arrow ^</gh-hint>
+  <gh-error>A wild error appeared.</gh-error>
+</gh-form-field>
 <div>
   <button gh-button (click)="currentDrink='Mojito'">Set Value</button>
   <button gh-button (click)="drinkDisabled=!drinkDisabled">Toggle disabled</button>

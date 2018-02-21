@@ -1,0 +1,27 @@
+<div class="gh-form-field-wrapper">
+  <div class="gh-form-field-container" (click)="_control.onContainerClick && _control.onContainerClick($event)">
+    <label class="gh-form-field-label"
+      *ngIf="!!this._labelChild"
+      [attr.for]="_control.id"
+      [attr.aria-owns]="_control.id"
+      [class.gh-empty]="_control.empty">
+      <ng-content select="gh-label"></ng-content>
+    </label>
+
+    <div class="gh-form-field-control">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+  <div class="gh-form-field-subscript-wrapper">
+    <div class="gh-form-field-error" *ngIf="_getDisplayedError()" [@transitionErrors]="_errorAnimationState">
+        <ng-content select="gh-error"></ng-content>
+    </div>
+    <div class="gh-form-field-hint-wrapper">
+      <gh-hint *ngIf="hintLabel" [id]="_hintLabelId">{{hintLabel}}</gh-hint>
+      <ng-content select="gh-hint:not([align='end'])"></ng-content>
+      <span class="gh-form-field-hint-spacer"></span>
+      <ng-content select="gh-hint[align='end']"></ng-content>
+    </div>
+  </div>
+</div>

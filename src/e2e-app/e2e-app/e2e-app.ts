@@ -15,6 +15,7 @@ export class Home {}
 export class E2EApp {
   navItems = [
     {name: 'Start', route: '/'},
-    {name: 'Button', route: '/button'}
+    {name: 'Button', route: '/button'},
+    {name: 'Input', route: '/input'}
   ];
 }
