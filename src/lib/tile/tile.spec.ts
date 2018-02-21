@@ -127,7 +127,6 @@ describe('GhTile', () => {
 class TestApp {
   clickCount: number = 0;
   isDisabled: boolean = false;
-  rippleDisabled: boolean = false;
 
   increment() {
     this.clickCount++;
