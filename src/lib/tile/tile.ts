@@ -74,7 +74,7 @@ export const _GhTileMixinBase = mixinTabIndex(mixinDisabled(mixinColor(GhTileBas
     'class': 'gh-tile',
     '[class.gh-tile-small]': '!_subTitle',
     '[class.gh-tile-disabled]': 'disabled',
-    '(click)': '_haltDisabledEvents($event)'
+    // '(click)': '_haltDisabledEvents($event)'
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
