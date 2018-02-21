@@ -1,13 +1,26 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, Directive } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  Directive,
+  ContentChild,
+  Input
+} from '@angular/core';
+import {
+  CanDisable,
+  mixinDisabled,
+  HasTabIndex,
+  mixinTabIndex
+} from '@dynatrace/ngx-groundhog/core';
 
-/** Content of a card, needed as it's used as a selector in the API. */
+/** Content of a tile, needed as it's used as a selector in the API. */
 @Directive({
   selector: 'gh-tile-content',
   host: { 'class': 'gh-tile-content' }
 })
 export class GhTileContent { }
 
-/** Title of a card, needed as it's used as a selector in the API. */
+/** Title of a tile, needed as it's used as a selector in the API. */
 @Directive({
   selector: `gh-tile-title, [gh-tile-title], [ghTileTitle]`,
   host: {
@@ -16,7 +29,19 @@ export class GhTileContent { }
 })
 export class GhTileTitle { }
 
-/** Sub-title of a card, needed as it's used as a selector in the API. */
+/** Icon of a tile, needed as it's used as a selector in the API. */
+@Directive({
+  selector: `gh-tile-icon, [gh-tile-icon], [ghTileIcon]`,
+  host: {
+    'class': 'gh-tile-icon',
+    '[class.gh-tile-icon-end]': 'align === "end"'
+  }
+})
+export class GhTileIcon {
+  @Input() align: 'start' | 'end' = 'start';
+}
+
+/** Sub-title of a tile, needed as it's used as a selector in the API. */
 @Directive({
   selector: `gh-tile-subtitle, [gh-tile-subtitle], [ghTileSubtitle]`,
   host: {
@@ -25,15 +50,11 @@ export class GhTileTitle { }
 })
 export class GhTileSubtitle { }
 
-/** Action section of a card, needed as it's used as a selector in the API. */
-@Directive({
-  selector: 'gh-tile-actions',
-  exportAs: 'ghTileActions',
-  host: {
-    'class': 'gh-tile-actions',
-  }
-})
-export class GhTileActions { }
+// Boilerplate for applying mixins to GhTile.
+export class GhTileBase {
+  constructor() {}
+}
+export const _GhTileMixinBase = mixinTabIndex(mixinDisabled(GhTileBase));
 
 @Component({
   moduleId: module.id,
@@ -41,9 +62,20 @@ export class GhTileActions { }
   exportAs: 'ghTile',
   templateUrl: 'tile.html',
   styleUrls: ['tile.css'],
+  inputs: ['disabled', 'tabIndex'],
+  host: {
+    'role': 'button',
+    '[attr.tabindex]': 'tabIndex',
+    'class': 'gh-tile',
+    '[class.gh-tile-small]': '!_subTitle',
+    '[class.gh-tile-disabled]': 'disabled'
+  },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhTile { }
+export class GhTile extends _GhTileMixinBase implements CanDisable, HasTabIndex {
+  @ContentChild(GhTileSubtitle) _subTitle: GhTileSubtitle;
+  @ContentChild(GhTileIcon) _icon: GhTileIcon;
+}
 
