@@ -11,6 +11,9 @@ import {FocusMonitor} from '@angular/cdk/a11y';
 import {
   CanDisable,
   mixinDisabled,
+  CanColor,
+  HasElementRef,
+  mixinColor
 } from '@dynatrace/ngx-groundhog/core';
 
 /**
@@ -26,11 +29,9 @@ const BUTTON_HOST_ATTRIBUTES = [
 export class GhButtonBase {
   constructor(public _elementRef: ElementRef) {}
 }
-export const _GhButtonMixinBase = mixinDisabled(GhButtonBase);
+export const _GhButtonMixinBase = mixinDisabled(mixinColor(GhButtonBase, 'main'));
 
-export type ButtonColor = 'main' | 'accent' | 'warning' | 'error'  | 'cta';
 export type ButtonVariant = 'primary' | 'secondary';
-const defaultColor = 'main';
 const defaultVariant = 'primary';
 
 /**
@@ -45,22 +46,13 @@ const defaultVariant = 'primary';
   },
   templateUrl: 'button.html',
   styleUrls: ['button.css'],
-  inputs: ['disabled'],
+  inputs: ['disabled', 'color'],
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisable {
-
-  @Input()
-  get color(): ButtonColor { return this._color; }
-  set color(value: ButtonColor) {
-    const color = value || defaultColor;
-    if (color !== this._color) {
-      this._replaceCssClass(color, this._color);
-      this._color = color;
-    }
-  }
+export class GhButton extends _GhButtonMixinBase
+  implements OnDestroy, CanDisable, CanColor, HasElementRef {
 
   @Input()
   get variant(): ButtonVariant { return this._variant; }
@@ -75,15 +67,13 @@ export class GhButton extends _GhButtonMixinBase implements OnDestroy, CanDisabl
   /** Whether the button is icon button. */
   _isIconButton: boolean = this._hasHostAttributes('gh-icon-button');
 
-  private _color: ButtonColor;
   private _variant: ButtonVariant;
 
   constructor(elementRef: ElementRef,
               private _focusMonitor: FocusMonitor) {
     super(elementRef);
 
-    // Set the default color and variant to trigger the setters.
-    this.color = defaultColor;
+    // Set the default variant to trigger the setters.
     this.variant = defaultVariant;
 
     // For each of the variant selectors that is prevent in the button's host

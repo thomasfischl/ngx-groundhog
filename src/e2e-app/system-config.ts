@@ -48,6 +48,7 @@ System.config({
     '@dynatrace/ngx-groundhog/button': 'dist/bundles/ngx-groundhog-button.umd.js',
     '@dynatrace/ngx-groundhog/input': 'dist/bundles/ngx-groundhog-input.umd.js',
     '@dynatrace/ngx-groundhog/form-field': 'dist/bundles/ngx-groundhog-form-field.umd.js',
+    '@dynatrace/ngx-groundhog/tile': 'dist/bundles/ngx-groundhog-tile.umd.js',
   },
   packages: {
     // Thirdparty barrels.

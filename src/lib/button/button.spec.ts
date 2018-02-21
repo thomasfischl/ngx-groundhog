@@ -72,14 +72,14 @@ describe('GhButton', () => {
       const instance = buttonElement.componentInstance;
 
       expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-main', 'Expected the element to have the "gh-button-main" class set');
+        .toContain('gh-main', 'Expected the element to have the "gh-main" class set');
 
       instance.color = 'accent';
 
-      expect(buttonElement.nativeElement.classList)
-        .not.toContain('gh-button-main', 'Expected the element to no longer have "gh-button-main" set.');
-      expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-accent', 'Expected the element to have the "gh-button-accent" class set');
+      expect(buttonElement.nativeElement.classList).not.toContain('gh-main',
+        'Expected the element to no longer have "gh-main" set.');
+      expect(buttonElement.nativeElement.classList).toContain('gh-accent',
+        'Expected the element to have the "gh-accent" class set');
     });
 
     it('should augment an existing class with a variant property', () => {
@@ -105,15 +105,15 @@ describe('GhButton', () => {
       const buttonElement = fixture.debugElement.query(By.css('button'));
       const instance = buttonElement.componentInstance;
 
-      expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-primary', 'Expected the element to have the "gh-button-primary" class set');
+      expect(buttonElement.nativeElement.classList).toContain('gh-button-primary',
+        'Expected the element to have the "gh-button-primary" class set');
 
       instance.variant = 'secondary';
 
-      expect(buttonElement.nativeElement.classList)
-        .not.toContain('gh-button-primary', 'Expected the element to no longer have "gh-button-primary" set.');
-      expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-secondary', 'Expected the element to have the "gh-button-secondary" class set');
+      expect(buttonElement.nativeElement.classList).not.toContain('gh-button-primary',
+        'Expected the element to no longer have "gh-button-primary" set.');
+      expect(buttonElement.nativeElement.classList).toContain('gh-button-secondary',
+        'Expected the element to have the "gh-button-secondary" class set');
     });
   });
 

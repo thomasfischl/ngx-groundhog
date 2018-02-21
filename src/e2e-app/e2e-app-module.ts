@@ -8,10 +8,12 @@ import { E2E_APP_ROUTES } from './e2e-app/routes';
 import {
   GhButtonModule,
   GhInputModule,
-  GhFormFieldModule
+  GhFormFieldModule,
+  GhTileModule
 } from '@dynatrace/ngx-groundhog';
 import { ButtonE2E } from './button/button-e2e';
 import { InputE2E } from './input/input-e2e';
+import { TileE2E } from 'tile/tile-e2e';
 
 /**
  * NgModule that contains all Groundhog modules that are required to serve the e2e-app.
@@ -20,7 +22,8 @@ import { InputE2E } from './input/input-e2e';
   exports: [
     GhButtonModule,
     GhInputModule,
-    GhFormFieldModule
+    GhFormFieldModule,
+    GhTileModule
   ]
 })
 export class E2eNgxGroundhogModule {}
@@ -37,7 +40,8 @@ export class E2eNgxGroundhogModule {}
     E2EApp,
     Home,
     ButtonE2E,
-    InputE2E
+    InputE2E,
+    TileE2E
   ],
   bootstrap: [E2EApp],
   entryComponents: [Home],

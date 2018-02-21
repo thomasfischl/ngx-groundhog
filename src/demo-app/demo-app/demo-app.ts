@@ -45,5 +45,6 @@ export class DemoApp {
     {name: 'Input', route: '/input'},
     {name: 'Progress circle', route: '/progress-circle'},
     {name: 'Select', route: '/select'},
+    {name: 'Tile', route: '/tile'},
   ];
 }

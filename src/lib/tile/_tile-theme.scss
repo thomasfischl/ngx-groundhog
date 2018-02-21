@@ -1,0 +1,25 @@
+@import '../core/theming/theming';
+@import '../core/style/variables';
+
+@mixin gh-tile-theme($theme) {
+
+  $palette-names: 'main', 'accent', 'warning', 'error', 'cta';
+  $default-palette: 'main';
+
+  .gh-tile:not(.gh-tile-disabled) {
+    @each $name in $palette-names {
+      $palette: map-get($theme, $name);
+      $default-color: gh-color($palette, 'default');
+
+      &.gh-#{$name} {
+        &:hover {
+          border-color: $default-color;
+        }
+
+        .gh-tile-icon {
+          background-color: $default-color;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<div class="gh-tile-header">
+  <ng-content select="
+    gh-tile-icon:not([align='end']),
+    [gh-tile-icon]:not([align='end']),
+    [ghTileIcon]:not([align='end'])">
+  </ng-content>
+  <div class="gh-tile-heading">
+    <ng-content select="gh-tile-title, [gh-tile-title], [ghTileTitle]"></ng-content>
+    <ng-content select="gh-tile-subtitle, [gh-tile-subtitle], [ghTileSubtitle]"></ng-content>
+  </div>
+  <ng-content select="
+    gh-tile-icon[align='end'],
+    [gh-tile-icon][align='end'],
+    [ghTileIcon][align='end']">
+  </ng-content>
+</div>
+<div class="gh-tile-content">
+  <ng-content></ng-content>
+</div>
