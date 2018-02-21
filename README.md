@@ -5,19 +5,19 @@ TODO
 
 #### Available features & Status
 
-| Feature          | Status      | Docs        | Issue/PR    |
-|------------------|-------------|-------------|-------------|
-| Button           | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/button/README.md)            | - |
-| Form field       | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/form-field/README.md)        | - |
-| Icon             | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/icon/README.md)              | - |
-| Input            | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/input/README.md)             | - |
-| Progress circle  | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/progress-circle/README.md)   | - |
-| Select           | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/select/README.md)            | - |
-| Tile             | Finished    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/tile/README.md)              | - |
-| Expandable       | In-progress | - | #47 |
-| Checkbox         | In-progress | - | #12 / #53 |
-| Context menu     | In-progress | - | #48 / #45 |
-| Datepicker       | In-progress | - | #49 / #34 |
+| Feature          | Status      | Version        | Docs        | Issue/PR    |
+|------------------|-------------|-------------|-------------|-------------|
+| Button           | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/button/README.md)            | - |
+| Form field       | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/form-field/README.md)        | - |
+| Icon             | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/icon/README.md)              | - |
+| Input            | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/input/README.md)             | - |
+| Progress circle  | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/progress-circle/README.md)   | - |
+| Select           | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/select/README.md)            | - |
+| Tile             | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/tile/README.md)              | - |
+| Expandable       | In-progress | - | - | #47 |
+| Checkbox         | In-progress | - | - | #12 / #53 |
+| Context menu     | In-progress | - | - | #48 / #45 |
+| Datepicker       | In-progress | - | - | #49 / #34 |
 
 ## Found an Issue?
 
