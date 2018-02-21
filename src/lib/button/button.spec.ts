@@ -72,14 +72,14 @@ describe('GhButton', () => {
       const instance = buttonElement.componentInstance;
 
       expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-main', 'Expected the element to have the "gh-button-main" class set');
+        .toContain('gh-main', 'Expected the element to have the "gh-main" class set');
 
       instance.color = 'accent';
 
-      expect(buttonElement.nativeElement.classList)
-        .not.toContain('gh-button-main', 'Expected the element to no longer have "gh-button-main" set.');
-      expect(buttonElement.nativeElement.classList)
-        .toContain('gh-button-accent', 'Expected the element to have the "gh-button-accent" class set');
+      expect(buttonElement.nativeElement.classList).not.toContain('gh-main',
+        'Expected the element to no longer have "gh-main" set.');
+      expect(buttonElement.nativeElement.classList).toContain('gh-accent',
+        'Expected the element to have the "gh-accent" class set');
     });
 
     it('should augment an existing class with a variant property', () => {

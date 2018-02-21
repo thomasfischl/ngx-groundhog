@@ -16,7 +16,7 @@
 
       $namespace: '';
       @if $name != $default-palette {
-        $namespace: '.gh-button-#{$name}';
+        $namespace: '.gh-#{$name}';
       }
 
       &#{$namespace}.gh-button-primary {
