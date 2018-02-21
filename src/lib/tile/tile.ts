@@ -4,13 +4,17 @@ import {
   ViewEncapsulation,
   Directive,
   ContentChild,
-  Input
+  Input,
+  ElementRef
 } from '@angular/core';
 import {
   CanDisable,
   mixinDisabled,
   HasTabIndex,
-  mixinTabIndex
+  mixinTabIndex,
+  HasElementRef,
+  CanColor,
+  mixinColor
 } from '@dynatrace/ngx-groundhog/core';
 
 /** Content of a tile, needed as it's used as a selector in the API. */
@@ -52,9 +56,9 @@ export class GhTileSubtitle { }
 
 // Boilerplate for applying mixins to GhTile.
 export class GhTileBase {
-  constructor() {}
+  constructor(public _elementRef: ElementRef) { }
 }
-export const _GhTileMixinBase = mixinTabIndex(mixinDisabled(GhTileBase));
+export const _GhTileMixinBase = mixinTabIndex(mixinDisabled(mixinColor(GhTileBase)));
 
 @Component({
   moduleId: module.id,
@@ -62,7 +66,7 @@ export const _GhTileMixinBase = mixinTabIndex(mixinDisabled(GhTileBase));
   exportAs: 'ghTile',
   templateUrl: 'tile.html',
   styleUrls: ['tile.css'],
-  inputs: ['disabled', 'tabIndex'],
+  inputs: ['disabled', 'tabIndex', 'color'],
   host: {
     'role': 'button',
     '[attr.tabindex]': 'tabIndex',
@@ -74,8 +78,14 @@ export const _GhTileMixinBase = mixinTabIndex(mixinDisabled(GhTileBase));
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhTile extends _GhTileMixinBase implements CanDisable, HasTabIndex {
+export class GhTile extends _GhTileMixinBase
+  implements CanDisable, HasElementRef, CanColor, HasTabIndex {
+
   @ContentChild(GhTileSubtitle) _subTitle: GhTileSubtitle;
   @ContentChild(GhTileIcon) _icon: GhTileIcon;
+
+  constructor(elementRef: ElementRef) {
+    super(elementRef);
+  }
 }
 
