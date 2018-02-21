@@ -17,4 +17,4 @@ import { GhTile, GhTileContent, GhTileTitle, GhTileSubtitle, GhTileActions } fro
     GhTileActions
   ]
 })
-export class TileModule { }
+export class GhTileModule { }
