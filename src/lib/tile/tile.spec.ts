@@ -120,7 +120,7 @@ describe('GhTile', () => {
         <gh-tile-icon></gh-tile-icon>
         <gh-tile-title>L-W8-64-APMDay3</gh-tile-title>
         <gh-tile-subtitle>Linux (x84, 64-bit)</gh-tile-subtitle>
-        <gh-tile-content>Network traffic</gh-tile-content>
+        Network traffic
       </gh-tile>
     `
 })

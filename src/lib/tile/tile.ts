@@ -17,13 +17,6 @@ import {
   mixinColor
 } from '@dynatrace/ngx-groundhog/core';
 
-/** Content of a tile, needed as it's used as a selector in the API. */
-@Directive({
-  selector: 'gh-tile-content',
-  host: { 'class': 'gh-tile-content' }
-})
-export class GhTileContent { }
-
 /** Title of a tile, needed as it's used as a selector in the API. */
 @Directive({
   selector: `gh-tile-title, [gh-tile-title], [ghTileTitle]`,
