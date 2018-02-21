@@ -1,6 +1,6 @@
 # Tile
 
-`<gh-tile>` is a clickable container for differnent types of content. A Tail consists of various sub elements beside the content itself.
+`<gh-tile>` is a clickable container for different types of content. A tile consists of various sub elements beside the content itself.
 - `<gh-tile-title>`: The tiles title
 - `<gh-tile-subtitle>`: (Optional) A tile can also contain an optional subtitle
 - `<gh-tile-icon>`: (Optional) An optional icon as a visual key element.
