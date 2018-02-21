@@ -70,12 +70,12 @@
 }
 
 .gh-form-field-hint-spacer {
-  flex: 1 0 1em;
+  flex: 1 0 8px;
 }
 
 .gh-hint,
 .gh-error {
-  font-family: 'BerninaSans', 'Open Sans', sans-serif;
+  font-family: $mainfont;
   font-size: 12px;
   font-weight: 400;
   text-decoration: none;
@@ -86,7 +86,7 @@
 }
 
 .gh-hint {
-  color: #898989;
+  color: $gray-500;
 }
 
 .gh-error {
