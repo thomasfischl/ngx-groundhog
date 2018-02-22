@@ -18,6 +18,7 @@ TODO
 | Checkbox         | In-progress | - | - | #12 / #53 |
 | Context menu     | In-progress | - | - | #48 / #45 |
 | Datepicker       | In-progress | - | - | #49 / #34 |
+| Island           | In-progress | - | - | #67 / #68 |
 
 ## Found an Issue?
 
