@@ -43,6 +43,7 @@ export class DemoApp {
     {name: 'Button', route: '/button'},
     {name: 'Icon', route: '/icon'},
     {name: 'Input', route: '/input'},
+    {name: 'Island', route: '/island'},
     {name: 'Progress circle', route: '/progress-circle'},
     {name: 'Select', route: '/select'},
     {name: 'Tile', route: '/tile'},
