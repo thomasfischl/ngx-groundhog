@@ -1,0 +1,38 @@
+@import '../core/style/variables';
+
+.gh-island {
+  display: block;
+  font-familiy: $mainfont;
+  border: 1px solid $gray-200;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 16px;
+  margin: 24px;
+}
+
+.gh-island-icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gh-island-header {
+  display: flex;
+  width: 100%;
+}
+
+.gh-island-heading {
+  flex: 1 0 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gh-island-title {
+  display: block;
+  font-size: 24px;
+  color: $gray-700;
+}
