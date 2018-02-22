@@ -1,11 +1,10 @@
-@import '../../../node_modules/@angular/cdk/overlay';
-@import '@dynatrace/groundhog/src/common/colors';
+@import '../core/core';
+@import '../core/style/variables';
 
 $panel-padding-btn: 32px;
 $panel-padding: 8px;
 
-
-@include cdk-overlay();
+@include gh-core();
 
 .gh-ca-menu-panel {
   background-color: $gray-700;
