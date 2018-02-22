@@ -17,8 +17,11 @@ import {GhSelectModule, GhSelect, GhOption} from './index';
 import {DOWN_ARROW, UP_ARROW} from '@angular/cdk/keycodes';
 import {SPACE} from '@angular/cdk/keycodes';
 import {map} from 'rxjs/operators/map';
-import {dispatchKeyboardEvent, dispatchEvent} from '../../testing/dispatch-event';
-import {createKeyboardEvent} from '../../testing/event-objects';
+import {
+  dispatchKeyboardEvent,
+  dispatchEvent,
+} from '@dynatrace/ngx-groundhog/core';
+import {createKeyboardEvent} from '@dynatrace/ngx-groundhog/core';
 
 describe('GhSelect', () => {
   let overlayContainer: OverlayContainer;
