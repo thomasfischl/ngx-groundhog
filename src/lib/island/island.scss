@@ -2,8 +2,7 @@
 
 .gh-island {
   display: block;
-  font-familiy: $mainfont;
-  border: 1px solid $gray-200;
+  font-family: $mainfont;
   background-color: #fff;
   border-radius: 3px;
   padding: 16px;
@@ -17,11 +16,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+
+  .gh-icon {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 .gh-island-header {
   display: flex;
   width: 100%;
+  padding-bottom: 16px;
 }
 
 .gh-island-heading {
@@ -35,14 +41,16 @@
   display: block;
   font-size: 24px;
   color: $gray-700;
+  font-weight: 300;
+}
+
+.gh-island-subtitle {
+  display: block;
+  font-size: 14px;
+  color: $gray-700;
 }
 
 .gh-island-actions {
   display: block;
-
-  // As defined in the style definition action button should be positioned 20px
-  // from the top. The container itself has already 16px so we have to add
-  // another 4px
-  padding-top: 4px;
 
 }
