@@ -36,3 +36,13 @@
   font-size: 24px;
   color: $gray-700;
 }
+
+.gh-island-actions {
+  display: block;
+
+  // As defined in the style definition action button should be positioned 20px
+  // from the top. The container itself has already 16px so we have to add
+  // another 4px
+  padding-top: 4px;
+
+}
