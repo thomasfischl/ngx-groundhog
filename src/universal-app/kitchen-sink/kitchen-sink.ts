@@ -5,9 +5,10 @@ import {
   GhButtonModule,
   GhIconModule,
   GhInputModule,
+  GhIslandModule,
   GhFormFieldModule,
   GhProgressCircleModule,
-  GhTileModule
+  GhTileModule,
 } from '@dynatrace/ngx-groundhog';
 
 @Component({
@@ -26,6 +27,7 @@ export class KitchenSink {
     GhButtonModule,
     GhIconModule,
     GhInputModule,
+    GhIslandModule,
     GhFormFieldModule,
     GhProgressCircleModule,
     GhTileModule,
