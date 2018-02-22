@@ -85,11 +85,8 @@ $gh-select-panel-max-width: 280px !default;
   overflow: auto;
   -webkit-overflow-scrolling: touch;   // for momentum scroll on mobile
 
-  // prevents some animation twitching and test inconsistencies in IE11
-  min-width: 100%;
-
+  width: 100%;
   min-width: $gh-select-panel-min-width;
-  max-width: $gh-select-panel-max-width;
 
   &.gh-select-panel-top {
     border-radius: 3px 3px 0 0;
