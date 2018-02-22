@@ -11,6 +11,7 @@ TODO
 | Form field       | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/form-field/README.md)        | - |
 | Icon             | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/icon/README.md)              | - |
 | Input            | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/input/README.md)             | - |
+| Island           | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/island/README.md)            | - |
 | Progress circle  | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/progress-circle/README.md)   | - |
 | Select           | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/select/README.md)            | - |
 | Tile             | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/tile/README.md)              | - |
@@ -18,7 +19,6 @@ TODO
 | Checkbox         | In-progress | - | - | #12 / #53 |
 | Context menu     | In-progress | - | - | #48 / #45 |
 | Datepicker       | In-progress | - | - | #49 / #34 |
-| Island           | In-progress | - | - | #67 / #68 |
 
 ## Found an Issue?
 
