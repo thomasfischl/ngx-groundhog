@@ -17,46 +17,8 @@ import {GhSelectModule, GhSelect, GhOption} from './index';
 import {DOWN_ARROW, UP_ARROW} from '@angular/cdk/keycodes';
 import {SPACE} from '@angular/cdk/keycodes';
 import {map} from 'rxjs/operators/map';
-
-// NOTE:
-// The following funcitons to dispatch events have been taken directly from
-// @angular/cdk/testing as it is not yet part of their release
-// See: https://github.com/angular/material2/issues/5803#issuecomment-323211124
-/** Dispatches a keydown event from an element. */
-export function createKeyboardEvent(type: string, keyCode: number, target?: Element, key?: string) {
-  let event = document.createEvent('KeyboardEvent') as any;
-  // Firefox does not support `initKeyboardEvent`, but supports `initKeyEvent`.
-  let initEventFn = (event.initKeyEvent || event.initKeyboardEvent).bind(event);
-  let originalPreventDefault = event.preventDefault;
-
-  initEventFn(type, true, true, window, 0, 0, 0, 0, 0, keyCode);
-
-  // Webkit Browsers don't set the keyCode when calling the init function.
-  // See related bug https://bugs.webkit.org/show_bug.cgi?id=16735
-  Object.defineProperties(event, {
-    keyCode: { get: () => keyCode },
-    key: { get: () => key },
-    target: { get: () => target }
-  });
-
-  // IE won't set `defaultPrevented` on synthetic events so we need to do it manually.
-  event.preventDefault = function() {
-    Object.defineProperty(event, 'defaultPrevented', { get: () => true });
-    return originalPreventDefault.apply(this, arguments);
-  };
-
-  return event;
-}
-/** Utility to dispatch any event on a Node. */
-export function dispatchEvent(node: Node | Window, event: Event): Event {
-  node.dispatchEvent(event);
-  return event;
-}
-/** Shorthand to dispatch a keyboard event with a specified key code. */
-export function dispatchKeyboardEvent(node: Node, type: string, keyCode: number, target?: Element):
-    KeyboardEvent {
-  return dispatchEvent(node, createKeyboardEvent(type, keyCode, target)) as KeyboardEvent;
-}
+import {dispatchKeyboardEvent, dispatchEvent} from '../../testing/dispatch-event';
+import {createKeyboardEvent} from '../../testing/event-objects';
 
 describe('GhSelect', () => {
   let overlayContainer: OverlayContainer;
