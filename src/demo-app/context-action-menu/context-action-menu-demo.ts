@@ -11,6 +11,7 @@ export class ContextActionMenuDemo {
   deleteClickCount: number = 0;
   deleteClickEvent: string = '';
   opened: boolean = false;
+  disabled: boolean = false;
 
   @ViewChild('caMenu') caMenu: GhContextActionMenu;
 

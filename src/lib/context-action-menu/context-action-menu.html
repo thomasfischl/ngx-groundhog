@@ -6,8 +6,15 @@
   cdk-overlay-origin
   #origin="cdkOverlayOrigin"
   (click)="open()"
-  [tabindex]="tabIndex">
-  <gh-icon svgIcon="more"></gh-icon>
+  [tabindex]="tabIndex"
+  [disabled]="disabled">
+  <gh-icon>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <circle cx="404" cy="256" r="44"/>
+      <circle cx="256" cy="256" r="44"/>
+      <circle cx="108" cy="256" r="44"/>
+    </svg>
+  </gh-icon>
 </button>
 <ng-template
   cdk-connected-overlay
@@ -18,13 +25,12 @@
   (detach)="close()"
   [origin]="origin"
   [open]="panelOpen"
-  [positions]="_positions"
-  role="dialog"
-  [aria-labelledby]="ariaLabel">
+  [positions]="_positions">
   <div
     class="gh-ca-menu-panel"
-    role="menu"
-    #panel>
+    [attr.aria-labelledby]="ariaLabel"
+    #panel
+    role="dialog">
     <div class="gh-menu-content">
       <ng-content></ng-content>
     </div>
@@ -34,7 +40,11 @@
       variant="secondary"
       class="gh-ca-menu-close-trigger"
       (click)="close()">
-      <gh-icon svgIcon="abort"></gh-icon>
+      <gh-icon>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M434.191 134.378l-56.568-56.569L256 199.432 134.377 77.809l-56.568 56.569L199.432 256 77.809 377.623l56.568 56.568L256 312.568l121.623 121.623 56.568-56.568L312.568 256z"/>
+        </svg>
+      </gh-icon>
     </button>
   </div>
 </ng-template>

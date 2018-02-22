@@ -56,8 +56,10 @@ export const _GhContextActionMenuBase =
   styleUrls: ['context-action-menu.css'],
   inputs: ['disabled', 'tabIndex', 'color'],
   host: {
-    '[attr.aria-label]': 'ariaLabel',
+    'class': 'gh-context-action-menu',
+    '[attr.aria-label]': '_ariaLabel',
     '[attr.aria-disabled]': 'disabled.toString()',
+    '[attr.tabindex]': 'tabIndex',
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
@@ -82,9 +84,13 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
   // Save this to restore upon close.
   private _elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
-  /** Aria label of the select. If not specified,
-   * the fallback to 'Context action menu will be used'. */
-  @Input('aria-label') ariaLabel: string = 'Context action menu';
+  /** Aria label of the context-menu. If not specified,
+   * the fallback to 'Context action menu' will be used. */
+  @Input('aria-label') ariaLabel: string = '';
+
+  get _ariaLabel(): string {
+    return this.ariaLabel || 'Context action menu';
+  }
 
   /** Event emitted when the select has been opened. */
   @Output() readonly openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -156,6 +162,11 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
       this._restoreFocus();
       this._changeDetectorRef.markForCheck();
     }
+  }
+
+  /** Focuses the context-action-menu element. */
+  focus(): void {
+    this._elementRef.nativeElement.focus();
   }
 
   /** Moves the focus inside the focus trap. */
