@@ -1,6 +1,7 @@
 <button 
   gh-icon-button
-  color="secondary"
+  [color]="color"
+  variant="secondary"
   #trigger
   cdk-overlay-origin
   #origin="cdkOverlayOrigin"
@@ -17,7 +18,9 @@
   (detach)="close()"
   [origin]="origin"
   [open]="panelOpen"
-  [positions]="_positions">
+  [positions]="_positions"
+  role="dialog"
+  [aria-labelledby]="ariaLabel">
   <div
     class="gh-ca-menu-panel"
     role="menu"
@@ -27,7 +30,8 @@
     </div>
     <button
       gh-icon-button
-      color="secondary"
+      [color]="color"
+      variant="secondary"
       class="gh-ca-menu-close-trigger"
       (click)="close()">
       <gh-icon svgIcon="abort"></gh-icon>

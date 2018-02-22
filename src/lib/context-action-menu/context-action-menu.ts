@@ -30,6 +30,8 @@ import {
   CanDisable,
   mixinTabIndex,
   HasTabIndex,
+  CanColor,
+  mixinColor,
 } from '@dynatrace/ngx-groundhog/core';
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {takeUntil} from 'rxjs/operators/takeUntil';
@@ -42,22 +44,27 @@ import { DOCUMENT } from '@angular/common';
 
 // Boilerplate for applying mixins to GhContextActionMenu.
 export class GhContextActionMenuBase {
-  constructor() { }
+  constructor(public _elementRef: ElementRef) { }
 }
-export const _GhContextActionMenuBase = mixinTabIndex(mixinDisabled(GhContextActionMenuBase));
+export const _GhContextActionMenuBase =
+  mixinTabIndex(mixinDisabled(mixinColor(GhContextActionMenuBase)));
 
 @Component({
   moduleId: module.id,
   selector: 'gh-ca-menu, gh-context-action-menu',
   templateUrl: 'context-action-menu.html',
   styleUrls: ['context-action-menu.css'],
-  inputs: ['disabled', 'tabIndex'],
+  inputs: ['disabled', 'tabIndex', 'color'],
+  host: {
+    '[attr.aria-label]': 'ariaLabel',
+    '[attr.aria-disabled]': 'disabled.toString()',
+  },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GhContextActionMenu extends _GhContextActionMenuBase
-  implements OnDestroy, HasTabIndex, CanDisable {
+  implements OnDestroy, HasTabIndex, CanDisable, CanColor {
 
   /** Whether or not the overlay panel is open. */
   private _panelOpen = false;
@@ -74,6 +81,10 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
   // Element that was focused before the context-action-menu was opened.
   // Save this to restore upon close.
   private _elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
+
+  /** Aria label of the select. If not specified,
+   * the fallback to 'Context action menu will be used'. */
+  @Input('aria-label') ariaLabel: string = 'Context action menu';
 
   /** Event emitted when the select has been opened. */
   @Output() readonly openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -105,6 +116,7 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
   }
 
   constructor(
+    elementRef: ElementRef,
     private _changeDetectorRef: ChangeDetectorRef,
     private _focusTrapFactory: FocusTrapFactory,
     iconRegistry: GhIconRegistry,
@@ -112,7 +124,7 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
     @Attribute('tabindex') tabIndex: string,
     @Optional() @Inject(DOCUMENT) private _document: any
   ) {
-    super();
+    super(elementRef);
 
     this.tabIndex = parseInt(tabIndex) || 0;
 
@@ -217,12 +229,15 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
 @Component({
   selector: 'gh-context-action-menu-item, gh-ca-menu-item',
   templateUrl: './context-action-menu-item.html',
-  inputs: ['disabled'],
+  inputs: ['disabled', 'tabIndex', 'color'],
 })
 export class GhContextActionMenuItem extends _GhContextActionMenuBase
-  implements CanDisable, HasTabIndex {
-  constructor(private _changeDetectorRef: ChangeDetectorRef) {
-    super();
+  implements CanDisable, HasTabIndex, CanColor {
+  constructor(
+    elementRef: ElementRef,
+    private _changeDetectorRef: ChangeDetectorRef
+  ) {
+    super(elementRef);
   }
 
   /** Event emitted when the item has been clicked. */
