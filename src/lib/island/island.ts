@@ -1,4 +1,10 @@
-import {Component, ViewEncapsulation, ChangeDetectionStrategy, Directive} from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  Directive,
+  ContentChild
+} from '@angular/core';
 
 /** Title of a island, needed as it's used as a selector in the API. */
 @Directive({
@@ -45,9 +51,13 @@ export class GhIslandActions { }
   styleUrls: ['island.css'],
   host: {
     'class': 'gh-island',
+    // We know that a header is present when the island has at least a title
+    '[class.gh-island-has-header]': '!!_title'
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhIsland { }
+export class GhIsland {
+  @ContentChild(GhIslandTitle) _title: GhIslandTitle;
+}
