@@ -1,19 +1,20 @@
 import {Component, ViewChild} from '@angular/core';
-import { GhContextActionMenu } from '@dynatrace/ngx-groundhog';
+import { GhContextMenu } from '@dynatrace/ngx-groundhog';
 
 @Component({
   moduleId: module.id,
-  selector: 'context-action-menu-demo',
-  templateUrl: 'context-action-menu-demo.html',
-  styleUrls: ['context-action-menu-demo.css'],
+  selector: 'context-menu-demo',
+  templateUrl: 'context-menu-demo.html',
+  styleUrls: ['context-menu-demo.css'],
 })
-export class ContextActionMenuDemo {
+export class ContextMenuDemo {
   deleteClickCount: number = 0;
   deleteClickEvent: string = '';
   opened: boolean = false;
   disabled: boolean = false;
+  editDisabled: boolean = false;
 
-  @ViewChild('caMenu') caMenu: GhContextActionMenu;
+  @ViewChild('contextMenu') caMenu: GhContextMenu;
 
   handleDeleteClick(event: Event) {
     this.deleteClickCount++;

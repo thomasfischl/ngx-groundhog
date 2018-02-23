@@ -42,21 +42,21 @@ import {Subject} from 'rxjs/Subject';
 import { FocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
 import { DOCUMENT } from '@angular/common';
 
-// Boilerplate for applying mixins to GhContextActionMenu.
-export class GhContextActionMenuBase {
+// Boilerplate for applying mixins to GhContextMenu.
+export class GhContextMenuBase {
   constructor(public _elementRef: ElementRef) { }
 }
-export const _GhContextActionMenuBase =
-  mixinTabIndex(mixinDisabled(mixinColor(GhContextActionMenuBase)));
+export const _GhContextMenuBase =
+  mixinTabIndex(mixinDisabled(mixinColor(GhContextMenuBase)));
 
 @Component({
   moduleId: module.id,
-  selector: 'gh-ca-menu, gh-context-action-menu',
-  templateUrl: 'context-action-menu.html',
-  styleUrls: ['context-action-menu.css'],
+  selector: 'gh-context-menu',
+  templateUrl: 'context-menu.html',
+  styleUrls: ['context-menu.css'],
   inputs: ['disabled', 'tabIndex', 'color'],
   host: {
-    'class': 'gh-context-action-menu',
+    'class': 'gh-context-menu',
     '[attr.aria-label]': '_ariaLabel',
     '[attr.aria-disabled]': 'disabled.toString()',
     '[attr.tabindex]': 'tabIndex',
@@ -65,7 +65,7 @@ export const _GhContextActionMenuBase =
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhContextActionMenu extends _GhContextActionMenuBase
+export class GhContextMenu extends _GhContextMenuBase
   implements OnDestroy, HasTabIndex, CanDisable, CanColor {
 
   /** Whether or not the overlay panel is open. */
@@ -80,16 +80,16 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
   /** The class that traps and manages focus within the overlay. */
   private _focusTrap: FocusTrap | null;
 
-  // Element that was focused before the context-action-menu was opened.
+  // Element that was focused before the context-menu was opened.
   // Save this to restore upon close.
   private _elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
   /** Aria label of the context-menu. If not specified,
-   * the fallback to 'Context action menu' will be used. */
+   * the fallback to 'Context menu' will be used. */
   @Input('aria-label') ariaLabel: string = '';
 
   get _ariaLabel(): string {
-    return this.ariaLabel || 'Context action menu';
+    return this.ariaLabel || 'Context menu';
   }
 
   /** Event emitted when the select has been opened. */
@@ -164,7 +164,7 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
     }
   }
 
-  /** Focuses the context-action-menu element. */
+  /** Focuses the context-menu element. */
   focus(): void {
     this._elementRef.nativeElement.focus();
   }
@@ -222,9 +222,9 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
         // Set the classes to indicate the position of the overlay
         if (this._connectionPair) {
           this.panel.nativeElement.classList
-            .remove(`gh-ca-menu-panel-${this._connectionPair.originY}`);
+            .remove(`gh-context-menu-panel-${this._connectionPair.originY}`);
         }
-        this.panel.nativeElement.classList.add(`gh-ca-menu-panel-${connectionPair.originY}`);
+        this.panel.nativeElement.classList.add(`gh-context-menu-panel-${connectionPair.originY}`);
         this._connectionPair = connectionPair;
       });
   }
@@ -238,17 +238,27 @@ export class GhContextActionMenu extends _GhContextActionMenuBase
 }
 
 @Component({
-  selector: 'gh-context-action-menu-item, gh-ca-menu-item',
-  templateUrl: './context-action-menu-item.html',
+  selector: 'gh-context-menu-item',
+  templateUrl: './context-menu-item.html',
   inputs: ['disabled', 'tabIndex', 'color'],
+  host: {
+    'class': 'gh-context-menu-item',
+    '[attr.aria-disabled]': 'disabled.toString()',
+  },
+  encapsulation: ViewEncapsulation.None,
+  preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhContextActionMenuItem extends _GhContextActionMenuBase
+export class GhContextMenuItem extends _GhContextMenuBase
   implements CanDisable, HasTabIndex, CanColor {
   constructor(
     elementRef: ElementRef,
+    @Attribute('tabindex') tabIndex: string,
     private _changeDetectorRef: ChangeDetectorRef
   ) {
     super(elementRef);
+
+    this.tabIndex = parseInt(tabIndex) || 0;
   }
 
   /** Event emitted when the item has been clicked. */

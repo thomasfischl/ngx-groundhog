@@ -1,6 +1,6 @@
-# Context Action Menu
+# Context Menu
 
-The Angular Groundhog Context Action Menu creates a menu thats hidden inside an overlay. It is possible to disable the entire context action menu or the items within. Each item within is rendered as a `<button gh-button color="secondary">`.
+The Angular Groundhog Context Menu creates a menu thats hidden inside an overlay. It is possible to disable the entire context menu or the items within. Each item within is rendered as a `<button gh-button color="secondary">`.
 
 **Example**
 ```html
@@ -15,18 +15,18 @@ There are currently two selectors for the menu and two for the items:
 
 ## Selectors
 
-### Context Action Menu
+### Context Menu
 
 ```html
 <gh-ca-menu> <!--shorthand-->
-<gh-context-action-menu>
+<gh-context-menu>
 ```
 
-### Context Action Menu Item
+### Context Menu Item
 
 ```html
 <gh-ca-menu-item> <!--shorthand-->
-<gh-context-action-menu-item>
+<gh-context-menu-item>
 ```
 
 ## Events

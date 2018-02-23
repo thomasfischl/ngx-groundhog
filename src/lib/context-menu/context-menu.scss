@@ -6,7 +6,7 @@ $panel-padding: 8px;
 
 @include gh-core();
 
-.gh-ca-menu-panel {
+.gh-context-menu-panel {
   background-color: $gray-700;
   padding: $panel-padding-btn $panel-padding $panel-padding $panel-padding;
   display: inline-block;
@@ -15,7 +15,7 @@ $panel-padding: 8px;
   transform-origin: top right;
 }
 
-.gh-ca-menu-close-trigger {
+.gh-context-menu-close-trigger {
   border: none;
   position: absolute;
   top: 0;
@@ -26,23 +26,25 @@ $panel-padding: 8px;
   }
 }
 
-.gh-ca-menu-panel-bottom {
+.gh-context-menu-panel-bottom {
   transform-origin: bottom right;
   padding: $panel-padding $panel-padding $panel-padding-btn $panel-padding;
 }
 
-.gh-ca-menu-panel-bottom .gh-ca-menu-close-trigger {
+.gh-context-menu-panel-bottom .gh-context-menu-close-trigger {
   top: auto;
   bottom: 0;
 }
 
-// Button
-.gh-ca-menu-btn {
+/**
+* ITEM
+*/
+.gh-context-menu-btn {
   display: block;
   width: 100%;
   margin-bottom: 8px;
 }
 
-.gh-ca-menu-btn .gh-button:last-child {
+.gh-context-menu-btn .gh-button:last-child {
   margin-bottom: 0;
 }

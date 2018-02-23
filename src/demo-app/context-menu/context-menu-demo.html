@@ -1,0 +1,20 @@
+<div class="demo-context-menu">
+  <h1>Context menu</h1>
+  <p>
+    Edit click count: {{deleteClickCount}}<br/>
+    lastDeleteClickEvent: {{deleteClickEvent | json}}<br/>
+    Opened: {{opened}}<br/>
+    Disabled: {{disabled}}
+  </p>
+  <section>
+    <button gh-button (click)="disabled=!disabled">Disable</button>
+    <button gh-button (click)="close()">Close</button>
+    <button gh-button (click)="open()">Open</button>
+    <button gh-button (click)="editDisabled=!editDisabled">Toggle Edit Disabled</button>
+    <gh-context-menu (openedChange)="opened = $event" [disabled]="disabled" #contextMenu>
+      <gh-context-menu-item [disabled]="editDisabled">Edit</gh-context-menu-item>
+      <gh-context-menu-item>Approve</gh-context-menu-item>
+      <gh-context-menu-item color="error" (onClick)="handleDeleteClick($event)">Delete</gh-context-menu-item>
+    </gh-context-menu>
+  </section>
+</div>

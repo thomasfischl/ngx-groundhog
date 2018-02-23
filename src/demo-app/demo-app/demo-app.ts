@@ -47,6 +47,6 @@ export class DemoApp {
     {name: 'Progress circle', route: '/progress-circle'},
     {name: 'Select', route: '/select'},
     {name: 'Tile', route: '/tile'},
-    {name: 'ContextActionMenu', route: '/context-action-menu'},
+    {name: 'ContextMenu', route: '/context-menu'},
   ];
 }

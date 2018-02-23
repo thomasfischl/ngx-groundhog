@@ -12,7 +12,7 @@ import {DEMO_APP_ROUTES} from './routes';
 import {SelectDemo} from '../select/select-demo';
 import {ProgressCircleDemo} from '../progress-circle/progress-circle-demo';
 import {TileDemo} from 'tile/tile-demo';
-import {ContextActionMenuDemo} from '../context-action-menu/context-action-menu-demo';
+import {ContextMenuDemo} from '../context-menu/context-menu-demo';
 
 @NgModule({
   imports: [
@@ -32,7 +32,7 @@ import {ContextActionMenuDemo} from '../context-action-menu/context-action-menu-
     TileDemo,
     DemoApp,
     Home,
-    ContextActionMenuDemo,
+    ContextMenuDemo,
   ],
   entryComponents: [
     DemoApp,

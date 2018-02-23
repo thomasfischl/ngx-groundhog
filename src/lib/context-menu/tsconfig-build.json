@@ -8,7 +8,7 @@
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",
-    "flatModuleId": "@dynatrace/ngx-groundhog/context-action-menu",
+    "flatModuleId": "@dynatrace/ngx-groundhog/context-menu",
     "skipTemplateCodegen": true,
     "fullTemplateTypeCheck": true
   }

@@ -27,18 +27,18 @@
   [open]="panelOpen"
   [positions]="_positions">
   <div
-    class="gh-ca-menu-panel"
+    class="gh-context-menu-panel"
     [attr.aria-labelledby]="ariaLabel"
     #panel
     role="dialog">
-    <div class="gh-menu-content">
+    <div class="gh-context-menu-content">
       <ng-content></ng-content>
     </div>
     <button
       gh-icon-button
       [color]="color"
       variant="secondary"
-      class="gh-ca-menu-close-trigger"
+      class="gh-context-menu-close-trigger"
       (click)="close()">
       <gh-icon>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
