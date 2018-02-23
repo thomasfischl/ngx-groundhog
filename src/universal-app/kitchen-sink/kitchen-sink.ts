@@ -9,6 +9,7 @@ import {
   GhFormFieldModule,
   GhProgressCircleModule,
   GhTileModule,
+  GhThemingModule,
 } from '@dynatrace/ngx-groundhog';
 
 @Component({
@@ -31,6 +32,7 @@ export class KitchenSink {
     GhFormFieldModule,
     GhProgressCircleModule,
     GhTileModule,
+    GhThemingModule,
   ],
   bootstrap: [KitchenSink],
   declarations: [KitchenSink],
