@@ -2,10 +2,21 @@
 
 `<gh-island>` is a visual container for wrapping a wide variety of contents.
 In addition to the custom content, the island can also hold some special sections:
-- `<gh-island-title>` - The tile of this island, needs to be defined to show the island's header
+- `<gh-island-title>` - The title of this island, needs to be defined to show the island's header
 - `<gh-island-subtitle`> - Right below the title, a subtitle can be placed.
 - `<gh-island-icon>` - An icon in the top left corner of the island. Use `<gh-icon>` for it.
 - `<gh-island-action>` - Your place to add action buttons. Will be displayed in the top right corner. Use the buttons `secondary` variant.
+
+**Example:**
+```html
+<gh-island>
+  <gh-island-icon><gh-icon svgIcon="agent"></gh-icon></gh-island-icon>
+  <gh-island-title>Top 3 JavaScript errors</gh-island-title>
+  <gh-island-subtitle>Some subtitle</gh-island-subtitle>
+  <gh-island-actions><button gh-button variant="secondary">Some Action</button></gh-island-actions>
+  The island is not an interactive element, therefore, there are no hover, active and disabled island.
+</gh-island>
+```
 
 ## Accessibility
 Islands can be used in a wide variety of scenarios and can contain many different types of content.
