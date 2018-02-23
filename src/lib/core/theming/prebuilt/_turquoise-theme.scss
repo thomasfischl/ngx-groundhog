@@ -2,18 +2,22 @@
 @import '../../style/variables';
 
 @mixin gh-turquoise-theme($default: false) {
-  $main-palette: gh-palette($turquoise-600, $turquoise-700, $turquoise-800);
-  $accent-palette: gh-palette($blue-600, $blue-700, $blue-800);
-  $warning-palette: gh-palette($yellow-600, $yellow-700, $yellow-800);
-  $error-palette: gh-palette($red-600, $red-700, $red-800);
-  $cta-palette: gh-palette($shamrockgreen-600, $shamrockgreen-700, $shamrockgreen-800);
 
-  @include gh-component-theme(
-    'turquoise', // theme name
-    true, // is the default theme
-    $main-palette,
-    $accent-palette,
-    $warning-palette,
-    $error-palette,
-    $cta-palette);
+  $theme-light: gh-theme-light(
+    gh-palette($turquoise-600, $turquoise-700, $turquoise-800),
+    gh-palette($blue-600, $blue-700, $blue-800),
+    gh-palette($yellow-600, $yellow-700, $yellow-800),
+    gh-palette($red-600, $red-700, $red-800),
+    gh-palette($green-500, $green-700, $green-900)
+  );
+
+  $theme-dark: gh-theme-dark(
+    gh-palette($turquoise-600, $turquoise-700, $turquoise-800),
+    gh-palette($blue-600, $blue-700, $blue-800),
+    gh-palette($yellow-600, $yellow-700, $yellow-800),
+    gh-palette($red-600, $red-700, $red-800),
+    gh-palette($green-500, $green-700, $green-900)
+  );
+
+  @include gh-component-theme('turquoise', $default, $theme-light, $theme-dark);
 }

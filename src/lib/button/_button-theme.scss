@@ -38,16 +38,11 @@
         border-color: $active-color;
         color: #fff;
       }
-      &#{$namespace}.gh-button-primary[disabled] {
-        background: $disabledcolor;
-        border-color: $disabledcolor;
-        color: #fff;
-      }
       &#{$namespace}.gh-button-primary .gh-icon svg {
         fill: #fff;
       }
 
-      @if $is-dark == true {
+      @if ($is-dark == true) {
         &#{$namespace}.gh-button-primary,
         &#{$namespace}.gh-button-primary:hover:not([disabled]),
         &#{$namespace}.gh-button-primary:active:not([disabled]) {
@@ -88,11 +83,6 @@
         border-color: $active-color;
         color: $active-color;
       }
-      &#{$namespace}.gh-button-secondary[disabled] {
-        background: #fff;
-        border-color: $disabledcolor;
-        color: $disabledcolor;
-      }
       &#{$namespace}.gh-button-secondary .gh-icon svg {
         fill: $default-color;
       }
@@ -112,17 +102,42 @@
           background: transparent;
         }
         &#{$namespace}.gh-button-secondary:hover:not([disabled]) {
-          background-color: rgba(255, 255, 255, 0.2)
+          background: rgba(255, 255, 255, 0.2)
         }
+        &#{$namespace}.gh-button-secondary:active:not([disabled]) {
+          background: rgba(255, 255, 255, 0.3);
+        }
+        &#{$namespace}.gh-button-secondary[disabled] {
+          border-color: rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 0.6);
+        }
+        // Main does not have the main color as a border
+        // so we have to specifiy it differently
         @if $name == 'main' {
-
-        }
-        @else {
-          &#{$namespace}.gh-button-secondary {
+          &#{$namespace}.gh-button-secondary,
+          &#{$namespace}.gh-button-secondary:hover:not([disabled]) {
+            border-color: #fff;
+            color: $gray-100;
+          }
+          &#{$namespace}.gh-button-secondary .gh-icon svg,
+          &#{$namespace}.gh-button-secondary:hover:not([disabled]) .gh-icon svg {
+            fill: $gray-100;
+          }
+          &#{$namespace}.gh-button-secondary:active:not([disabled]) {
+            border-color: #fff;
+            color: #fff;
+          }
+          &#{$namespace}.gh-button-secondary:active:not([disabled]) .gh-icon svg {
+            fill: #fff;
           }
         }
       }
       @else {
+        &#{$namespace}.gh-button-secondary[disabled] {
+          background: #fff;
+          border-color: $disabledcolor;
+          color: $disabledcolor;
+        }
       }
     }
   }
