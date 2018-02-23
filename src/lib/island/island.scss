@@ -1,0 +1,55 @@
+@import '../core/style/variables';
+
+.gh-island {
+  display: block;
+  font-family: $mainfont;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 16px;
+  margin: 24px;
+}
+
+.gh-island-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  .gh-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.gh-island-header {
+  display: flex;
+  width: 100%;
+  padding-bottom: 16px;
+}
+
+.gh-island-heading {
+  flex: 1 0 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gh-island-title {
+  display: block;
+  font-size: 24px;
+  color: $gray-700;
+  font-weight: 300;
+}
+
+.gh-island-subtitle {
+  display: block;
+  font-size: 14px;
+  color: $gray-700;
+}
+
+.gh-island-actions {
+  display: block;
+
+}

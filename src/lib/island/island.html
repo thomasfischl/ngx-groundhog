@@ -1,0 +1,11 @@
+<div class="gh-island-header" *ngIf="!!_title">
+  <ng-content select="gh-island-icon, [gh-island-icon], [ghIslandIcon]"></ng-content>
+  <div class="gh-island-heading">
+      <ng-content select="gh-island-title, [gh-island-title], [ghIslandTitle]"></ng-content>
+      <ng-content select="gh-island-subtitle, [gh-island-subtitle], [ghIslandSubitle]"></ng-content>
+  </div>
+  <ng-content select="gh-island-actions, [gh-island-actions], [ghIslandActions]"></ng-content>
+</div>
+<div class="gh-island-content">
+  <ng-content></ng-content>
+</div>
