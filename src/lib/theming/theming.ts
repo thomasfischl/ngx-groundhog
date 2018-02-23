@@ -35,7 +35,8 @@ export class GhTheme {
     const className = this._genClassName();
     const [, name, variant] = result;
     this._name = name;
-    this._variant = (THEME_VARIANTS[variant] !== -1 ? variant : DEFAULT_VARIANT) as GhThemeVariant;
+    this._variant =
+      (variant && THEME_VARIANTS[variant] !== -1 ? variant : DEFAULT_VARIANT) as GhThemeVariant;
     this._replaceCssClass(this._genClassName(), className);
   }
 
