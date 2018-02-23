@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import { GhContextMenu } from '@dynatrace/ngx-groundhog';
+import {Component, ViewChild, ContentChild} from '@angular/core';
+import { GhContextMenu, GhContextMenuItem } from '@dynatrace/ngx-groundhog';
 
 @Component({
   moduleId: module.id,
@@ -13,13 +13,16 @@ export class ContextMenuDemo {
   opened: boolean = false;
   disabled: boolean = false;
   editDisabled: boolean = false;
+  color: string = 'error';
 
   @ViewChild('contextMenu') caMenu: GhContextMenu;
 
   handleDeleteClick(event: Event) {
     this.deleteClickCount++;
     this.deleteClickEvent = event.toString();
+    this.color = 'accent';
   }
+
 
   open() {
     this.caMenu.open();

@@ -57,7 +57,7 @@ export const _GhContextMenuBase =
   inputs: ['disabled', 'tabIndex', 'color'],
   host: {
     'class': 'gh-context-menu',
-    '[attr.aria-label]': '_ariaLabel',
+    '[attr.aria-hidden]': 'true',
     '[attr.aria-disabled]': 'disabled.toString()',
     '[attr.tabindex]': 'tabIndex',
   },
@@ -125,23 +125,12 @@ export class GhContextMenu extends _GhContextMenuBase
     elementRef: ElementRef,
     private _changeDetectorRef: ChangeDetectorRef,
     private _focusTrapFactory: FocusTrapFactory,
-    iconRegistry: GhIconRegistry,
-    sanitizer: DomSanitizer,
     @Attribute('tabindex') tabIndex: string,
     @Optional() @Inject(DOCUMENT) private _document: any
   ) {
     super(elementRef);
 
     this.tabIndex = parseInt(tabIndex) || 0;
-
-    iconRegistry
-      // Registering an icon named 'more' in the default namespace
-      .addSvgIcon('more',
-        sanitizer.bypassSecurityTrustResourceUrl('/assets/more.svg'));
-    iconRegistry
-      // Registering an icon named 'abort' in the default namespace
-      .addSvgIcon('abort',
-        sanitizer.bypassSecurityTrustResourceUrl('/assets/abort.svg'));
   }
 
   /** Opens the panel */

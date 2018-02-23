@@ -160,6 +160,19 @@ describe('GhContextMenu', () => {
           fixture.detectChanges();
           expect((items[0].children[0] as HTMLButtonElement).disabled).toBe(true);
         }));
+
+        // TODO: @ffr figure out why this test does not work
+        // it('should set the color of the button inside the menu item', fakeAsync(() => {
+        //   const approve = items[1];
+        //   fixture.componentInstance.items.last.color = 'error';
+        //   console.log(fixture.componentInstance.items.last);
+        //   fixture.detectChanges();
+        //   flushMicrotasks();
+
+        //   // expect(approve.getAttribute('color')).toBe('error');
+        //   expect((approve.children[0] as HTMLButtonElement)
+        //     .getAttribute('class')).toContain('gh-error');
+        // }));
       });
     });
   });
