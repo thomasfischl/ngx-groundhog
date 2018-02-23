@@ -14,7 +14,7 @@ describe('GhTHeme', () => {
     TestBed.compileComponents();
   }));
 
-  it('should apply the g-theme class', () => {
+  it('should apply the gh-theme class', () => {
     const fixture = TestBed.createComponent(TestApp);
     const testComponent = fixture.debugElement.componentInstance;
     const sectionDebugElement = fixture.debugElement.query(By.css('section'));
