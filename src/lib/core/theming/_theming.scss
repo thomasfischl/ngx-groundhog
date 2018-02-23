@@ -11,7 +11,7 @@
   @return map-get($palette, $flavor);
 }
 
-@function gh-light-theme(
+@function gh-theme-variants(
   $main-palette,
   $accent-palette,
   $warning-palette,
@@ -19,28 +19,52 @@
   $cta-palette
 ) {
   @return (
-    main: $main-palette,
-    accent: $accent-palette,
-    warning: $warning-palette,
-    error: $error-palette,
-    cta: $cta-palette,
-    is-dark: false,
+    light: (
+      main: $main-palette,
+      accent: $accent-palette,
+      warning: $warning-palette,
+      error: $error-palette,
+      cta: $cta-palette,
+      is-dark: false
+    ),
+    dark: (
+      main: $main-palette,
+      accent: $accent-palette,
+      warning: $warning-palette,
+      error: $error-palette,
+      cta: $cta-palette,
+      is-dark: true
+    )
   );
 }
 
-@function gh-dark-theme(
+@mixin gh-component-theme(
+  $name,
+  $default,
   $main-palette,
   $accent-palette,
   $warning-palette,
   $error-palette,
   $cta-palette
 ) {
-  @return (
-    main: $main-palette,
-    accent: $accent-palette,
-    warning: $warning-palette,
-    error: $error-palette,
-    cta: $cta-palette,
-    is-dark: true,
-  );
+  $variants: gh-theme-variants(
+    $main-palette,
+    $accent-palette,
+    $warning-palette,
+    $error-palette,
+    $cta-palette);
+
+  @if $default == false {
+    .gh-theme-#{$name},
+    .gh-theme-#{$name}-light {
+      @include gh-theme(map-get($variants, 'light'));
+    }
+  }
+  @else {
+    @include gh-core();
+    @include gh-theme(map-get($variants, 'light'));
+  }
+  .gh-theme-#{$name}-dark {
+    @include gh-theme(map-get($variants, 'dark'));
+  }
 }

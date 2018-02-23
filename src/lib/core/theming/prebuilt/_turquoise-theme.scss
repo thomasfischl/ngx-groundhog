@@ -8,22 +8,12 @@
   $error-palette: gh-palette($red-600, $red-700, $red-800);
   $cta-palette: gh-palette($shamrockgreen-600, $shamrockgreen-700, $shamrockgreen-800);
 
-  $theme: gh-light-theme(
+  @include gh-component-theme(
+    'turquoise', // theme name
+    true, // is the default theme
     $main-palette,
     $accent-palette,
     $warning-palette,
     $error-palette,
     $cta-palette);
-
-  @if $default == false {
-    .gh-theme-turquoise {
-      @include gh-theme($theme);
-    }
-  }
-  @else {
-    // Include non-theme styles for core.
-    @include gh-core();
-
-    @include gh-theme($theme);
-  }
 }
