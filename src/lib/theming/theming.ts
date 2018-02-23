@@ -1,6 +1,6 @@
 import { Directive, Input, ElementRef } from '@angular/core';
 
-const THEME_VALIDATION_RX = /(\w+)(?:\:(light|dark))?/g;
+const THEME_VALIDATION_RX = /([a-zA-Z-]+)(?::(light|dark))?/;
 
 export function getThemeNotValidError(name: string): Error {
   return Error(`The provided theme name "${name}" for ghTheme is not a valid theme!`);
@@ -22,7 +22,7 @@ export class GhTheme {
       throw getThemeNotValidError(value);
     }
     const className = this._genClassName();
-    const [name, variant] = result;
+    const [, name, variant] = result;
     this._name = name;
     if (variant) {
       this._variant = variant as 'light' | 'dark';
@@ -46,10 +46,10 @@ export class GhTheme {
 
   private _replaceCssClass(newClass?: string, oldClass?: string) {
     if (oldClass) {
-      this._elementRef.nativeElement.classList.remove(`gh-theme-${oldClass}`);
+      this._elementRef.nativeElement.classList.remove(oldClass);
     }
     if (newClass) {
-      this._elementRef.nativeElement.classList.add(`gh-theme-${newClass}`);
+      this._elementRef.nativeElement.classList.add(newClass);
     }
   }
 }
