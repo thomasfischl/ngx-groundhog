@@ -27,3 +27,20 @@
     is-dark: false,
   );
 }
+
+@function gh-dark-theme(
+  $main-palette,
+  $accent-palette,
+  $warning-palette,
+  $error-palette,
+  $cta-palette
+) {
+  @return (
+    main: $main-palette,
+    accent: $accent-palette,
+    warning: $warning-palette,
+    error: $error-palette,
+    cta: $cta-palette,
+    is-dark: true,
+  );
+}
