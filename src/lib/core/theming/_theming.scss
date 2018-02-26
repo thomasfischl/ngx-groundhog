@@ -53,15 +53,24 @@
 ) {
   @if $default == false {
     .gh-theme-#{$name},
-    .gh-theme-#{$name}-light {
+    .gh-theme-#{$name}.gh-theme-light {
       @include gh-theme($theme-light);
+    }
+    .gh-theme-#{$name}.gh-theme-dark {
+      @include gh-theme($theme-dark);
     }
   }
   @else {
     @include gh-core();
     @include gh-theme($theme-light);
-  }
-  .gh-theme-#{$name}-dark {
-    @include gh-theme($theme-dark);
+    .gh-theme-#{$name},
+    .gh-theme-light,
+    .gh-theme-#{$name}.gh-theme-light {
+      @include gh-theme($theme-light);
+    }
+    .gh-theme-dark,
+    .gh-theme-#{$name}.gh-theme-dark {
+      @include gh-theme($theme-dark);
+    }
   }
 }

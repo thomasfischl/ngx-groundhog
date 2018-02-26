@@ -23,27 +23,43 @@ describe('GhTHeme', () => {
     expect(sectionDebugElement.nativeElement.className).toContain('gh-theme');
   });
 
-  it('should apply the light class if no variant is provided', () => {
+  it('should apply the corrent class if a name is set', () => {
     const fixture = TestBed.createComponent(TestApp);
     const testComponent = fixture.debugElement.componentInstance;
     const sectionDebugElement = fixture.debugElement.query(By.css('section'));
     fixture.detectChanges();
+    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-turquoise');
 
-    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-turquoise-light');
+    testComponent.theme = 'royalblue:light';
+    fixture.detectChanges();
+    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-royalblue');
+
+    testComponent.theme = 'turquoise:dark';
+    fixture.detectChanges();
+    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-turquoise');
+
+    testComponent.theme = ':dark';
+    fixture.detectChanges();
+    expect(!(sectionDebugElement.nativeElement.className).toContain('gh-theme-turquoise'));
   });
 
   it('should apply the corrent class if a variant is set', () => {
     const fixture = TestBed.createComponent(TestApp);
     const testComponent = fixture.debugElement.componentInstance;
     const sectionDebugElement = fixture.debugElement.query(By.css('section'));
+    fixture.detectChanges();
+    expect(!(sectionDebugElement.nativeElement.className).toContain('gh-theme-light'));
+    expect(!(sectionDebugElement.nativeElement.className).toContain('gh-theme-dark'));
 
     testComponent.theme = 'turquoise:light';
     fixture.detectChanges();
-    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-turquoise-light');
+    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-light');
+    expect(!(sectionDebugElement.nativeElement.className).toContain('gh-theme-dark'));
 
     testComponent.theme = 'turquoise:dark';
     fixture.detectChanges();
-    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-turquoise-dark');
+    expect(!(sectionDebugElement.nativeElement.className).toContain('gh-theme-light'));
+    expect(sectionDebugElement.nativeElement.className).toContain('gh-theme-dark');
   });
 });
 
