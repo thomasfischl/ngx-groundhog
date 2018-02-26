@@ -69,13 +69,17 @@ describe('GhContextMenu', () => {
         }));
 
         it('should set the aria label of the context menu to the fallback', fakeAsync(() => {
-          expect(contextMenu.getAttribute('aria-label')).toEqual('Context menu');
+          const openTrigger = fixture.debugElement
+            .query(By.css('.gh-context-menu-open-trigger')).nativeElement;
+          expect(openTrigger.getAttribute('aria-label')).toEqual('Context menu');
         }));
 
         it('should support setting a custom aria-label', fakeAsync(() => {
           fixture.componentInstance.ariaLabel = 'Custom Label';
           fixture.detectChanges();
-          expect(contextMenu.getAttribute('aria-label')).toEqual('Custom Label');
+          const openTrigger = fixture.debugElement
+            .query(By.css('.gh-context-menu-open-trigger')).nativeElement;
+          expect(openTrigger.getAttribute('aria-label')).toEqual('Custom Label');
         }));
 
         it('should set the tabindex of the select to 0 by default', fakeAsync(() => {
@@ -88,7 +92,7 @@ describe('GhContextMenu', () => {
           expect(contextMenu.getAttribute('tabindex')).toBe('3');
         }));
 
-        it('should set aria-disabled for disabled context  menus', fakeAsync(() => {
+        it('should set aria-disabled for disabled context menus', fakeAsync(() => {
           expect(contextMenu.getAttribute('aria-disabled')).toEqual('false');
           fixture.componentInstance.disabled = true;
           fixture.detectChanges();
