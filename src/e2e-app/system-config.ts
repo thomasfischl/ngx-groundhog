@@ -50,6 +50,7 @@ System.config({
     '@dynatrace/ngx-groundhog/form-field': 'dist/bundles/ngx-groundhog-form-field.umd.js',
     '@dynatrace/ngx-groundhog/tile': 'dist/bundles/ngx-groundhog-tile.umd.js',
     '@dynatrace/ngx-groundhog/context-menu': 'dist/bundles/ngx-groundhog-context-menu.umd.js',
+    '@dynatrace/ngx-groundhog/theming': 'dist/bundles/ngx-groundhog-theming.umd.js',
     '@dynatrace/ngx-groundhog/icon': 'dist/bundles/ngx-groundhog-icon.umd.js',
   },
   packages: {

@@ -68,6 +68,15 @@ describe('GhContextMenu', () => {
           expect(contextMenuPanel.getAttribute('role')).toEqual('dialog');
         }));
 
+        it('should have the dark theme class on the panel', fakeAsync(() => {
+          fixture.componentInstance.contextMenu.open();
+          fixture.detectChanges();
+          flush();
+          const contextMenuPanel = fixture.debugElement
+            .query(By.css('.gh-context-menu-panel')).nativeElement;
+          expect(contextMenuPanel.classList.contains('gh-theme-dark')).toEqual(true);
+        }));
+
         it('should set the aria label of the context menu to the fallback', fakeAsync(() => {
           const openTrigger = fixture.debugElement
             .query(By.css('.gh-context-menu-open-trigger')).nativeElement;
