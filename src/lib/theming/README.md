@@ -12,7 +12,11 @@ If you want to change the theme or set a different theme or variant to a specifi
 
 ```html
 <section ghTheme="royalblue:dark">This is now a royal blue dark</section>
+<!-- this is also possible -->
+<section ghTheme="royalblue">This is now a royal blue</section>
+<!-- or this -->
+<section ghTheme=":dark">This is now dark</section>
 ```
 
-When no variant (`light` or `dark`) is provided, the `light` version will be used.
+When no variant (`light` or `dark`) or name is provided, the parent variant/name will be used.
 If you want to use multiple themes in you app a `@dynatrace/ngx-groundhob/themes/all.css` is also available.
