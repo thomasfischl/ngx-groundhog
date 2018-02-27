@@ -1,0 +1,24 @@
+@import '../core/style/variables';
+@import '../core/theming/theming';
+
+@mixin gh-island-theme($theme) {
+  $is-dark: map-get($theme, 'is-dark');
+
+  @if ($is-dark == true) {
+    .gh-island {
+      color: #fff;
+      background: rgba(255, 255, 255, .2);
+    }
+    .gh-island-icon svg {
+      fill: #fff;
+    }
+
+    .gh-island-title {
+      color: #fff;
+    }
+
+    .gh-island-subtitle {
+      color: #fff;
+    }
+  }
+}
