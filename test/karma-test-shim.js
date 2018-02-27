@@ -69,6 +69,8 @@ System.config({
     '@dynatrace/ngx-groundhog/icon': 'dist/packages/ngx-groundhog/icon/index.js',
     '@dynatrace/ngx-groundhog/input': 'dist/packages/ngx-groundhog/input/index.js',
     '@dynatrace/ngx-groundhog/form-field': 'dist/packages/ngx-groundhog/form-field/index.js',
+    '@dynatrace/ngx-groundhog/theming': 'dist/packages/ngx-groundhog/theming/index.js',
+    '@dynatrace/ngx-groundhog/context-menu': 'dist/packages/ngx-groundhog/context-menu/index.js',
   },
   packages: {
     // Thirdparty barrels.

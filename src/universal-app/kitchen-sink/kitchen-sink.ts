@@ -10,6 +10,7 @@ import {
   GhProgressCircleModule,
   GhTileModule,
   GhThemingModule,
+  GhContextMenuModule,
 } from '@dynatrace/ngx-groundhog';
 
 @Component({
@@ -33,6 +34,7 @@ export class KitchenSink {
     GhProgressCircleModule,
     GhTileModule,
     GhThemingModule,
+    GhContextMenuModule,
   ],
   bootstrap: [KitchenSink],
   declarations: [KitchenSink],

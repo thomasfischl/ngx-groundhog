@@ -7,6 +7,7 @@ import {SelectDemo} from '../select/select-demo';
 import {ProgressCircleDemo} from '../progress-circle/progress-circle-demo';
 import {IslandDemo} from '../island/island-demo';
 import {TileDemo} from '../tile/tile-demo';
+import {ContextMenuDemo} from '../context-menu/context-menu-demo';
 
 export const DEMO_APP_ROUTES: Routes = [
   {path: '', component: DemoApp, children: [
@@ -18,6 +19,7 @@ export const DEMO_APP_ROUTES: Routes = [
     {path: 'progress-circle', component: ProgressCircleDemo},
     {path: 'select', component: SelectDemo},
     {path: 'tile', component: TileDemo},
+    {path: 'context-menu', component: ContextMenuDemo},
   ]}
 ];
 
