@@ -15,6 +15,7 @@ TODO
 | Progress circle  | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/progress-circle/README.md)   | - |
 | Select           | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/select/README.md)            | - |
 | Tile             | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/tile/README.md)              | - |
+| Theming          | Finished    | >= 0.2.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/theming/README.md)           | - |
 | Expandable       | In-progress | - | - | #47 |
 | Checkbox         | In-progress | - | - | #12 / #53 |
 | Context menu     | In-progress | - | - | #48 / #45 |

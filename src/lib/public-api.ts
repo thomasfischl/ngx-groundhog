@@ -7,3 +7,4 @@ export * from '@dynatrace/ngx-groundhog/island';
 export * from '@dynatrace/ngx-groundhog/progress-circle';
 export * from '@dynatrace/ngx-groundhog/select';
 export * from '@dynatrace/ngx-groundhog/tile';
+export * from '@dynatrace/ngx-groundhog/theming';
