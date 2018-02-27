@@ -115,18 +115,21 @@ export class GhTheme implements OnDestroy {
     newClasses?: [string | null, string | null],
     oldClasses?: [string | null, string | null]
   ) {
+    // To run this in universal we have to use className instead of classList
+    let classes: string[] = this._elementRef.nativeElement.className.split(' ');
     if (oldClasses) {
-      this._elementRef.nativeElement.classList.remove(...oldClasses.filter(c => !!c));
+      classes = classes.filter(c => oldClasses.filter(o => !!o).indexOf(c) === -1);
     }
     if (newClasses) {
-      this._elementRef.nativeElement.classList.add(...newClasses.filter(c => !!c));
+      classes.push(...(newClasses.filter(c => !!c && classes.indexOf(c) === -1) as string[]));
     }
+    this._elementRef.nativeElement.className = classes.filter(c => !!c).join(' ');
   }
 
   /** Notify developers if max depth level has been exceeded */
   private _warnIfDepthExceeded() {
     if (isDevMode() && this._depthLevel > MAX_DEPTH &&
-      MAX_DEPTH_EXCEPTION_CLASSESS.some(c => this._elementRef.nativeElement.classList.contains(c))
+      !MAX_DEPTH_EXCEPTION_CLASSESS.some(c => this._elementRef.nativeElement.classList.contains(c))
     ) {
       console.warn(`The max supported depth level (${MAX_DEPTH}) of nested themes (ghTheme) has ` +
         `been exceeded. This could result in wrong styling unpredictable styling side effects.`);
