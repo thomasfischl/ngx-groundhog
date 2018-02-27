@@ -11,6 +11,14 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 const MAX_DEPTH = 1;
+// ghTemes placed on elements containing one of these classes
+// will ignore the max depth check.
+// Needed for special cases like the context menu where the
+// buttons are always dark.
+// Only add if you are absolutely sure what you are doing and
+// only if you have adjusted the css selectors.
+const MAX_DEPTH_EXCEPTION_CLASSESS = ['gh-context-menu-panel'];
+
 const THEME_VALIDATION_RX = /((?:[a-zA-Z-]+)?)(?::(light|dark))?/;
 const THEME_VARIANTS = ['light', 'dark'];
 export type GhThemeVariant = 'light' | 'dark' | null;
@@ -117,9 +125,11 @@ export class GhTheme implements OnDestroy {
 
   /** Notify developers if max depth level has been exceeded */
   private _warnIfDepthExceeded() {
-    if (isDevMode() && this._depthLevel > MAX_DEPTH) {
-      console.warn(`The max supported depth level (${MAX_DEPTH}) of nested themes (ghTheme) ` +
-       `has been exceeded. This could result in wrong styling unpredictable styling side effects.`);
+    if (isDevMode() && this._depthLevel > MAX_DEPTH &&
+      MAX_DEPTH_EXCEPTION_CLASSESS.some(c => this._elementRef.nativeElement.classList.contains(c))
+    ) {
+      console.warn(`The max supported depth level (${MAX_DEPTH}) of nested themes (ghTheme) has ` +
+        `been exceeded. This could result in wrong styling unpredictable styling side effects.`);
     }
   }
 }
