@@ -5,6 +5,7 @@
 
   $palette-names: 'main', 'accent', 'warning', 'error', 'cta';
   $default-palette: 'main';
+  $is-dark: map-get($theme, 'is-dark');
 
   .gh-tile:not(.gh-tile-disabled) {
     @each $name in $palette-names {
@@ -19,6 +20,49 @@
         .gh-tile-icon {
           background-color: $default-color;
         }
+      }
+    }
+  }
+
+  @if ($is-dark == true) {
+    .gh-tile:not(.gh-tile-disabled) {
+      border-color: rgba(255, 255, 255, 0.4);
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+    }
+    .gh-tile-header {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .gh-tile-content {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .gh-tile-title,
+    .gh-tile-content {
+      color: #fff;
+    }
+    .gh-tile-subtitle {
+      color: rgba(255, 255, 255, .8);
+    }
+
+    .gh-tile.gh-tile-disabled {
+      border-color: rgba(255, 255, 255, 0.2);
+      .gh-tile-header {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      .gh-tile-content {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+      .gh-tile-icon {
+        // background-color: rgba(69, 70, 70, 0.7);
+        background-color: rgba(255, 255, 255, 0.4);
+      }
+      .gh-tile-title,
+      .gh-tile-content {
+        color: rgba(255, 255, 255, 0.7);;
+      }
+      .gh-tile-subtitle {
+        color: rgba(255, 255, 255, 0.5);
       }
     }
   }
