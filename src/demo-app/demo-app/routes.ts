@@ -7,7 +7,7 @@ import {SelectDemo} from '../select/select-demo';
 import {ProgressCircleDemo} from '../progress-circle/progress-circle-demo';
 import {IslandDemo} from '../island/island-demo';
 import {TileDemo} from '../tile/tile-demo';
-import { ExpandableDemo } from '../expandable/expandable-demo';
+import {ExpandableDemo} from '../expandable/expandable-demo';
 
 export const DEMO_APP_ROUTES: Routes = [
   {path: '', component: DemoApp, children: [
