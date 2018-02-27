@@ -1,10 +1,7 @@
-@import '../core/core';
 @import '../core/style/variables';
 
 $panel-padding-btn: 32px;
 $panel-padding: 8px;
-
-@include gh-core();
 
 .gh-context-menu-panel {
   background-color: $gray-700;

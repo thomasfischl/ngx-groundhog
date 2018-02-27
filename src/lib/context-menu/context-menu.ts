@@ -57,7 +57,7 @@ export const _GhContextMenuBase =
   inputs: ['disabled', 'tabIndex', 'color'],
   host: {
     'class': 'gh-context-menu',
-    '[attr.aria-hidden]': 'true',
+    'attr.aria-hidden': 'true',
     '[attr.aria-disabled]': 'disabled.toString()',
     '[attr.tabindex]': 'tabIndex',
   },
