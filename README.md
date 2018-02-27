@@ -18,7 +18,7 @@ TODO
 | Theming          | Finished    | >= 0.2.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/theming/README.md)           | - |
 | Expandable       | In-progress | - | - | #47 |
 | Checkbox         | In-progress | - | - | #12 / #53 |
-| Context menu     | In-progress | - | - | #48 / #45 |
+| Context menu     | Finished    | >= 0.2.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/context-menu/README.md)      | - |
 | Datepicker       | In-progress | - | - | #49 / #34 |
 
 ## Found an Issue?
