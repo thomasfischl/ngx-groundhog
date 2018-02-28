@@ -57,7 +57,7 @@ import {NoopAnimationsModule} from '@dynatrace/ngx-groundhog';
 export class AppModule { }
 ```
 
-**Note:** @angular/animations uses the WebAnimation API that isn't supported by all browsers yet. If you want to support Material component animations in these browsers, you'll have to [include a polyfill](https://github.com/web-animations/web-animations-js).
+**Note:** @angular/animations uses the WebAnimation API that isn't supported by all browsers yet. If you want to support animations in these browsers, you'll have to [include a polyfill](https://github.com/web-animations/web-animations-js).
 
 #### Step 3: Import the component modules
 
