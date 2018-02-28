@@ -73,9 +73,9 @@ import {GhButtonModule, GhSelectModule} from '@angular/material';
 export class PizzaPartyAppModule { }
 ```
 
-Alternatively, you can create a separate NgModule that imports all of the Angular Material components that you will use in your application. You can then include this module wherever you'd like to use the components.
+Alternatively, you can create a separate NgModule that imports all of the ngx-groundhog components that you will use in your application. You can then include this module wherever you'd like to use the components.
 
-**Note:** Whichever approach you use, be sure to import the Angular Material modules after Angular's BrowserModule, as the import order matters for NgModules.
+**Note:** Whichever approach you use, be sure to import the ngx-groundhog modules after Angular's BrowserModule, as the import order matters for NgModules.
 
 #### Step 4: Include a theme
 
