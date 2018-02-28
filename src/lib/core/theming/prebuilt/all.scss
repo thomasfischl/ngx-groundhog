@@ -2,7 +2,6 @@
 @import './purple-theme';
 @import './blue-theme';
 @import './royalblue-theme';
-@import './gray-theme';
 
 // Include non-theme styles for core.
 @include gh-core();
@@ -11,4 +10,3 @@
 @include  gh-purple-theme(true);
 @include  gh-blue-theme(true);
 @include  gh-royalblue-theme(true);
-@include  gh-gray-theme(true);
