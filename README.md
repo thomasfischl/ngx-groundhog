@@ -17,6 +17,7 @@
 | Expandable       | In-progress | - | - | #47 |
 | Checkbox         | In-progress | - | - | #12 / #53 |
 | Datepicker       | In-progress | - | - | #49 / #34 |
+| Radio button     | In-progress | - | - | #82 / #83 |
 
 ## Getting started
 
