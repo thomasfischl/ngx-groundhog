@@ -59,7 +59,7 @@ export const _GhContextMenuBase =
     'class': 'gh-context-menu',
     'attr.aria-hidden': 'true',
     '[attr.aria-disabled]': 'disabled.toString()',
-    '[attr.tabindex]': 'tabIndex',
+    'tabindex': '-1',
   },
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,

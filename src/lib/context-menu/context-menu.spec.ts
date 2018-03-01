@@ -52,11 +52,14 @@ describe('GhContextMenu', () => {
       describe('for context-menu', () => {
         let fixture: ComponentFixture<BasicContextMenu>;
         let contextMenu: HTMLElement;
+        let openTrigger: HTMLElement;
 
         beforeEach(fakeAsync(() => {
           fixture = TestBed.createComponent(BasicContextMenu);
           fixture.detectChanges();
           contextMenu = fixture.debugElement.query(By.css('.gh-context-menu')).nativeElement;
+          openTrigger = fixture.debugElement
+            .query(By.css('.gh-context-menu-open-trigger')).nativeElement;
         }));
 
         it('should set the role of the overlay to dialog', fakeAsync(() => {
@@ -78,27 +81,27 @@ describe('GhContextMenu', () => {
         }));
 
         it('should set the aria label of the context menu to the fallback', fakeAsync(() => {
-          const openTrigger = fixture.debugElement
-            .query(By.css('.gh-context-menu-open-trigger')).nativeElement;
           expect(openTrigger.getAttribute('aria-label')).toEqual('Context menu');
         }));
 
         it('should support setting a custom aria-label', fakeAsync(() => {
           fixture.componentInstance.ariaLabel = 'Custom Label';
           fixture.detectChanges();
-          const openTrigger = fixture.debugElement
-            .query(By.css('.gh-context-menu-open-trigger')).nativeElement;
           expect(openTrigger.getAttribute('aria-label')).toEqual('Custom Label');
         }));
 
-        it('should set the tabindex of the select to 0 by default', fakeAsync(() => {
-          expect(contextMenu.getAttribute('tabindex')).toEqual('0');
+        it('should set the tabindex of the trigger to 0 by default', fakeAsync(() => {
+          expect(openTrigger.getAttribute('tabindex')).toEqual('0');
         }));
 
         it('should be able to override the tabindex', fakeAsync(() => {
           fixture.componentInstance.tabIndexOverride = 3;
           fixture.detectChanges();
-          expect(contextMenu.getAttribute('tabindex')).toBe('3');
+          expect(openTrigger.getAttribute('tabindex')).toBe('3');
+        }));
+
+        it('should set the tab index on the host to -1', fakeAsync(() => {
+          expect(contextMenu.getAttribute('tabindex')).toBe('-1');
         }));
 
         it('should set aria-disabled for disabled context menus', fakeAsync(() => {
@@ -111,10 +114,10 @@ describe('GhContextMenu', () => {
         it('should set the tabindex of the context menu to -1 if disabled', fakeAsync(() => {
           fixture.componentInstance.disabled = true;
           fixture.detectChanges();
-          expect(contextMenu.getAttribute('tabindex')).toEqual('-1');
+          expect(openTrigger.getAttribute('tabindex')).toEqual('-1');
           fixture.componentInstance.disabled = false;
           fixture.detectChanges();
-          expect(contextMenu.getAttribute('tabindex')).toEqual('0');
+          expect(openTrigger.getAttribute('tabindex')).toEqual('0');
         }));
 
         it('should set the focus to the first button inside the overlay', fakeAsync(() => {
