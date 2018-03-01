@@ -22,7 +22,6 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
 import {
   mixinTabIndex,
-  mixinDisabled,
   CanDisable,
   HasTabIndex
 } from '@dynatrace/ngx-groundhog/core';
@@ -36,10 +35,6 @@ export interface GhRadioChange {
   source: GhRadioButton;
   value: any;
 }
-
-// Boilerplate for applying mixins to GhRadioGroup.
-export class GhRadioGroupBase { }
-export const _GhRadioGroupMixinBase = mixinDisabled(GhRadioGroupBase);
 
 @Directive({
   selector: 'gh-radio-group',
@@ -55,7 +50,7 @@ export const _GhRadioGroupMixinBase = mixinDisabled(GhRadioGroupBase);
   },
   inputs: ['disabled'],
 })
-export class GhRadioGroup extends _GhRadioGroupMixinBase implements AfterContentInit, CanDisable {
+export class GhRadioGroup  implements AfterContentInit, CanDisable {
   private _value: any = null;
   private _name: string = `gh-radio-group-${nextUniqueId++}`;
   private _selected: GhRadioButton | null = null;
@@ -117,14 +112,12 @@ export class GhRadioGroup extends _GhRadioGroupMixinBase implements AfterContent
   @ContentChildren(forwardRef(() => GhRadioButton), { descendants: true })
   _radios: QueryList<GhRadioButton>;
 
-  constructor(private _changeDetector: ChangeDetectorRef) {
-    super();
-  }
+  constructor(private _changeDetector: ChangeDetectorRef) { }
 
   ngAfterContentInit() {
     // Mark this component as initialized in AfterContentInit because the initial value can
-    // possibly be set by NgModel on MatRadioGroup, and it is possible that the OnInit of the
-    // NgModel occurs *after* the OnInit of the MatRadioGroup.
+    // possibly be set by NgModel on GhRadioGroup, and it is possible that the OnInit of the
+    // NgModel occurs *after* the OnInit of the GhRadioGroup.
     this._isInitialized = true;
   }
 
