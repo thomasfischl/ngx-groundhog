@@ -28,3 +28,4 @@ If you want to use multiple themes in you app a `@dynatrace/ngx-groundhob/themes
 | `purple`     | `purple.css`    | Theme for all views on application level.                       |
 | `royalblue`  | `royalblue.css` | Theme for all views on service, transaction and database level. |
 | `blue`       | `blue.css`      | Theme for all views on infrastructure level.                    |
+| `all`        | `all.css`       | Supports all themes.                                            |
