@@ -1,3 +1,6 @@
+[![npm version](https://badge.fury.io/js/%40dynatrace%2Fngx-groundhog.svg)](https://badge.fury.io/js/%40dynatrace%2Fngx-groundhog)
+[![Build Status](https://travis-ci.org/Dynatrace/ngx-groundhog.svg?branch=master)](https://travis-ci.org/Dynatrace/ngx-groundhog)
+
 # Angular Groundhog
 
 ## Available features & Status
@@ -14,10 +17,10 @@
 | Tile             | Finished    | >= 0.1.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/tile/README.md)              | - |
 | Theming          | Finished    | >= 0.2.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/theming/README.md)           | - |
 | Context menu     | Finished    | >= 0.2.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/context-menu/README.md)      | - |
+| Radio button     | Finished    | >= 0.3.0    | [Docs](https://github.com/Dynatrace/ngx-groundhog/blob/master/src/lib/radio/README.md) | - |
 | Expandable       | In-progress | - | - | #47 |
 | Checkbox         | In-progress | - | - | #12 / #53 |
 | Datepicker       | In-progress | - | - | #49 / #34 |
-| Radio button     | In-progress | - | - | #82 / #83 |
 
 ## Getting started
 
