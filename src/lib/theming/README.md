@@ -4,7 +4,7 @@ Including a theme is required to apply all of the core and theme styles to your 
 Include a theme globally in your application. If you're using the Angular CLI, you can add this to your styles.css:
 
 ```css
-@import "~@dynatrace/ngx-groundhob/themes/turquoise.css";
+@import "~@dynatrace/ngx-groundhog/themes/turquoise.css";
 ```
 
 ## Changing Themes
@@ -20,3 +20,12 @@ If you want to change the theme or set a different theme or variant to a specifi
 
 When no variant (`light` or `dark`) or name is provided, the parent variant/name will be used.
 If you want to use multiple themes in you app a `@dynatrace/ngx-groundhob/themes/all.css` is also available.
+
+
+| Name         | File            | Usage                                                           |
+|--------------|-----------------|-----------------------------------------------------------------|
+| `turquoise`  | `turquoise.css` | Default theme.                                                  |
+| `purple`     | `purple.css`    | Theme for all views on application level.                       |
+| `royalblue`  | `royalblue.css` | Theme for all views on service, transaction and database level. |
+| `blue`       | `blue.css`      | Theme for all views on infrastructure level.                    |
+| `all`        | `all.css`       | Supports all themes.                                            |
