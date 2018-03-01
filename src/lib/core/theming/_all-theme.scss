@@ -12,5 +12,6 @@
   @include gh-progress-circle-theme($theme);
   @include gh-select-theme($theme);
   @include gh-tile-theme($theme);
+  @include gh-island-theme($theme);
   @include gh-radio-theme($theme);
 }
