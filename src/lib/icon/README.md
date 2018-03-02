@@ -26,11 +26,11 @@ export class IconDemo {
     iconRegistry
       // Registering an icon named 'agend' in the default namespace
       .addSvgIcon('agent',
-        sanitizer.bypassSecurityTrustResourceUrl('/assets/agent.svg'))
+        sanitizer.bypassSecurityTrustResourceUrl('assets/agent.svg'))
 
       // Registering an icon named 'ai' in the 'core namespace
       .addSvgIconInNamespace('core', 'ai',
-        sanitizer.bypassSecurityTrustResourceUrl('/assets/ai.svg'));
+        sanitizer.bypassSecurityTrustResourceUrl('assets/ai.svg'));
   }
 }
 ```
