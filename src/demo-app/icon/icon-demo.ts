@@ -13,10 +13,10 @@ export class IconDemo {
   constructor(iconRegistry: GhIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry
       .addSvgIcon('agent',
-        sanitizer.bypassSecurityTrustResourceUrl('/assets/agent.svg'))
+        sanitizer.bypassSecurityTrustResourceUrl('assets/agent.svg'))
       .addSvgIconInNamespace('core', 'sensor',
-        sanitizer.bypassSecurityTrustResourceUrl('/assets/sensor.svg'))
+        sanitizer.bypassSecurityTrustResourceUrl('assets/sensor.svg'))
       .addSvgIconInNamespace('core', 'ai',
-        sanitizer.bypassSecurityTrustResourceUrl('/assets/ai.svg'));
+        sanitizer.bypassSecurityTrustResourceUrl('assets/ai.svg'));
   }
 }
